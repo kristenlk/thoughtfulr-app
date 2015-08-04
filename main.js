@@ -29,17 +29,23 @@ $(document).ready(function(){
 // Click handlers for sign in functionality
 
   var sa = 'http://localhost:3000';
+  var moniker;
 
   $('#register-btn').on('click', function(){
-    var profile = {moniker:
-                    if ($('#anon-btn').is(':checked')) {
-                      return 'anonymous';
-                    else {
-                      return $('#register-moniker').val();
-                    },
-                    location: $('#register-location').val(),
-                    email_or_phone: $('input[name=phone-or-email]:checked').val(),
-                    selected_time: $('input[name=time-of-day]:checked').val()
+
+    moniker = function(){
+      if ($('#anon-btn').is(':checked')) {
+        return 'anonymous';}
+      else {
+        return $('#register-moniker').val();
+      }
+    }
+
+    var profile = {
+                  moniker: moniker,
+                  location: $('#register-location').val(),
+                  email_or_phone: $("input[name='phone-or-email']:checked").val(),
+                  selected_time: $("input[name='time-of-day']:checked").val()
                   };
 
     $.ajax(sa + '/create', {
@@ -51,7 +57,7 @@ $(document).ready(function(){
           password: $('#register-password').val(),
           password_confirmation: $('#register-confirm-password').val()
         },
-        profile: profile;
+        profile: profile
       }),
       dataType: 'json',
       method: 'POST'
