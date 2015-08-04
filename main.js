@@ -1,7 +1,21 @@
 var token;
 var userID;
+var moniker;
+var tokenExists;
 
 $(document).ready(function(){
+
+  // Checks for a token
+tokenExists = function(token){
+  if (token) {
+    $('.register, .sign-in').addClass('hide');
+    $('.my-account, .log-out').removeClass('hide');
+  } else {
+    console.log('no token yet')
+  }
+};
+
+tokenExists(token);
 
 // Click handlers for register / sign in modals
   $('.sign-in').on('click', function() {
@@ -18,7 +32,7 @@ $(document).ready(function(){
     $('.modal').removeClass('show');
   });
 
-  $('[name="phone-or-email"]').on('click', function(){
+  $('[name="phone-or-email"]').on('click', function() {
     if ($('#phone-radio-btn').is(':checked')) {
       $('#phone-selected').show();
     } else {
@@ -26,23 +40,33 @@ $(document).ready(function(){
     };
   });
 
+  $('#anon-btn').on('click', function() {
+    $('#register-moniker').val('');
+  });
+
+  $('#register-moniker').on('click', function() {
+    $('#anon-btn').prop('checked', false);
+  });
+
 // Click handlers for sign in functionality
 
   var sa = 'http://localhost:3000';
-  var moniker;
 
-  $('#register-btn').on('click', function(){
+  $('#register-btn').on('click', function() {
 
     moniker = function(){
+      var msg;
       if ($('#anon-btn').is(':checked')) {
-        return 'anonymous';}
-      else {
-        return $('#register-moniker').val();
+        msg = 'anonymous';
+        console.log(msg);
+      } else {
+        msg = $('#register-moniker').val();
       }
+      return msg;
     }
 
     var profile = {
-                  moniker: moniker,
+                  moniker: moniker(),
                   location: $('#register-location').val(),
                   email_or_phone: $("input[name='phone-or-email']:checked").val(),
                   selected_time: $("input[name='time-of-day']:checked").val()
@@ -62,9 +86,16 @@ $(document).ready(function(){
       dataType: 'json',
       method: 'POST'
     }).done(function(data, textStatus, jqxhr){
-      $('#result').val(JSON.stringify(data));
+      // $('#result').val(JSON.stringify(data));
+      console.log(data);
+      $('.modal').removeClass('show');
+      token = data.user_login.token;
+      userID = data.user_login.id;
+      tokenExists(token);
     }).fail(function(jqxhr, textStatus, errorThrown){
-      $('#result').val('registration failed');
+      // $('#result').val('registration failed');
+
+      console.log(jqxhr.responseText);
     });
   });
 
@@ -85,8 +116,9 @@ $(document).ready(function(){
       $('.modal').removeClass('show');
       token = data.user_login.token;
       userID = data.user_login.id;
+      tokenExists(token);
       // simplestorage
-      console.log(userID);
+      // console.log(userID);
     }).fail(function(jqxhr, textStatus, errorThrown){
       $('#login-alert').addClass('show');
       // console.log("We were unable to locate an account with that email address and password combination. Please try again.");
@@ -132,7 +164,7 @@ $(document).ready(function(){
 // Click handlers for creating a message
 
   $("#send-msg-btn").on('click', function() {
-    debugger;
+    // debugger;
     $.ajax({
       url: sa + '/messages',
       method: 'POST',
@@ -150,7 +182,6 @@ $(document).ready(function(){
       console.error(data);
     });
   });
-
 
 });
 
