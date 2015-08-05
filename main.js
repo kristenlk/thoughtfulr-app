@@ -5,17 +5,17 @@ var tokenExists;
 
 $(document).ready(function(){
 
-  // Checks for a token
-tokenExists = function(token){
-  if (token) {
-    $('.register, .sign-in').addClass('hide');
-    $('.my-account, .log-out').removeClass('hide');
-  } else {
-    console.log('no token yet')
-  }
-};
+  // Checks for a token, does stuff if it finds one
+  tokenExists = function(token){
+    if (token) {
+      $('.register, .sign-in').addClass('hide');
+      $('.my-account, .log-out, .temp-send-text').removeClass('hide');
+    } else {
+      console.log('no token yet')
+    }
+  };
 
-tokenExists(token);
+  tokenExists(token);
 
 // Click handlers for register / sign in modals
   $('.sign-in').on('click', function() {
@@ -178,11 +178,35 @@ tokenExists(token);
       }
     }).done(function(data) {
       console.log("Created message!");
+
     }).fail(function(data) {
       console.error(data);
     });
   });
 
+  // Temporary click handler for Send Message button (to generate a text via Twilio API)
+
+  $(".temp-send-text").on('click', function() {
+    $.ajax({
+      url: sa + '/received_messages',
+      method: 'POST',
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+
+      // what needs to be passed in here for now? anything?
+      // data: {
+      //   message: {
+      //     body: $("#message-text").val()
+      //   }
+      // }
+    }).done(function() {
+      console.log("Sent message!");
+
+    }).fail(function() {
+      console.log('didn\'t work');
+    });
+
+  });
+
 });
-
-
