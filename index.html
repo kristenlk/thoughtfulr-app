@@ -145,6 +145,40 @@
       </div>
     </div>
 
-    <!-- <script type="text/javascript" src="../assets/handlebars-v3.0.3.js"></script>-->
+    <!-- USER ACCOUNT -->
+
+    <div class="span3 bs-docs-sidebar hide" id="my-account-nav">
+      <ul class="nav nav-list bs-docs-sidenav affix-top">
+        <li class="active" id="acct-received-messages"><a href="#receivedmessages"><i class="icon-chevron-right"></i> Received Messages</a></li>
+        <li class="" id="acct-sent-messages"><a href="#sentmessages"><i class="icon-chevron-right"></i> Sent Messages</a></li>
+        <li class="" id="acct-my-account"><a href="#myaccount"><i class="icon-chevron-right"></i> My Account</a></li>
+        <li id="acct-logout"><a href="#logout"><i class="icon-chevron-right"></i> Log Out</a></li>
+      </ul>
+    </div>
+
+    <div id="account-info">
+
+      <div id="display-received-messages"></div>
+        <script type="text/x-handlebars-template" id="received-messages-template">
+        {{#each receivedmessage}}
+        Body: {{body}}<br>
+        {{/each}}
+        </script>
+
+      <div id="display-sent-messages"></div>
+        <script type="text/x-handlebars-template" id="sent-messages-template">
+        {{#each sentmessage}}
+        Body: {{body}}<br>
+        {{/each}}
+        </script>
+
+      <div id="display-account-settings"></div>
+        <script type="text/x-handlebars-template" id="account-settings-template">
+        Moniker: {{moniker}}<br>
+        </script>
+
+    </div>
+
+     <script type="text/javascript" src="../assets/handlebars-v3.0.3.js"></script>
   </body>
 </html>

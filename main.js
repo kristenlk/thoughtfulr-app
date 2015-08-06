@@ -184,6 +184,81 @@ $(document).ready(function(){
     });
   });
 
+  // Click handler for displaying My Account information
+
+  $('.my-account').on('click', function(){
+    $('#my-account-nav').removeClass('hide').addClass('show');
+    $.ajax({
+      url: sa + '/received_messages',
+      headers: {
+        Authorization: 'Token token=' + token
+      }
+    }).done(function(data) {
+      // $('#account-stuff').html(data)
+      var templatingFunction = Handlebars.compile($('#received-messages-template').html());
+      var html = templatingFunction({receivedmessage: data.messages});
+      $('#display-received-messages').html(html);
+    }).fail(function(data) {
+      console.error(data);
+    });
+  });
+
+  // My Account: Click handler for displaying received messages
+  $('#acct-received-messages').on('click', function(){
+    $.ajax({
+      url: sa + '/received_messages',
+      headers: {
+        Authorization: 'Token token=' + token
+      }
+    }).done(function(data) {
+      // $('#account-stuff').html(data)
+      $('#account-info > div').addClass('hide');
+      var templatingFunction = Handlebars.compile($('#received-messages-template').html());
+      var html = templatingFunction({receivedmessage: data.messages});
+      $('#display-received-messages').removeClass('hide').html(html);
+    }).fail(function(data) {
+      console.error(data);
+    });
+  });
+
+  // My Account: Click handler for displaying sent messages
+  $('#acct-sent-messages').on('click', function(){
+    $.ajax({
+      url: sa + '/sent_messages',
+      headers: {
+        Authorization: 'Token token=' + token
+      }
+    }).done(function(data) {
+      // $('#account-stuff').html(data)
+      $('#account-info > div').addClass('hide');
+
+      var templatingFunction = Handlebars.compile($('#sent-messages-template').html());
+      var html = templatingFunction({sentmessage: data.messages});
+      $('#display-sent-messages').removeClass('hide').html(html);
+    }).fail(function(data) {
+      console.error(data);
+    });
+  });
+
+  // My Account: Click handler for displaying account information / preferences
+  $('#acct-my-account').on('click', function(){
+    $.ajax({
+      url: sa + '/users/' + userID + '/profile',
+      headers: {
+        Authorization: 'Token token=' + token
+      }
+    }).done(function(data) {
+      $('#account-info > div').addClass('hide');
+      console.log(data);
+      var templatingFunction = Handlebars.compile($('#account-settings-template').html());
+      var html = templatingFunction(data);
+      $('#display-account-settings').removeClass('hide').html(html);
+    }).fail(function(data) {
+      console.error(data);
+    });
+  });
+
+
   // Temporary click handler for Send Message button (to generate a text via Twilio API)
 
   $(".temp-send-text").on('click', function() {
