@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>thoughtful.ly</title>
+    <script type="text/javascript" src="../assets/handlebars-v3.0.3.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script type="text/javascript"src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -19,7 +20,7 @@
         <button type="button" class="btn btn-default navbar-btn temp-send-text hide">Temp- Send Text</button>
         <button type="button" class="btn btn-default navbar-btn my-account hide">My Account</button>
         <button type="button" class="btn btn-default navbar-btn log-out hide">Log Out</button>
-        <button type="button" class="btn btn-default btn-lg send-msg">
+        <button type="button" class="btn btn-default btn-lg send-msg hide">
           <span class="glyphicon glyphicon-pencil"></span>
         </button>
       </div>
@@ -111,6 +112,7 @@
           </div>
 
           <div class="modal-footer">
+          <div class="alert alert-danger hide text-left" role="alert" id="message-alert"></div>
           <span class="pull-left"><a href="#" class="sign-in">Already a member? Sign in.</a></span>
             <button id="sign-in-modal-close" type="button" class="btn btn-default x">Close</button>
             <button type="button" class="btn btn-primary" id="register-btn">Register</button>
@@ -138,6 +140,8 @@
             </form>
           </div>
           <div class="modal-footer">
+            <div class="alert alert-danger hide text-left" role="alert" id="message-alert">We were unable to send your message. Please try again.</div>
+            <div class="alert alert-success hide text-left" role="alert" id="message-confirmation">Your message has been successfully sent.</div>
             <button type="button" class="btn btn-default x" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" id="send-msg-btn">Send message</button>
           </div>
@@ -158,7 +162,7 @@
       </div>
 
       <div id="account-info">
-
+        <button type="button" class="btn btn-default temp-edit-sent-messages">Temp- Edit Sent Messages</button>
         <div id="display-received-messages"></div>
           <script type="text/x-handlebars-template" id="received-messages-template">
           <h3>You have received NUM messages. You have NUM more to receive. To receive more messages, <a href="#" class="send-msg">send more!</a></h3>
@@ -175,11 +179,10 @@
           Body: {{body}}<br>
           Time / date sent: {{created_at}}
           {{/each}}
-          <p>Have you changed your mind about one of the messages you sent? <a href="#">Edit them here.</a>
+          {{{Have you changed your mind about one of the messages you sent? <a href="#" id="edit-msgs">Edit them here.</a>}}}
           </script>
 
         <div id="display-account-settings"></div>
-
           <script type="text/x-handlebars-template" id="account-settings-template-user">
           <a href="#">Edit your account information</a><br><br>
           <div id="acct-email">Email address: {{user.email}}</div>
@@ -191,9 +194,9 @@
           <div id="acct-email-or-phone">You selected to receive messages by {{email_or_phone}}<br></div>
           <div id="acct-phone">Your phone number is {{phone_number}}</div>
           </script>
+          <!-- if user is opted into message, give them the ability here to opt out -->
       </div>
     </div>
 
-     <script type="text/javascript" src="../assets/handlebars-v3.0.3.js"></script>
   </body>
 </html>

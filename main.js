@@ -11,7 +11,7 @@ $(document).ready(function(){
   tokenExists = function(token){
     if (token) {
       $('.register, .sign-in').addClass('hide');
-      $('.my-account, .log-out, .temp-send-text').removeClass('hide');
+      $('.my-account, .log-out, .temp-send-text, .send-msg').removeClass('hide');
     } else {
       console.log('no token found!')
       $('.my-account, .log-out, .temp-send-text').addClass('hide');
@@ -42,6 +42,8 @@ $(document).ready(function(){
     tokenExists(token);
     $('#user-account').removeClass('show').addClass('hide');
   });
+
+
 
   // Click handler to close any open modal
 
@@ -113,6 +115,7 @@ $(document).ready(function(){
       // $('#result').val(JSON.stringify(data));
       console.log(data);
       $('.modal').removeClass('show');
+      $('.form').trigger('reset');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
@@ -137,7 +140,8 @@ $(document).ready(function(){
       method: 'POST'
     }).done(function(data, textStatus, jqxhr){
       console.log(data);
-      $('.modal').removeClass('show');
+      $('.modal').removeClass('show')
+      $('.form').trigger('reset');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
@@ -183,7 +187,10 @@ $(document).ready(function(){
 // Click handlers for send a message modal
 
   $('.send-msg').on('click', function(){
+    $('#send-msg-btn').removeClass('hide');
+    $('.alert').removeClass('show');
     $('#send-message-modal').addClass('show');
+    $('#message-text').val('');
   });
 
 // Click handlers for creating a message
@@ -203,9 +210,12 @@ $(document).ready(function(){
       }
     }).done(function(data) {
       console.log("Created message!");
-
+      $('#message-confirmation').addClass('show');
+      $('#send-msg-btn').addClass('hide');
+      $('#send-message-modal').delay(2000).fadeOut('slow');
     }).fail(function(data) {
       console.error(data);
+      $('#message-alert').addClass('show');
     });
   });
 
@@ -318,6 +328,15 @@ $(document).ready(function(){
     });
   });
 
+  $('#edit-sent-msg').on('click', function(){
+    // when you click on Edit next to a specific message, it should create an input field and the body of the message should be in the input field.
+    console.log('hello')
+  });
+
+  $('#delete-sent-msg').on('click', function(){
+    // when you click on Edit next to a specific message, it should create an input field and the body of the message should be in the input field.
+    console.log('hello')
+  });
 
 // Account info / preferences:
   // Click handler for editing email address
@@ -340,6 +359,30 @@ $(document).ready(function(){
 
 
 //
+
+
+  // Temporary click handler to edit sent messages - move to My Account once handlebars thing is figured out
+
+  $('.temp-edit-sent-messages').on('click', function(){
+
+    // $.ajax({
+    //   url: sa + '/reviews/' + $("#review-id").val(),
+    //   method: 'PATCH',
+    //   data: {
+    //     review: {
+    //       score: $("#review-score").val(),
+    //       content: $("#review-content").val(),
+    //       user_id: $("#review-user-id").val(),
+    //       movie_id: $("#review-movie-id").val()
+    //     }
+    //   }
+    // }).done(function(data) {
+    //   console.log("Updated Review!");
+    // }).fail(function(data) {
+    //   console.error(data);
+    // });
+  });
+
 
 
 
