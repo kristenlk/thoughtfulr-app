@@ -17,7 +17,7 @@
       <div class="navbar-right">
         <button type="button" class="btn btn-default navbar-btn register">Register</button>
         <button type="button" class="btn btn-default navbar-btn sign-in">Sign In</button>
-        <button type="button" class="btn btn-default navbar-btn temp-send-text hide">Temp- Send Text</button>
+<!--         <button type="button" class="btn btn-default navbar-btn temp-send-text hide">Temp- Send Text</button> -->
         <button type="button" class="btn btn-default navbar-btn my-account hide">My Account</button>
         <button type="button" class="btn btn-default navbar-btn log-out hide">Log Out</button>
         <button type="button" class="btn btn-default btn-lg send-msg hide">
@@ -112,7 +112,7 @@
           </div>
 
           <div class="modal-footer">
-          <div class="alert alert-danger hide text-left" role="alert" id="message-alert"></div>
+          <div class="alert alert-danger hide text-left" role="alert" id="register-alert"></div>
           <span class="pull-left"><a href="#" class="sign-in">Already a member? Sign in.</a></span>
             <button id="sign-in-modal-close" type="button" class="btn btn-default x">Close</button>
             <button type="button" class="btn btn-primary" id="register-btn">Register</button>
@@ -162,7 +162,7 @@
       </div>
 
       <div id="account-info">
-        <button type="button" class="btn btn-default temp-edit-sent-messages">Temp- Edit Sent Messages</button>
+<!--         <button type="button" class="btn btn-default temp-edit-sent-messages">Temp- Edit Sent Messages</button> -->
         <div id="display-received-messages"></div>
           <script type="text/x-handlebars-template" id="received-messages-template">
           <h3>You have received NUM messages. You have NUM more to receive. To receive more messages, <a href="#" class="send-msg">send more!</a></h3>
@@ -178,8 +178,8 @@
           {{#each sentmessage}}
           Body: {{body}}<br>
           Time / date sent: {{created_at}}
+          <a href="#" class="edit-a-msg">Edit</a>
           {{/each}}
-          {{{Have you changed your mind about one of the messages you sent? <a href="#" id="edit-msgs">Edit them here.</a>}}}
           </script>
 
         <div id="display-account-settings"></div>
@@ -189,7 +189,7 @@
           </script>
 
           <script type="text/x-handlebars-template" id="account-settings-template-profile">
-          <div id="acct-moniker">Moniker: {{moniker}}<br></div>
+          Moniker: <div id="acct-moniker">{{moniker}}</div><br>
           <div id="acct-location">Location: {{location}}<br></div>
           <div id="acct-email-or-phone">You selected to receive messages by {{email_or_phone}}<br></div>
           <div id="acct-phone">Your phone number is {{phone_number}}</div>

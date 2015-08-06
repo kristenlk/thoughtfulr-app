@@ -121,7 +121,8 @@ $(document).ready(function(){
       tokenExists(token);
     }).fail(function(jqxhr, textStatus, errorThrown){
       // $('#result').val('registration failed');
-
+      $('#register-alert').html(jqxhr.responseText);
+      $('#register-alert').removeClass('hide');
       console.log(jqxhr.responseText);
     });
   });
@@ -184,9 +185,9 @@ $(document).ready(function(){
   //   });
   // });
 
-// Click handlers for send a message modal
+// Click handlers for send a message modal (opens from the pencil button in the navbar and in various places in My Account)
 
-  $('.send-msg').on('click', function(){
+  $(document).on('click', '.send-msg', function(){
     $('#send-msg-btn').removeClass('hide');
     $('.alert').removeClass('show');
     $('#send-message-modal').addClass('show');
@@ -328,9 +329,9 @@ $(document).ready(function(){
     });
   });
 
-  $('#edit-sent-msg').on('click', function(){
+  $('#account-info').on('click', '.edit-a-msg', function(){
     // when you click on Edit next to a specific message, it should create an input field and the body of the message should be in the input field.
-    console.log('hello')
+    console.log('clicked on an Edit link')
   });
 
   $('#delete-sent-msg').on('click', function(){
