@@ -28,6 +28,8 @@ $(document).ready(function(){
   // Click handlers for header
 
   $('.sign-in').on('click', function() {
+    $('#login-alert').addClass('hide');
+    $('.form').trigger('reset');
     $('#register-modal').removeClass('show');
     $('#sign-in-modal').addClass('show');
   });
@@ -142,14 +144,13 @@ $(document).ready(function(){
     }).done(function(data, textStatus, jqxhr){
       console.log(data);
       $('.modal').removeClass('show')
-      $('.form').trigger('reset');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
       // simplestorage
       // console.log(userID);
     }).fail(function(jqxhr, textStatus, errorThrown){
-      $('#login-alert').addClass('show');
+      $('#login-alert').removeClass('hide');
       // console.log("We were unable to locate an account with that email address and password combination. Please try again.");
     });
   });
@@ -329,10 +330,61 @@ $(document).ready(function(){
     });
   });
 
-  $('#account-info').on('click', '.edit-a-msg', function(){
+
+// holds the id of the message you're currently editing
+  var selectedMsgId;
+
+// holds the body of the message you're currently editing
+  var priorToEditBody;
+  var $sentmessageBody;
+
+  $('#account-info').on('click', '.edit-a-msg', function(e){
     // when you click on Edit next to a specific message, it should create an input field and the body of the message should be in the input field.
-    console.log('clicked on an Edit link')
+    e.preventDefault();
+    var $editLink = $(this)
+    $sentmessageBody = $(this).siblings().filter('.sentmessage-body');
+    selectedMsgId = $(this).data('id');
+    priorToEditBody = $sentmessageBody.html();
+    console.log('currentMsgBody is: ' + priorToEditBody);
+    $editLink.addClass('hide');
+    $('#save-' + $(this).data('id')).removeClass('hide');
+    $('#cancel-' + $(this).data('id')).removeClass('hide');
+    $sentmessageBody.prop('contenteditable', 'true');
+    $sentmessageBody.focus();
   });
+
+  $('#account-info').on('click', '.cancel-a-msg', function(e){
+    e.preventDefault();
+    $(this).addClass('hide');
+    $('.save-a-msg').addClass('hide');
+    $('.edit-a-msg').removeClass('hide');
+    $sentmessageBody.html(priorToEditBody);
+    // $sentmessageBody = priorToEditBody;
+  });
+
+  $('#account-info').on('click', '.save-a-msg', function(e){
+    // console.log('clicked on Save');
+    e.preventDefault();
+    $.ajax({
+      url: sa + '/messages/' + selectedMsgId,
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+      method: 'PATCH',
+      data: {
+        message: {
+          body: $('.sentmessage-body').html(),
+        }
+      }
+    }).done(function(data) {
+      console.log("Saved edited message.");
+      $('.save-a-msg, .cancel-a-msg').addClass('hide');
+      $('.edit-a-msg').removeClass('hide');
+    }).fail(function(data) {
+      console.error(data);
+    });
+  });
+
 
   $('#delete-sent-msg').on('click', function(){
     // when you click on Edit next to a specific message, it should create an input field and the body of the message should be in the input field.

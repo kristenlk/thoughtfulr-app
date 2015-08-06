@@ -174,12 +174,18 @@
 
         <div id="display-sent-messages"></div>
           <script type="text/x-handlebars-template" id="sent-messages-template">
-          <h3>You have sent NUM messages. <a href="#" class="send-msg">Send more</a> to receive more!</h3>
-          {{#each sentmessage}}
-          Body: {{body}}<br>
-          Time / date sent: {{created_at}}
-          <a href="#" class="edit-a-msg">Edit</a>
-          {{/each}}
+            <h3>You have sent NUM messages. <a href="#" class="send-msg">Send more</a> to receive more!</h3>
+            <ul class="sentmessages">
+            {{#each sentmessage}}
+              <li class="sentmessage">
+                <a href="#" data-id="{{id}}" class="edit-a-msg">Edit</a>
+                <a href="#" id="save-{{id}}" class="save-a-msg hide">Save</a>
+                <a href="#" id="cancel-{{id}}" class="cancel-a-msg hide">Cancel</a>
+                <div class="sentmessage-body" contenteditable="false">{{body}}</div>
+                {{created_at}}
+              </li>
+            {{/each}}
+            </ul>
           </script>
 
         <div id="display-account-settings"></div>

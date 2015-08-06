@@ -18,3 +18,8 @@ ul {
 #register-moniker {
   width: 100px;
 }
+
+li.sentmessage {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
