@@ -19,7 +19,7 @@
         <button type="button" class="btn btn-default navbar-btn temp-send-text hide">Temp- Send Text</button>
         <button type="button" class="btn btn-default navbar-btn my-account hide">My Account</button>
         <button type="button" class="btn btn-default navbar-btn log-out hide">Log Out</button>
-        <button id="header-msg" type="button" class="btn btn-default btn-lg">
+        <button type="button" class="btn btn-default btn-lg send-msg">
           <span class="glyphicon glyphicon-pencil"></span>
         </button>
       </div>
@@ -77,17 +77,17 @@
               <div class="form-group">
                 <input type="password" class="form-control input-md" placeholder="Confirm password" id="register-confirm-password">
               </div>
-              <div class="form-group">
+              <div class="form-group" id="moniker-options">
                 <input type="text" class="form-control input-md" placeholder="Moniker" id="register-moniker">
+                <ul>
+                  <li><input type="radio" name="anonymous" id="anon-btn">&nbsp;I want to be anonymous.</li>
+                </ul>
               </div>
               <p>Your moniker will be displayed when your messages are sent to other users. We advise using your first initial or something similar.</p>
-              <ul>
-                <li><input type="radio" name="anonymous" id="anon-btn">&nbsp;I want to be anonymous.</li>
-              </ul>
               <div class="form-group">
                 <input type="text" class="form-control input-md" placeholder="Location" id="register-location">
               </div>
-              <p>Your location will be displayed when your messages are sent to other users. Your location has been detected as Boston, MA. If this is not correct, feel free to change it above.</p>
+              <p>Your location will be displayed when your messages are sent to other users. We advise using a "city, state" format (for example, "Boston, MA").</p>
               <p>How would you like to receive messages?</p>
               <ul>
                 <li><input type="radio" name="phone-or-email" id="phone-radio-btn" value="phone">&nbsp;Phone</li>
@@ -146,37 +146,52 @@
     </div>
 
     <!-- USER ACCOUNT -->
+    <div id="user-account">
+      <div class="span3 bs-docs-sidebar hide" id="my-account-nav">
+        <h1>My Account</h1>
+        <ul class="nav nav-list bs-docs-sidenav affix-top">
+          <li class="active" id="acct-received-messages"><a href="#receivedmessages"><i class="icon-chevron-right"></i> Received Messages</a></li>
+          <li class="" id="acct-sent-messages"><a href="#sentmessages"><i class="icon-chevron-right"></i> Sent Messages</a></li>
+          <li class="" id="acct-my-account"><a href="#myaccount"><i class="icon-chevron-right"></i> My Account</a></li>
+          <li class="log-out"><a href="#logout"><i class="icon-chevron-right"></i> Log Out</a></li>
+        </ul>
+      </div>
 
-    <div class="span3 bs-docs-sidebar hide" id="my-account-nav">
-      <ul class="nav nav-list bs-docs-sidenav affix-top">
-        <li class="active" id="acct-received-messages"><a href="#receivedmessages"><i class="icon-chevron-right"></i> Received Messages</a></li>
-        <li class="" id="acct-sent-messages"><a href="#sentmessages"><i class="icon-chevron-right"></i> Sent Messages</a></li>
-        <li class="" id="acct-my-account"><a href="#myaccount"><i class="icon-chevron-right"></i> My Account</a></li>
-        <li id="acct-logout"><a href="#logout"><i class="icon-chevron-right"></i> Log Out</a></li>
-      </ul>
-    </div>
+      <div id="account-info">
 
-    <div id="account-info">
+        <div id="display-received-messages"></div>
+          <script type="text/x-handlebars-template" id="received-messages-template">
+          <h3>You have received NUM messages. You have NUM more to receive. To receive more messages, <a href="#" class="send-msg">send more!</a></h3>
+          {{#each receivedmessage}}
+          {{body}}<br>
+          From MONIKER, LOCATION on DATE at TIME
+          {{/each}}
+          </script>
 
-      <div id="display-received-messages"></div>
-        <script type="text/x-handlebars-template" id="received-messages-template">
-        {{#each receivedmessage}}
-        Body: {{body}}<br>
-        {{/each}}
-        </script>
+        <div id="display-sent-messages"></div>
+          <script type="text/x-handlebars-template" id="sent-messages-template">
+          <h3>You have sent NUM messages. <a href="#" class="send-msg">Send more</a> to receive more!</h3>
+          {{#each sentmessage}}
+          Body: {{body}}<br>
+          Time / date sent: {{created_at}}
+          {{/each}}
+          <p>Have you changed your mind about one of the messages you sent? <a href="#">Edit them here.</a>
+          </script>
 
-      <div id="display-sent-messages"></div>
-        <script type="text/x-handlebars-template" id="sent-messages-template">
-        {{#each sentmessage}}
-        Body: {{body}}<br>
-        {{/each}}
-        </script>
+        <div id="display-account-settings"></div>
 
-      <div id="display-account-settings"></div>
-        <script type="text/x-handlebars-template" id="account-settings-template">
-        Moniker: {{moniker}}<br>
-        </script>
+          <script type="text/x-handlebars-template" id="account-settings-template-user">
+          <a href="#">Edit your account information</a><br><br>
+          <div id="acct-email">Email address: {{user.email}}</div>
+          </script>
 
+          <script type="text/x-handlebars-template" id="account-settings-template-profile">
+          <div id="acct-moniker">Moniker: {{moniker}}<br></div>
+          <div id="acct-location">Location: {{location}}<br></div>
+          <div id="acct-email-or-phone">You selected to receive messages by {{email_or_phone}}<br></div>
+          <div id="acct-phone">Your phone number is {{phone_number}}</div>
+          </script>
+      </div>
     </div>
 
      <script type="text/javascript" src="../assets/handlebars-v3.0.3.js"></script>

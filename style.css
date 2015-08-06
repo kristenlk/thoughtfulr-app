@@ -1,12 +1,20 @@
 .bs-docs-sidenav {
-    top: 0;
-    width: 218px;
-    margin-top: 30px;
-    margin-right: 0;
+  top: 0;
+  width: 218px;
+  margin-top: 30px;
+  margin-right: 0;
 }
 
 body {
   margin-left: 20px;
   margin-top: 200px;
   padding: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+#register-moniker {
+  width: 100px;
 }
