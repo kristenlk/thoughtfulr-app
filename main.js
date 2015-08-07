@@ -192,6 +192,7 @@ $(document).ready(function(){
 
   $('.my-account, #acct-received-messages').on('click', function(){
     $('#user-account, #my-account-nav').removeClass('hide').addClass('show');
+    $('.jumbotron, .glyphs').addClass('hide');
     $.ajax({
       url: sa + '/received_messages',
       headers: {
@@ -201,7 +202,8 @@ $(document).ready(function(){
       var html;
       $('#account-info > div').addClass('hide');
       var templatingFunction = Handlebars.compile($('#received-messages-template').html());
-      console.log(data)
+      console.log(data);
+      // console.log(data.messages[0].num_messages_left_to_receive)
       if (data.messages.length > 0) {
         html = templatingFunction({receivedmessage: data.messages});
       } else {
@@ -212,6 +214,19 @@ $(document).ready(function(){
     }).fail(function(data) {
       console.error(data);
     });
+
+    $.ajax({
+      url: sa + '/users/' + userID,
+      headers: {
+        Authorization: 'Token token=' + token
+      }
+    }).done(function(data) {
+      $('#num_messages_left_to_receive').text(data.user.num_messages_left_to_receive);
+
+    }).fail(function(data) {
+      console.error(data);
+    });
+
   });
 
   // My Account: Click handler for displaying sent messages
@@ -256,7 +271,8 @@ $(document).ready(function(){
       }
     }).done(function(data) {
       $('#account-info > div').addClass('hide');
-
+      $('.jumbotron').addClass('hide');
+      $('.glyphs').addClass('hide');
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
       // currentUserProfileData = JSON.parse(data);
@@ -363,6 +379,8 @@ $(document).ready(function(){
       console.error(data);
     });
   });
+
+
 
   $('#display-account-settings').on('click', '.edit-acct-info', function(e){
     e.preventDefault();

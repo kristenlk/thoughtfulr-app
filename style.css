@@ -6,14 +6,13 @@
 }
 
 body {
-  margin-left: 20px;
-  margin-top: 200px;
+  margin: 0 auto;
   /* padding: 0;*/
 }
 
 li {
   list-style-type: none;
-  margin-left:-20px;
+/*  margin-left:-20px;*/
 }
 
 
@@ -30,8 +29,8 @@ li.sentmessage, li.receivedmessage {
 .jumbotron {
   background: url("https://images.unsplash.com/photo-1433838552652-f9a46b332c40?q=80&fm=jpg&s=97cb7cd5e219e932365f3bcff3950eda") no-repeat center center fixed;
   background-size: cover;
-  margin-top:-150px;
-  margin-left:-20px;
+  margin-top: 50px;
+/*  margin-left:-20px;*/
   color: white;
 /*  height: 50%;
   width: 100%;*/
@@ -41,12 +40,12 @@ li.sentmessage, li.receivedmessage {
   text-align: center;*/
 }
 
-.container > .col-md-4 {
+.jumbotron .col-md-4 {
   height: 400px;
 }
 
 /* icons not centering */
-div > .col-md-4 {
+.container .col-md-4 {
   display: inline-block;
   position: relative;
   text-align: center;
@@ -63,11 +62,50 @@ div > .col-md-4 {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
-  padding:;
+  text-align: center;
+  display:-moz-box;
+   -moz-box-pack:center;
+   -moz-box-align:center;
+
+  display:-webkit-box;
+   -webkit-box-pack:center;
+   -webkit-box-align:center;
+
+  display:box;
+   box-pack:center;
+   box-align:center;
 }
 
-/* font-size not changing */
+/* h1 not centered */
+.jumbotron h1 {
+  font-family: 'Pacifico', cursive;
+  font-size: 100px;
+/*  margin-left: -30px;
+  margin-right: auto;
+  margin-right: 200px;
+  text-align: center;*/
+}
+
+.navbar-right {
+  margin-right: 20px;
+}
+
 h1 {
   font-family: 'Pacifico', cursive;
-  font-size: 200px;
+  font-size: 80px;
+  margin-left: -50px;
+}
+
+h2 {
+  font-family: 'Pacifico', cursive;
+  font-size: 60px;
+  margin-top: 100px;
+}
+
+#user-account {
+  padding: 20px;
+}
+
+.col-md-4.h4 {
+  padding: 20px;
 }
