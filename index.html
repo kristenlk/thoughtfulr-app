@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>thoughtful.ly</title>
+    <title>thoughtfulr</title>
     <script type="text/javascript" src="../assets/handlebars-v3.0.3.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
@@ -24,7 +24,7 @@
           <span class="glyphicon glyphicon-pencil"></span>
         </button>
       </div>
-      <a class="navbar-brand">thoughtful.ly</a>
+      <a class="navbar-brand">thoughtfulr</a>
     </nav>
 
     <!-- SIGN IN MODAL -->
@@ -162,7 +162,7 @@
       </div>
 
       <div id="account-info">
-<!--         <button type="button" class="btn btn-default temp-edit-sent-messages">Temp- Edit Sent Messages</button> -->
+
         <div id="display-received-messages"></div>
           <script type="text/x-handlebars-template" id="received-messages-template">
           <h3>You have received {{receivedmessage.length}} messages. You have NUM more to receive. To receive more messages, <a href="#" class="send-msg">send more!</a></h3>
@@ -170,7 +170,7 @@
           {{#each receivedmessage}}
             <li class="receivedmessage">
               {{body}}<br>
-              From MONIKER, LOCATION on DATE at TIME
+              From {{profile_info.moniker}} in {{profile_info.location}} {{created_at}}
             </li>
           {{/each}}
           </ul>
@@ -199,18 +199,64 @@
           </script>
 
           <script type="text/x-handlebars-template" id="account-settings-template-profile">
-          <div id="acct-moniker">Moniker: {{moniker}}</div>
-          <div id="acct-location">Location: {{location}}<br></div>
-          <div id="acct-email-or-phone">You selected to receive messages by {{email_or_phone}}<br></div>
-          <div id="acct-phone">Your phone number is {{phone_number}}</div>
-          {{#if opted_in}}
-            You are currently opted into daily messages. To opt out, <a href="#" id="unsubscribe">click here</a>.
-          {{/if}}
-          <br><br>
-          <a href="#">Edit your account information</a>
-          <br><br>
-          </script>
-          <!-- if user is opted into message, give them the ability here to opt out -->
+
+            <div id="acct-moniker">Moniker: {{moniker}}</div>
+            <div id="acct-location">Location: {{location}}</div>
+            <div id="acct-email-or-phone">You selected to receive messages by {{email_or_phone}}</div>
+
+            {{#if phone_number}}
+              <div id="acct-phone">Your phone number is {{phone_number}}</div>
+            {{/if}}
+
+            {{#if opted_in}}
+              <div id="opt-in">You are currently opted into daily messages. To opt out, <a href="#" id="unsubscribe">click here</a>.</div>
+            {{/if}}
+
+            <br><br><a href="#" class="edit-acct-info">Edit your account information</a>
+            </script>
+
+
+            <form class="form col-sm-12 center-block edit-acct-info-fields hide">
+              <div class="form-group">
+                <input type="text" class="form-control input-md" placeholder="Email address" id="register-email">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control input-md" placeholder="Password" id="register-password">
+              </div>
+              <div class="form-group">
+                <input type="password" class="form-control input-md" placeholder="Confirm password" id="register-confirm-password">
+              </div>
+              <div class="form-group" id="moniker-options">
+                <input type="text" class="form-control input-md" placeholder="Moniker" id="register-moniker">
+                <ul>
+                  <li><input type="radio" name="anonymous" id="anon-btn">&nbsp;I want to be anonymous.</li>
+                </ul>
+              </div>
+              <p>Your moniker will be displayed when your messages are sent to other users. We advise using your first initial or something similar.</p>
+              <div class="form-group">
+                <input type="text" class="form-control input-md" placeholder="Location" id="register-location">
+              </div>
+              <p>Your location will be displayed when your messages are sent to other users. We advise using a "city, state" format (for example, "Boston, MA").</p>
+              <p>How would you like to receive messages?</p>
+              <ul>
+                <li><input type="radio" name="phone-or-email" id="phone-radio-btn" value="phone">&nbsp;Phone</li>
+                <li><input type="radio" name="phone-or-email" id="email-radio-btn" value="email">&nbsp;Email</li>
+              </ul>
+              <div id="phone-selected" class="collapse">
+                <p>Enter your phone number below to receive messages from thoughtful.ly on your phone. Standard text messaging rates apply.</p>
+                <div class="form-group">
+                  <input type="text" class="form-control input-md" placeholder="123-456-7890" id="phone-number">
+                </div>
+              </div>
+              <div class="time-of-day">
+                <p>What time of day (EST) would you like to receive your messages?</p>
+                <ul>
+                  <li><input type="radio" name="time-of-day" id="morning-radio-btn" value="morning">&nbsp;Morning</li>
+                  <li><input type="radio" name="time-of-day" id="afternoon-radio-btn" value="afternoon">&nbsp;Afternoon</li>
+                  <li><input type="radio" name="time-of-day" id="evening-radio-btn" value="evening">&nbsp;Evening</li>
+                </ul>
+              </div>
+            </form>
       </div>
     </div>
 

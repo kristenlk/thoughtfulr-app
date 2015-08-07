@@ -149,43 +149,10 @@ $(document).ready(function(){
       userID = data.user_login.id;
       tokenExists(token);
       // simplestorage
-      // console.log(userID);
     }).fail(function(jqxhr, textStatus, errorThrown){
       $('#login-alert').removeClass('hide');
-      // console.log("We were unable to locate an account with that email address and password combination. Please try again.");
     });
   });
-
-  // $('#list').on('click', function(){
-  //   $.ajax(sa + '/users', {
-  //     dataType: 'json',
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: 'Token token=' + $('#token').val()
-  //     }
-  //   }).done(function(data, textStatus, jqxhr){
-  //     $('#result').val(JSON.stringify(data));
-  //   }).fail(function(jqxhr, textStatus, errorThrown){
-  //     $('#result').val('list failed');
-  //   });
-  // });
-
-  // $('#create').on('click', function(){
-  //   $.ajax(sa + '/games', {
-  //     contentType: 'application/json',
-  //     processData: false,
-  //     data: JSON.stringify({}),
-  //     dataType: 'json',
-  //     method: 'POST',
-  //     headers: {
-  //       Authorization: 'Token token=' + $('#token').val()
-  //     }
-  //   }).done(function(data, textStatus, jqxhr){
-  //     $('#result').val(JSON.stringify(data));
-  //   }).fail(function(jqxhr, textStatus, errorThrown){
-  //     $('#result').val('create failed');
-  //   });
-  // });
 
 // Click handlers for send a message modal (opens from the pencil button in the navbar and in various places in My Account)
 
@@ -199,7 +166,6 @@ $(document).ready(function(){
 // Click handlers for creating a message
 
   $("#send-msg-btn").on('click', function() {
-    // debugger;
     $.ajax({
       url: sa + '/messages',
       method: 'POST',
@@ -300,6 +266,9 @@ $(document).ready(function(){
 
   // My Account: Click handler for displaying account information / preferences
 
+  // saving opted_in outside of #account-info click handler because I need it from the rendered back json so a user can change this preference
+  var opted_in;
+
   $('#acct-my-account').on('click', function(){
     $.ajax({
       url: sa + '/users/' + userID + '/profile',
@@ -308,9 +277,9 @@ $(document).ready(function(){
       }
     }).done(function(data) {
       $('#account-info > div').addClass('hide');
-      console.log(data);
+      opted_in = data.opted_in;
+      console.log(opted_in);
 
-      // handlebars: whole profile
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
 
@@ -419,26 +388,11 @@ $(document).ready(function(){
     });
   });
 
-// Account info / preferences:
-  // Click handler for editing email address
+  $('#display-account-settings').on('click', '.edit-acct-info', function(e){
+    e.preventDefault();
+    $(this).addClass('hide');
+    $('.edit-acct-info-fields').removeClass('hide');
+  });
 
-  // Click handler for editing "phone or email"
-
-  // Click handler for editing phone number
-
-  // Click handler for editing moniker (if user is anonymous, anonymous radio button is selected. If user isn't anonymous, current moniker is changed to anonymous if they select that radio button.)
-
-  // Click handler for editing location
-
-  // Click handler for opting into / out of alerts
-
-
-// Sent messages:
-  // Click handler for editing a sent message
-
-  // Click handler for deleting a sent message
-
-
-//
 
 });

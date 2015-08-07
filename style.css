@@ -8,23 +8,25 @@
 body {
   margin-left: 20px;
   margin-top: 200px;
-  padding: 0;
+  /* padding: 0;*/
 }
 
-ul {
+li {
   list-style-type: none;
+  margin-left:-20px;
 }
 
+/*
 #register-moniker {
   width: 100px;
-}
+}*/
 
 li.sentmessage, li.receivedmessage {
   padding-top: 1em;
   padding-bottom: 1em;
 }
 
-#display-account-settings > div {
+#display-account-settings > div, a {
   padding-top: 1em;
   padding-bottom: 1em;
 }
