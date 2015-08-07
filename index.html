@@ -101,7 +101,7 @@
                 </div>
               </div>
               <div class="time-of-day">
-                <p>What time of day would you like to receive your messages?</p>
+                <p>What time of day (EST) would you like to receive your messages?</p>
                 <ul>
                   <li><input type="radio" name="time-of-day" id="morning-radio-btn" value="morning">&nbsp;Morning</li>
                   <li><input type="radio" name="time-of-day" id="afternoon-radio-btn" value="afternoon">&nbsp;Afternoon</li>
@@ -165,22 +165,27 @@
 <!--         <button type="button" class="btn btn-default temp-edit-sent-messages">Temp- Edit Sent Messages</button> -->
         <div id="display-received-messages"></div>
           <script type="text/x-handlebars-template" id="received-messages-template">
-          <h3>You have received NUM messages. You have NUM more to receive. To receive more messages, <a href="#" class="send-msg">send more!</a></h3>
+          <h3>You have received {{receivedmessage.length}} messages. You have NUM more to receive. To receive more messages, <a href="#" class="send-msg">send more!</a></h3>
+          <ul class="receivedmessages">
           {{#each receivedmessage}}
-          {{body}}<br>
-          From MONIKER, LOCATION on DATE at TIME
+            <li class="receivedmessage">
+              {{body}}<br>
+              From MONIKER, LOCATION on DATE at TIME
+            </li>
           {{/each}}
+          </ul>
           </script>
 
         <div id="display-sent-messages"></div>
           <script type="text/x-handlebars-template" id="sent-messages-template">
-            <h3>You have sent NUM messages. <a href="#" class="send-msg">Send more</a> to receive more!</h3>
+            <h3>You have sent {{sentmessage.length}} messages. <a href="#" class="send-msg">Send more</a> to receive more!</h3>
             <ul class="sentmessages">
             {{#each sentmessage}}
               <li class="sentmessage">
                 <a href="#" data-id="{{id}}" class="edit-a-msg">Edit</a>
-                <a href="#" id="save-{{id}}" class="save-a-msg hide">Save</a>
-                <a href="#" id="cancel-{{id}}" class="cancel-a-msg hide">Cancel</a>
+                <a href="#" data-id="{{id}}" id="delete-{{id}}" class="delete-a-msg">Delete</a>
+                <a href="#" data-id="{{id}}" id="save-{{id}}" class="save-a-msg hide">Save</a>
+                <a href="#" data-id="{{id}}" id="cancel-{{id}}" class="cancel-a-msg hide">Cancel</a>
                 <div class="sentmessage-body" contenteditable="false">{{body}}</div>
                 {{created_at}}
               </li>
@@ -190,15 +195,20 @@
 
         <div id="display-account-settings"></div>
           <script type="text/x-handlebars-template" id="account-settings-template-user">
-          <a href="#">Edit your account information</a><br><br>
           <div id="acct-email">Email address: {{user.email}}</div>
           </script>
 
           <script type="text/x-handlebars-template" id="account-settings-template-profile">
-          Moniker: <div id="acct-moniker">{{moniker}}</div><br>
+          <div id="acct-moniker">Moniker: {{moniker}}</div>
           <div id="acct-location">Location: {{location}}<br></div>
           <div id="acct-email-or-phone">You selected to receive messages by {{email_or_phone}}<br></div>
           <div id="acct-phone">Your phone number is {{phone_number}}</div>
+          {{#if opted_in}}
+            You are currently opted into daily messages. To opt out, <a href="#" id="unsubscribe">click here</a>.
+          {{/if}}
+          <br><br>
+          <a href="#">Edit your account information</a>
+          <br><br>
           </script>
           <!-- if user is opted into message, give them the ability here to opt out -->
       </div>

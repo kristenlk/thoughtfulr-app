@@ -35,8 +35,10 @@ $(document).ready(function(){
   });
 
   $('.register').on('click', function() {
+    $('#login-alert').addClass('hide');
     $('#sign-in-modal').removeClass('show');
     $('#register-modal').addClass('show');
+    $('.form').trigger('reset');
   });
 
   $('.log-out').on('click', function(){
@@ -117,7 +119,6 @@ $(document).ready(function(){
       // $('#result').val(JSON.stringify(data));
       console.log(data);
       $('.modal').removeClass('show');
-      $('.form').trigger('reset');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
@@ -272,6 +273,7 @@ $(document).ready(function(){
   });
 
   // My Account: Click handler for displaying sent messages
+
   $('#acct-sent-messages').on('click', function(){
     $.ajax({
       url: sa + '/sent_messages',
@@ -297,6 +299,7 @@ $(document).ready(function(){
   });
 
   // My Account: Click handler for displaying account information / preferences
+
   $('#acct-my-account').on('click', function(){
     $.ajax({
       url: sa + '/users/' + userID + '/profile',
@@ -306,8 +309,11 @@ $(document).ready(function(){
     }).done(function(data) {
       $('#account-info > div').addClass('hide');
       console.log(data);
+
+      // handlebars: whole profile
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
+
       // only show a phone number field and the current phone number if a phone number exists in the json that's sent back
 
       $('#display-account-settings').removeClass('hide').html(html);
@@ -330,6 +336,7 @@ $(document).ready(function(){
     });
   });
 
+  // My Account: click handlers for editing sent messages
 
 // holds the id of the message you're currently editing
   var selectedMsgId;
@@ -337,6 +344,7 @@ $(document).ready(function(){
 // holds the body of the message you're currently editing
   var priorToEditBody;
   var $sentmessageBody;
+
 
   $('#account-info').on('click', '.edit-a-msg', function(e){
     // when you click on Edit next to a specific message, it should create an input field and the body of the message should be in the input field.
@@ -351,6 +359,14 @@ $(document).ready(function(){
     $('#cancel-' + $(this).data('id')).removeClass('hide');
     $sentmessageBody.prop('contenteditable', 'true');
     $sentmessageBody.focus();
+
+  });
+
+  $('.sentmessage-body').keypress(function(e){
+    if(e.which == 13){ //Enter key pressed
+      console.log('hello');
+      $('.save-a-msg').click(); //Trigger search button click event
+    }
   });
 
   $('#account-info').on('click', '.cancel-a-msg', function(e){
@@ -386,9 +402,21 @@ $(document).ready(function(){
   });
 
 
-  $('#delete-sent-msg').on('click', function(){
-    // when you click on Edit next to a specific message, it should create an input field and the body of the message should be in the input field.
-    console.log('hello')
+  $('#account-info').on('click', '.delete-a-msg', function(e){
+    selectedMsgId = $(this).data('id');
+    e.preventDefault();
+    $.ajax({
+      url: sa + '/messages/' + selectedMsgId,
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+    }).done(function(data) {
+      console.log("Deleted message");
+      $(this).addClass('hide');
+    }).fail(function(data) {
+      console.error(data);
+    });
   });
 
 // Account info / preferences:
@@ -412,56 +440,5 @@ $(document).ready(function(){
 
 
 //
-
-
-  // Temporary click handler to edit sent messages - move to My Account once handlebars thing is figured out
-
-  $('.temp-edit-sent-messages').on('click', function(){
-
-    // $.ajax({
-    //   url: sa + '/reviews/' + $("#review-id").val(),
-    //   method: 'PATCH',
-    //   data: {
-    //     review: {
-    //       score: $("#review-score").val(),
-    //       content: $("#review-content").val(),
-    //       user_id: $("#review-user-id").val(),
-    //       movie_id: $("#review-movie-id").val()
-    //     }
-    //   }
-    // }).done(function(data) {
-    //   console.log("Updated Review!");
-    // }).fail(function(data) {
-    //   console.error(data);
-    // });
-  });
-
-
-
-
-  // Temporary click handler for Send Message button (to generate a text via Twilio API)
-
-  $(".temp-send-text").on('click', function() {
-    $.ajax({
-      url: sa + '/received_messages',
-      method: 'POST',
-      headers: {
-        Authorization: 'Token token=' + token
-      },
-
-      // what needs to be passed in here for now? anything?
-      // data: {
-      //   message: {
-      //     body: $("#message-text").val()
-      //   }
-      // }
-    }).done(function() {
-      console.log("Sent message!");
-
-    }).fail(function() {
-      console.log('didn\'t work');
-    });
-
-  });
 
 });
