@@ -16,10 +16,6 @@ li {
   margin-left:-20px;
 }
 
-/*
-#register-moniker {
-  width: 100px;
-}*/
 
 li.sentmessage, li.receivedmessage {
   padding-top: 1em;
@@ -29,4 +25,49 @@ li.sentmessage, li.receivedmessage {
 #display-account-settings > div, a {
   padding-top: 1em;
   padding-bottom: 1em;
+}
+
+.jumbotron {
+  background: url("https://images.unsplash.com/photo-1433838552652-f9a46b332c40?q=80&fm=jpg&s=97cb7cd5e219e932365f3bcff3950eda") no-repeat center center fixed;
+  background-size: cover;
+  margin-top:-150px;
+  margin-left:-20px;
+  color: white;
+/*  height: 50%;
+  width: 100%;*/
+/*  width: 90%;
+  max-width: 1170px;
+  margin: 0 auto;
+  text-align: center;*/
+}
+
+.container > .col-md-4 {
+  height: 400px;
+}
+
+/* icons not centering */
+div > .col-md-4 {
+  display: inline-block;
+  position: relative;
+  text-align: center;
+}
+
+/* icons not centering */
+.icons-etc {
+  max-width: 100%;
+}
+
+/* icons not centering */
+.icons {
+  font-size: 150px;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  padding:;
+}
+
+/* font-size not changing */
+h1 {
+  font-family: 'Pacifico', cursive;
+  font-size: 200px;
 }

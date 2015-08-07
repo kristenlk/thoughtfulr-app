@@ -2,16 +2,50 @@
 <html>
   <head>
     <title>thoughtfulr</title>
+
     <script type="text/javascript" src="../assets/handlebars-v3.0.3.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
     <script type="text/javascript"src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
-    <script src="main.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <script src="main.js" type="text/javascript"></script>
+
   </head>
   <body>
+
+    <!-- BANNER -->
+    <div class="jumbotron">
+      <div class="container">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+
+            <h1>thoughtfulr</h1><br>
+            <p>Send a happy thought, get one back.</p>
+
+        </div>
+        <div class="col-md-4"></div>
+      </div>
+    </div>
+
+    <!-- ICONS ETC -->
+    <div class="container">
+      <div class="col-md-4">
+        <span class="glyphicon glyphicon-pencil icons"></span>
+      </div>
+      <div class="col-md-4">
+        <span class="glyphicon glyphicon-envelope icons"></span>
+      </div>
+      <div class="col-md-4">
+        <span class="glyphicon glyphicon-heart-empty icons"></span>
+      </div>
+    </div>
+
     <!-- NAVBAR -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="navbar-right">
@@ -95,7 +129,7 @@
                 <li><input type="radio" name="phone-or-email" id="email-radio-btn" value="email">&nbsp;Email</li>
               </ul>
               <div id="phone-selected" class="collapse">
-                <p>Enter your phone number below to receive messages from thoughtful.ly on your phone. Standard text messaging rates apply.</p>
+                <p>Enter your phone number below to receive messages from thoughtfulr on your phone. Standard text messaging rates apply.</p>
                 <div class="form-group">
                   <input type="text" class="form-control input-md" placeholder="123-456-7890" id="phone-number">
                 </div>
@@ -232,18 +266,16 @@
                   <li><input type="radio" name="anonymous" id="anon-btn">&nbsp;I want to be anonymous.</li>
                 </ul>
               </div>
-              <p>Your moniker will be displayed when your messages are sent to other users. We advise using your first initial or something similar.</p>
               <div class="form-group">
                 <input type="text" class="form-control input-md" placeholder="Location" id="register-location">
               </div>
-              <p>Your location will be displayed when your messages are sent to other users. We advise using a "city, state" format (for example, "Boston, MA").</p>
               <p>How would you like to receive messages?</p>
               <ul>
                 <li><input type="radio" name="phone-or-email" id="phone-radio-btn" value="phone">&nbsp;Phone</li>
                 <li><input type="radio" name="phone-or-email" id="email-radio-btn" value="email">&nbsp;Email</li>
               </ul>
               <div id="phone-selected" class="collapse">
-                <p>Enter your phone number below to receive messages from thoughtful.ly on your phone. Standard text messaging rates apply.</p>
+                <p>Enter your phone number below to receive messages from thoughtfulr on your phone. Standard text messaging rates apply.</p>
                 <div class="form-group">
                   <input type="text" class="form-control input-md" placeholder="123-456-7890" id="phone-number">
                 </div>

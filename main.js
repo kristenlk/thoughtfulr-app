@@ -190,32 +190,8 @@ $(document).ready(function(){
 
   // Click handler for displaying My Account information
 
-  $('.my-account').on('click', function(){
+  $('.my-account, #acct-received-messages').on('click', function(){
     $('#user-account, #my-account-nav').removeClass('hide').addClass('show');
-    $.ajax({
-      url: sa + '/received_messages',
-      headers: {
-        Authorization: 'Token token=' + token
-      }
-    }).done(function(data) {
-      var html;
-      $('#account-info > div').addClass('hide');
-      var templatingFunction = Handlebars.compile($('#received-messages-template').html());
-      console.log(data)
-      if (data.messages.length > 0) {
-        html = templatingFunction({receivedmessage: data.messages});
-      } else {
-        html = 'You haven\'t received any messages yet. If you haven\'t sent out a message yet, <a href="#" class="send-msg">get sending</a> and you\'ll receive a message within the next day. If you\'ve already sent a message, you should be receiving your first message within the next 24 hours.'
-      }
-      $('#display-received-messages').removeClass('hide').html(html);
-
-    }).fail(function(data) {
-      console.error(data);
-    });
-  });
-
-  // My Account: Click handler for displaying received messages
-  $('#acct-received-messages').on('click', function(){
     $.ajax({
       url: sa + '/received_messages',
       headers: {
@@ -266,8 +242,11 @@ $(document).ready(function(){
 
   // My Account: Click handler for displaying account information / preferences
 
-  // saving opted_in outside of #account-info click handler because I need it from the rendered back json so a user can change this preference
-  var opted_in;
+  // // Storing current user data in a variable so I can access it (and so a user can edit it) without rendering json all over again.
+  // var currentUserData;
+
+  // // Storing current profile data in a variable so I can access it (and so a user can edit it) without rendering json all over again.
+  // var currentUserProfileData;
 
   $('#acct-my-account').on('click', function(){
     $.ajax({
@@ -277,14 +256,10 @@ $(document).ready(function(){
       }
     }).done(function(data) {
       $('#account-info > div').addClass('hide');
-      opted_in = data.opted_in;
-      console.log(opted_in);
 
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
-
-      // only show a phone number field and the current phone number if a phone number exists in the json that's sent back
-
+      // currentUserProfileData = JSON.parse(data);
       $('#display-account-settings').removeClass('hide').html(html);
     }).fail(function(data) {
       console.error(data);
@@ -299,6 +274,7 @@ $(document).ready(function(){
       console.log(data);
       var templatingFunction = Handlebars.compile($('#account-settings-template-user').html());
       var html = templatingFunction(data);
+      currentUserData = data;
       $('#display-account-settings').prepend(html);
     }).fail(function(data) {
       console.error(data);
