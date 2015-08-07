@@ -44,6 +44,7 @@ $(document).ready(function(){
   $('.log-out').on('click', function(){
     logOut();
     tokenExists(token);
+    $('.jumbotron, .glyphs').removeClass('hide');
     $('#user-account').removeClass('show').addClass('hide');
   });
 
@@ -99,8 +100,10 @@ $(document).ready(function(){
                   moniker: moniker(),
                   location: $('#register-location').val(),
                   email_or_phone: $("input[name='phone-or-email']:checked").val(),
+                  phone_number: $('#phone-number').val(),
                   selected_time: $("input[name='time-of-day']:checked").val()
                   };
+    console.log("profile data is", profile)
 
     $.ajax(sa + '/create', {
       contentType: 'application/json',
