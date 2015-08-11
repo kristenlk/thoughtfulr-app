@@ -258,13 +258,8 @@ $(document).ready(function(){
     });
   });
 
+
   // My Account: Click handler for displaying account information / preferences
-
-  // // Storing current user data in a variable so I can access it (and so a user can edit it) without rendering json all over again.
-  // var currentUserData;
-
-  // // Storing current profile data in a variable so I can access it (and so a user can edit it) without rendering json all over again.
-  // var currentUserProfileData;
 
   $('#acct-my-account').on('click', function(){
     $.ajax({
@@ -273,6 +268,7 @@ $(document).ready(function(){
         Authorization: 'Token token=' + token
       }
     }).done(function(data) {
+      console.log(data.location)
       $('#account-info > div').addClass('hide');
       $('.jumbotron').addClass('hide');
       $('.glyphs').addClass('hide');
@@ -280,6 +276,18 @@ $(document).ready(function(){
       var html = templatingFunction(data);
       // currentUserProfileData = JSON.parse(data);
       $('#display-account-settings').removeClass('hide').html(html);
+
+      if (data.email_or_phone == "phone") {
+        $('#acct-phone-option').prop('checked', true);
+      } else {
+        $('#acct-email-option').prop('checked', true);
+      }
+
+      if (data.opted_in) {
+        $('#acct-opt-in').prop('checked', true);
+      } else {
+        $('#acct-opt-out').prop('checked', true);
+      }
     }).fail(function(data) {
       console.error(data);
     });
@@ -326,6 +334,7 @@ $(document).ready(function(){
 
   });
 
+  // Should save an edited message when a user presses Enter on their keyboard, but isn't working right now
   $('.sentmessage-body').keypress(function(e){
     if(e.which == 13){ //Enter key pressed
       console.log('hello');
@@ -333,6 +342,8 @@ $(document).ready(function(){
     }
   });
 
+
+  // Click handler for Cancel button: removes anything a user edits and sets it back to value in db. Clicking outside of the field should also cancel, but it does not right now.
   $('#account-info').on('click', '.cancel-a-msg', function(e){
     e.preventDefault();
     $(this).addClass('hide');
@@ -342,6 +353,7 @@ $(document).ready(function(){
     // $sentmessageBody = priorToEditBody;
   });
 
+  // Click handler for Save button: saves whatever new message the user entered
   $('#account-info').on('click', '.save-a-msg', function(e){
     // console.log('clicked on Save');
     e.preventDefault();
@@ -365,7 +377,7 @@ $(document).ready(function(){
     });
   });
 
-
+  // Click handler for Delete button: deletes the current message. There should be some sort of delete confirmation here.
   $('#account-info').on('click', '.delete-a-msg', function(e){
     selectedMsgId = $(this).data('id');
     e.preventDefault();
@@ -384,12 +396,52 @@ $(document).ready(function(){
   });
 
 
-
-  $('#display-account-settings').on('click', '.edit-acct-info', function(e){
+// Click handler for allowing users to edit account information
+// Add green confirmation saying your account information has been saved
+  $('#display-account-settings').on('click', '.save-acct-info', function(e){
     e.preventDefault();
-    $(this).addClass('hide');
-    $('.edit-acct-info-fields').removeClass('hide');
+
+    var findOptInSelection = function() {
+      var bool;
+      if ($("input[name='acct-opt-in-out']:checked").val()) {
+        bool = true;
+      } else {
+        bool = false;
+      }
+      return bool;
+    };
+
+    // Below already exists in register click handler - shouldn't need this twice.
+    var profile = {
+                  moniker: $('#acct-moniker').val(),
+                  location: $('#acct-location').val(),
+                  email_or_phone: $("input[name='acct-phone-or-email']:checked").val(),
+                  phone_number: $('#acct-phone').val(),
+                  opted_in: findOptInSelection(),
+                  };
+    console.log("profile data is", profile)
+
+    $.ajax({
+      url: sa + '/users/' + userID,
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+      method: 'PATCH',
+      data: {
+        user: {
+          email: $('#acct-email').val(),
+        },
+        profile: profile
+      },
+    }).done(function(data) {
+      console.log("Saved edited user.");
+    }).fail(function(data) {
+      console.error(data);
+    });
+
   });
+
+
 
 
 });
