@@ -105,7 +105,7 @@ $(document).ready(function(){
                   };
     console.log("profile data is", profile)
 
-    $.ajax(sa + '/create', {
+    $.ajax(sa + '/users', {
       contentType: 'application/json',
       processData: false,
       data: JSON.stringify({
@@ -268,7 +268,7 @@ $(document).ready(function(){
         Authorization: 'Token token=' + token
       }
     }).done(function(data) {
-      console.log(data.location)
+      console.log(data)
       $('#account-info > div').addClass('hide');
       $('.jumbotron').addClass('hide');
       $('.glyphs').addClass('hide');
@@ -277,11 +277,30 @@ $(document).ready(function(){
       // currentUserProfileData = JSON.parse(data);
       $('#display-account-settings').removeClass('hide').html(html);
 
+      // shows phone number field, only if the phone radio button is checked
+      var displayPhoneNumberField = function() {
+        if ($('#acct-phone-option').is(':checked')) {
+          $('#acct-phone').show();
+        } else {
+          $('#acct-phone').hide();
+        };
+      };
+
       if (data.email_or_phone == "phone") {
         $('#acct-phone-option').prop('checked', true);
       } else {
         $('#acct-email-option').prop('checked', true);
       }
+
+      displayPhoneNumberField();
+
+      // Toggle phone number field when user changes daily message send method from phone to email (and vice versa)
+      $('[name="acct-phone-or-email"]').on('click', function() {
+        displayPhoneNumberField();
+        console.log('selected phone or email');
+      });
+
+
 
       if (data.opted_in) {
         $('#acct-opt-in').prop('checked', true);
@@ -307,6 +326,7 @@ $(document).ready(function(){
       console.error(data);
     });
   });
+
 
   // My Account: click handlers for editing sent messages
 
@@ -411,16 +431,7 @@ $(document).ready(function(){
       return bool;
     };
 
-    // Below already exists in register click handler - shouldn't need this twice.
-    var profile = {
-                  moniker: $('#acct-moniker').val(),
-                  location: $('#acct-location').val(),
-                  email_or_phone: $("input[name='acct-phone-or-email']:checked").val(),
-                  phone_number: $('#acct-phone').val(),
-                  opted_in: findOptInSelection(),
-                  };
-    console.log("profile data is", profile)
-
+    // ajax to save user data (just email right now)
     $.ajax({
       url: sa + '/users/' + userID,
       headers: {
@@ -430,11 +441,36 @@ $(document).ready(function(){
       data: {
         user: {
           email: $('#acct-email').val(),
-        },
-        profile: profile
+        }
       },
     }).done(function(data) {
       console.log("Saved edited user.");
+      console.log(data);
+    }).fail(function(data) {
+      console.error(data);
+    });
+
+    var profile = {
+                  moniker: $('#acct-moniker').val(),
+                  location: $('#acct-location').val(),
+                  email_or_phone: $("input[name='acct-phone-or-email']:checked").val(),
+                  phone_number: $('#acct-phone-field').val(),
+                  opted_in: findOptInSelection(),
+                  };
+
+    // ajax to save profile data (everything else)
+    $.ajax({
+      url: sa + '/profiles/' + userID,
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+      method: 'PATCH',
+      data: {
+        profile: profile
+      },
+    }).done(function(data) {
+      console.log("Saved edited profile.");
+      console.log(data);
     }).fail(function(data) {
       console.error(data);
     });

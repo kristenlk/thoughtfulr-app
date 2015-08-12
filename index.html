@@ -253,9 +253,7 @@
                   <li><input type="radio" name="acct-phone-or-email" id="acct-email-option" value="email">&nbsp;Email</li>
                 </ul>
 
-              {{#if phone_number}}
-                Phone number: <input type="text" class="form-control input-md" value="{{phone_number}}" id="acct-phone">
-              {{/if}}
+                <div id="acct-phone" class="collapse">Phone number: <input type="text" class="form-control input-md" value="{{phone_number}}" id="acct-phone-field"></div>
 
               Daily messages:
                 <ul>
