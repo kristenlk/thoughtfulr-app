@@ -81,7 +81,7 @@ $(document).ready(function(){
 
 // Click handlers for sign in functionality
 
-  var sa = 'http://localhost:3000';
+  var sa = 'https://powerful-waters-3612.herokuapp.com';
 
   $('#register-btn').on('click', function() {
 
@@ -275,7 +275,7 @@ $(document).ready(function(){
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
       // currentUserProfileData = JSON.parse(data);
-      $('#display-account-settings').removeClass('hide').html(html);
+      $('#display-profile-account-settings').removeClass('hide').html(html);
 
       // shows phone number field, only if the phone radio button is checked
       var displayPhoneNumberField = function() {
@@ -292,6 +292,7 @@ $(document).ready(function(){
         $('#acct-email-option').prop('checked', true);
       }
 
+      // figure out a better way to invoke this
       displayPhoneNumberField();
 
       // Toggle phone number field when user changes daily message send method from phone to email (and vice versa)
@@ -321,7 +322,7 @@ $(document).ready(function(){
       var templatingFunction = Handlebars.compile($('#account-settings-template-user').html());
       var html = templatingFunction(data);
       currentUserData = data;
-      $('#display-account-settings').prepend(html);
+      $('#display-user-account-settings').removeClass('hide').html(html);
     }).fail(function(data) {
       console.error(data);
     });
@@ -355,10 +356,11 @@ $(document).ready(function(){
   });
 
   // Should save an edited message when a user presses Enter on their keyboard, but isn't working right now
-  $('.sentmessage-body').keypress(function(e){
-    if(e.which == 13){ //Enter key pressed
+  $('#account-info').on('keypress', '.sentmessage-body', function(e){
+    e.preventDefault();
+    if(e.which == 13){
       console.log('hello');
-      $('.save-a-msg').click(); //Trigger search button click event
+      $('.save-a-msg').click();
     }
   });
 
@@ -476,8 +478,5 @@ $(document).ready(function(){
     });
 
   });
-
-
-
 
 });
