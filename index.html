@@ -55,8 +55,8 @@
     <!-- NAVBAR -->
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="navbar-right">
-        <button type="button" class="btn btn-default navbar-btn register">Register</button>
-        <button type="button" class="btn btn-default navbar-btn sign-in">Sign In</button>
+        <button type="button" class="btn btn-default navbar-btn register" data-toggle="modal" data-target="#register-modal">Register</button>
+        <button type="button" class="btn btn-default navbar-btn sign-in" data-toggle="modal" data-target="#sign-in-modal">Sign In</button>
         <button type="button" class="btn btn-default navbar-btn my-account hide">My Account</button>
         <button type="button" class="btn btn-default navbar-btn log-out hide">Log Out</button>
         <button type="button" class="btn btn-default btn-lg open-msg-modal hide" data-toggle="modal" data-target="#send-message-modal">
@@ -67,11 +67,11 @@
     </nav>
 
     <!-- SIGN IN MODAL -->
-    <div id="sign-in-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="sign-in-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button id="sign-in-modal-x" type="button" class="close x" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button id="sign-in-modal-x" type="button" class="close x" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Sign In</h4>
           </div>
 
@@ -88,8 +88,7 @@
 
           <div class="modal-footer">
             <div class="alert alert-danger hide text-left" role="alert" id="login-alert">We were unable to locate an account with that email address and password combination. Please try again.</div>
-            <span class="pull-left"><a href="#" class="register">Create an account</a></span>
-            <button id="sign-in-modal-close" type="button" class="btn btn-default x">Close</button>
+            <button id="sign-in-modal-close" type="button" class="btn btn-default x" data-dismiss="modal" aria-label="Close">Close</button>
             <button type="button" class="btn btn-primary" id="sign-in-btn">Sign In</button>
           </div>
         </div>
@@ -97,12 +96,12 @@
     </div>
 
     <!-- REGISTER MODAL -->
-    <div id="register-modal" class="modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div id="register-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
 
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <button id="register-modal-x" type="button" class="close x" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <button id="register-modal-x" type="button" class="close x" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <h4 class="modal-title">Register</h4>
           </div>
 
@@ -152,8 +151,7 @@
 
           <div class="modal-footer">
           <div class="alert alert-danger hide text-left" role="alert" id="register-alert"></div>
-          <span class="pull-left"><a href="#" class="sign-in">Already a member? Sign in.</a></span>
-            <button id="sign-in-modal-close" type="button" class="btn btn-default x">Close</button>
+            <button id="sign-in-modal-close" type="button" class="btn btn-default x" data-dismiss="modal" aria-label="Close">Close</button>
             <button type="button" class="btn btn-primary" id="register-btn">Register</button>
           </div>
         </div>
@@ -204,7 +202,7 @@
 
         <div id="display-received-messages"></div>
           <script type="text/x-handlebars-template" id="received-messages-template">
-          <h3>You have received {{receivedmessage.length}} messages. You have <span id="num_messages_left_to_receive"></span> more to receive. To receive more messages, <a href="#" class="open-msg-modal">send more!</a></h3>
+          <h3>You have received {{receivedmessage.length}} messages. You have <span id="num_messages_left_to_receive"></span> more to receive. To receive more messages, <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">send more!</a></h3>
           <ul class="receivedmessages">
           {{#each receivedmessage}}
             <li class="receivedmessage">
@@ -217,7 +215,7 @@
 
         <div id="display-sent-messages"></div>
           <script type="text/x-handlebars-template" id="sent-messages-template">
-            <h3>You have sent {{sentmessage.length}} messages. <a href="#" class="open-msg-modal" id="open-msg-modal-from-account">Send more</a> to receive more!</h3>
+            <h3>You have sent {{sentmessage.length}} messages. <a href="#" class="open-msg-modal" id="open-msg-modal-from-account" data-toggle="modal" data-target="#send-message-modal">Send more</a> to receive more!</h3>
             <ul class="sentmessages">
             {{#each sentmessage}}
               <li class="sentmessage">

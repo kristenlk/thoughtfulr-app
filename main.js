@@ -27,17 +27,8 @@ $(document).ready(function(){
 
   // Click handlers for header
 
-  $('.sign-in').on('click', function() {
-    $('#login-alert').addClass('hide');
-    $('.form').trigger('reset');
-    $('#register-modal').removeClass('show');
-    $('#sign-in-modal').addClass('show');
-  });
-
-  $('.register').on('click', function() {
-    $('#login-alert').addClass('hide');
-    $('#sign-in-modal').removeClass('show');
-    $('#register-modal').addClass('show');
+  $('.sign-in, .register').on('click', function() {
+    $('.alert').addClass('hide');
     $('.form').trigger('reset');
   });
 
@@ -47,14 +38,6 @@ $(document).ready(function(){
     $('.jumbotron, .glyphs').removeClass('hide');
     $('#user-account').removeClass('show').addClass('hide');
   });
-
-
-
-  // Click handler to close any open modal
-
-  // $('.x').on('click', function() {
-  //   $('.modal').removeClass('show');
-  // });
 
   // Click handlers for register modal
 
@@ -121,7 +104,7 @@ $(document).ready(function(){
     }).done(function(data, textStatus, jqxhr){
       // $('#result').val(JSON.stringify(data));
       console.log(data);
-      $('.modal').removeClass('show');
+      $('.modal').modal('hide');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
@@ -147,7 +130,7 @@ $(document).ready(function(){
       method: 'POST'
     }).done(function(data, textStatus, jqxhr){
       console.log(data);
-      $('.modal').removeClass('show')
+      $('.modal').modal('hide');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
@@ -179,7 +162,7 @@ $(document).ready(function(){
       if (data.messages.length > 0) {
         html = templatingFunction({receivedmessage: data.messages});
       } else {
-        html = 'You haven\'t received any messages yet. If you haven\'t sent out a message yet, <a href="#" class="open-msg-modal">get sending</a> and you\'ll receive a message within the next day. If you\'ve already sent a message, you should be receiving your first message within the next 24 hours.'
+        html = 'You haven\'t received any messages yet. If you haven\'t sent out a message yet, <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">get sending</a> and you\'ll receive a message within the next day. If you\'ve already sent a message, you should be receiving your first message within the next 24 hours.'
       }
       $('#display-received-messages').removeClass('hide').html(html);
 
@@ -218,7 +201,7 @@ $(document).ready(function(){
         if (data.messages.length > 0) {
           html = templatingFunction({sentmessage: data.messages});
         } else {
-          html = 'You have not yet sent any messages. You won\'t receive a daily messages until you send one, so <a href="#" class="open-msg-modal">get sending!</a>'
+          html = 'You have not yet sent any messages. You won\'t receive a daily messages until you send one, so <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">get sending!</a>'
         }
         $('#display-sent-messages').removeClass('hide').html(html);
 
@@ -470,11 +453,6 @@ var msgModalOpenedFrom;
     // $('#send-message-modal').addClass('show');
     $('#message-text').val('');
 
-    // if user clicked on one of the "get sending" links in their account, return true
-    // reloadSentMessages = function() {
-    //   return open-msg-modal-from-account
-    // };
-
   });
 
 // Click handlers for creating a message
@@ -492,6 +470,8 @@ var msgModalOpenedFrom;
         }
       }
     }).done(function(data) {
+
+      // if the user opened the Send a Message modal from the Sent Messages page, the Sent Messages page will be reloaded after the user sends the message.
       if (msgModalOpenedFrom === 'open-msg-modal-from-account') {
         displaySentMessages()
       }
