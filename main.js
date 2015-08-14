@@ -52,9 +52,9 @@ $(document).ready(function(){
 
   // Click handler to close any open modal
 
-  $('.x').on('click', function() {
-    $('.modal').removeClass('show');
-  });
+  // $('.x').on('click', function() {
+  //   $('.modal').removeClass('show');
+  // });
 
   // Click handlers for register modal
 
@@ -466,8 +466,8 @@ var msgModalOpenedFrom;
     msgModalOpenedFrom = $(this).attr('id')
     e.preventDefault();
     $('#send-msg-btn').removeClass('hide');
-    $('.alert').removeClass('show');
-    $('#send-message-modal').addClass('show');
+    $('.alert').addClass('hide');
+    // $('#send-message-modal').addClass('show');
     $('#message-text').val('');
 
     // if user clicked on one of the "get sending" links in their account, return true
@@ -496,12 +496,16 @@ var msgModalOpenedFrom;
         displaySentMessages()
       }
       console.log("Created message!");
-      $('#message-confirmation').addClass('show');
+      $('#message-alert').addClass('hide');
+      $('#message-confirmation').removeClass('hide');
       $('#send-msg-btn').addClass('hide');
-      $('#send-message-modal').delay(2000).fadeOut('slow');
+      // $('#send-message-modal').delay(2000).fadeOut('slow');
+      window.setTimeout(function(){
+        $('#send-message-modal').modal('hide');
+      }, 2000);
     }).fail(function(data) {
       console.error(data);
-      $('#message-alert').addClass('show');
+      $('#message-alert').removeClass('hide');
     });
   });
 
