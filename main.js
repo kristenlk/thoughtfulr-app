@@ -58,10 +58,6 @@ $(document).ready(function(){
   });
 
 
-
-
-
-
 // Click handlers for sign in functionality
 
   var sa = 'http://localhost:3000';
