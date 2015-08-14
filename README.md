@@ -18,18 +18,8 @@ Daily messages are sent to users with the moniker and location of the user who s
 - Bootstrap
 - Handlebars
 
-#### What else I’d like to implement:
-- I’d like to integrate the MailGun API so users have the option to receive messages to either their phone or their email.
-- SimpleStorage
-- Would like to display to users how many times messages they’ve sent have been sent to other users
-- Wasn’t able to implement CRUD actions in user preferences.
-- App is currently sending all users a message daily, regardless of whether or not they have sent out more messages than they have received.
-
-#### How I implemented text-sending:
-- Got Twilio API running - told it exactly which message to send and exactly who to send it to. Triggered it with a manual click in my navbar.
-- Next, needed messages to send based on certain criteria: users who are opted in, who have sent more messages than they've received. For each user, find a random message that they didn’t send and that they haven’t yet received.
-- Needed messages to send at specific times in the background - users don’t send themselves messages, so I needed to set up a job handler that would send out messages at specified times instead of when I click on something. Chose Delayed::Job (just have to install a gem, set up a Delayed::Jobs table that holds all of the jobs that need to be sent).
-- Once messages were definitely sending when I told them to send, I created a Ruby script that I manually run that queues up all of the messages that need to be sent.
+#### Notes:
+- This app is a work in progress! The job handler that will send messages to users once per day is still being worked on (messages are currently only sent to users when I manually trigger them), so don't expect your daily message just yet.
 
 Link to front end: https://github.com/kristenlk/thoughtfulr-app
 
