@@ -11,7 +11,7 @@ $(document).ready(function(){
   tokenExists = function(token){
     if (token) {
       $('.register, .sign-in').addClass('hide');
-      $('.my-account, .log-out, .temp-send-text, .send-msg').removeClass('hide');
+      $('.my-account, .log-out, .temp-send-text, .open-msg-modal').removeClass('hide');
     } else {
       console.log('no token found!')
       $('.my-account, .log-out, .temp-send-text').addClass('hide');
@@ -81,7 +81,7 @@ $(document).ready(function(){
 
 // Click handlers for sign in functionality
 
-  var sa = 'https://powerful-waters-3612.herokuapp.com';
+  var sa = 'http://localhost:3000';
 
   $('#register-btn').on('click', function() {
 
@@ -157,39 +157,8 @@ $(document).ready(function(){
     });
   });
 
-// Click handlers for send a message modal (opens from the pencil button in the navbar and in various places in My Account)
 
-  $(document).on('click', '.send-msg', function(){
-    $('#send-msg-btn').removeClass('hide');
-    $('.alert').removeClass('show');
-    $('#send-message-modal').addClass('show');
-    $('#message-text').val('');
-  });
-
-// Click handlers for creating a message
-
-  $("#send-msg-btn").on('click', function() {
-    $.ajax({
-      url: sa + '/messages',
-      method: 'POST',
-      headers: {
-        Authorization: 'Token token=' + token
-      },
-      data: {
-        message: {
-          body: $("#message-text").val()
-        }
-      }
-    }).done(function(data) {
-      console.log("Created message!");
-      $('#message-confirmation').addClass('show');
-      $('#send-msg-btn').addClass('hide');
-      $('#send-message-modal').delay(2000).fadeOut('slow');
-    }).fail(function(data) {
-      console.error(data);
-      $('#message-alert').addClass('show');
-    });
-  });
+///////////
 
   // Click handler for displaying My Account information
 
@@ -210,7 +179,7 @@ $(document).ready(function(){
       if (data.messages.length > 0) {
         html = templatingFunction({receivedmessage: data.messages});
       } else {
-        html = 'You haven\'t received any messages yet. If you haven\'t sent out a message yet, <a href="#" class="send-msg">get sending</a> and you\'ll receive a message within the next day. If you\'ve already sent a message, you should be receiving your first message within the next 24 hours.'
+        html = 'You haven\'t received any messages yet. If you haven\'t sent out a message yet, <a href="#" class="open-msg-modal">get sending</a> and you\'ll receive a message within the next day. If you\'ve already sent a message, you should be receiving your first message within the next 24 hours.'
       }
       $('#display-received-messages').removeClass('hide').html(html);
 
@@ -232,30 +201,35 @@ $(document).ready(function(){
 
   });
 
+
+// AJAX for displaying sent messages
+  var displaySentMessages = function() {
+      $.ajax({
+        url: sa + '/sent_messages',
+        headers: {
+          Authorization: 'Token token=' + token
+        }
+      }).done(function(data) {
+        // $('#account-stuff').html(data)
+        console.log(data)
+        var html;
+        $('#account-info > div').addClass('hide');
+        var templatingFunction = Handlebars.compile($('#sent-messages-template').html());
+        if (data.messages.length > 0) {
+          html = templatingFunction({sentmessage: data.messages});
+        } else {
+          html = 'You have not yet sent any messages. You won\'t receive a daily messages until you send one, so <a href="#" class="open-msg-modal">get sending!</a>'
+        }
+        $('#display-sent-messages').removeClass('hide').html(html);
+
+      }).fail(function(data) {
+        console.error(data);
+      });
+  };
+
   // My Account: Click handler for displaying sent messages
-
   $('#acct-sent-messages').on('click', function(){
-    $.ajax({
-      url: sa + '/sent_messages',
-      headers: {
-        Authorization: 'Token token=' + token
-      }
-    }).done(function(data) {
-      // $('#account-stuff').html(data)
-      console.log(data)
-      var html;
-      $('#account-info > div').addClass('hide');
-      var templatingFunction = Handlebars.compile($('#sent-messages-template').html());
-      if (data.messages.length > 0) {
-        html = templatingFunction({sentmessage: data.messages});
-      } else {
-        html = 'You have not yet sent any messages. You won\'t receive a daily messages until you send one, so <a href="#" class="send-msg">get sending!</a>'
-      }
-      $('#display-sent-messages').removeClass('hide').html(html);
-
-    }).fail(function(data) {
-      console.error(data);
-    });
+    displaySentMessages();
   });
 
 
@@ -268,6 +242,23 @@ $(document).ready(function(){
         Authorization: 'Token token=' + token
       }
     }).done(function(data) {
+
+      // AJAX to get user data.
+      $.ajax({
+        url: sa + '/users/' + userID,
+        headers: {
+          Authorization: 'Token token=' + token
+        }
+      }).done(function(data) {
+        console.log(data);
+        var templatingFunction = Handlebars.compile($('#account-settings-template-user').html());
+        var html = templatingFunction(data);
+        currentUserData = data;
+        $('#display-user-account-settings').removeClass('hide').html(html);
+      }).fail(function(data) {
+        console.error(data);
+      });
+
       console.log(data)
       $('#account-info > div').addClass('hide');
       $('.jumbotron').addClass('hide');
@@ -301,8 +292,6 @@ $(document).ready(function(){
         console.log('selected phone or email');
       });
 
-
-
       if (data.opted_in) {
         $('#acct-opt-in').prop('checked', true);
       } else {
@@ -312,20 +301,6 @@ $(document).ready(function(){
       console.error(data);
     });
 
-    $.ajax({
-      url: sa + '/users/' + userID,
-      headers: {
-        Authorization: 'Token token=' + token
-      }
-    }).done(function(data) {
-      console.log(data);
-      var templatingFunction = Handlebars.compile($('#account-settings-template-user').html());
-      var html = templatingFunction(data);
-      currentUserData = data;
-      $('#display-user-account-settings').removeClass('hide').html(html);
-    }).fail(function(data) {
-      console.error(data);
-    });
   });
 
 
@@ -357,7 +332,7 @@ $(document).ready(function(){
 
   // Should save an edited message when a user presses Enter on their keyboard, but isn't working right now
   $('#account-info').on('keypress', '.sentmessage-body', function(e){
-    e.preventDefault();
+    // e.preventDefault();
     if(e.which == 13){
       console.log('hello');
       $('.save-a-msg').click();
@@ -367,6 +342,7 @@ $(document).ready(function(){
 
   // Click handler for Cancel button: removes anything a user edits and sets it back to value in db. Clicking outside of the field should also cancel, but it does not right now.
   $('#account-info').on('click', '.cancel-a-msg', function(e){
+    console.log('sdfsd');
     e.preventDefault();
     $(this).addClass('hide');
     $('.save-a-msg').addClass('hide');
@@ -377,7 +353,7 @@ $(document).ready(function(){
 
   // Click handler for Save button: saves whatever new message the user entered
   $('#account-info').on('click', '.save-a-msg', function(e){
-    // console.log('clicked on Save');
+    console.log('clicked on Save');
     e.preventDefault();
     $.ajax({
       url: sa + '/messages/' + selectedMsgId,
@@ -410,8 +386,9 @@ $(document).ready(function(){
         Authorization: 'Token token=' + token
       },
     }).done(function(data) {
+      displaySentMessages();
       console.log("Deleted message");
-      $(this).addClass('hide');
+      // $(this).addClass('hide');
     }).fail(function(data) {
       console.error(data);
     });
@@ -420,7 +397,8 @@ $(document).ready(function(){
 
 // Click handler for allowing users to edit account information
 // Add green confirmation saying your account information has been saved
-  $('#display-account-settings').on('click', '.save-acct-info', function(e){
+  $('#display-profile-account-settings').on('click', '.save-acct-info', function(e){
+    console.log('sdfsd');
     e.preventDefault();
 
     var findOptInSelection = function() {
@@ -477,6 +455,54 @@ $(document).ready(function(){
       console.error(data);
     });
 
+  });
+
+// Click handlers for send a message modal (opens from the pencil button in the navbar and in various places in My Account)
+
+// gets id of the specific "open message modal" element that was clicked
+var msgModalOpenedFrom;
+
+  $(document).on('click', '.open-msg-modal', function(e){
+    msgModalOpenedFrom = $(this).attr('id')
+    e.preventDefault();
+    $('#send-msg-btn').removeClass('hide');
+    $('.alert').removeClass('show');
+    $('#send-message-modal').addClass('show');
+    $('#message-text').val('');
+
+    // if user clicked on one of the "get sending" links in their account, return true
+    // reloadSentMessages = function() {
+    //   return open-msg-modal-from-account
+    // };
+
+  });
+
+// Click handlers for creating a message
+
+  $("#send-msg-btn").on('click', function() {
+    $.ajax({
+      url: sa + '/messages',
+      method: 'POST',
+      headers: {
+        Authorization: 'Token token=' + token
+      },
+      data: {
+        message: {
+          body: $("#message-text").val()
+        }
+      }
+    }).done(function(data) {
+      if (msgModalOpenedFrom === 'open-msg-modal-from-account') {
+        displaySentMessages()
+      }
+      console.log("Created message!");
+      $('#message-confirmation').addClass('show');
+      $('#send-msg-btn').addClass('hide');
+      $('#send-message-modal').delay(2000).fadeOut('slow');
+    }).fail(function(data) {
+      console.error(data);
+      $('#message-alert').addClass('show');
+    });
   });
 
 });

@@ -59,7 +59,7 @@
         <button type="button" class="btn btn-default navbar-btn sign-in">Sign In</button>
         <button type="button" class="btn btn-default navbar-btn my-account hide">My Account</button>
         <button type="button" class="btn btn-default navbar-btn log-out hide">Log Out</button>
-        <button type="button" class="btn btn-default btn-lg send-msg hide">
+        <button type="button" class="btn btn-default btn-lg open-msg-modal hide">
           <span class="glyphicon glyphicon-pencil"></span>
         </button>
       </div>
@@ -204,7 +204,7 @@
 
         <div id="display-received-messages"></div>
           <script type="text/x-handlebars-template" id="received-messages-template">
-          <h3>You have received {{receivedmessage.length}} messages. You have <span id="num_messages_left_to_receive"></span> more to receive. To receive more messages, <a href="#" class="send-msg">send more!</a></h3>
+          <h3>You have received {{receivedmessage.length}} messages. You have <span id="num_messages_left_to_receive"></span> more to receive. To receive more messages, <a href="#" class="open-msg-modal">send more!</a></h3>
           <ul class="receivedmessages">
           {{#each receivedmessage}}
             <li class="receivedmessage">
@@ -217,7 +217,7 @@
 
         <div id="display-sent-messages"></div>
           <script type="text/x-handlebars-template" id="sent-messages-template">
-            <h3>You have sent {{sentmessage.length}} messages. <a href="#" class="send-msg">Send more</a> to receive more!</h3>
+            <h3>You have sent {{sentmessage.length}} messages. <a href="#" class="open-msg-modal" id="open-msg-modal-from-account">Send more</a> to receive more!</h3>
             <ul class="sentmessages">
             {{#each sentmessage}}
               <li class="sentmessage">
