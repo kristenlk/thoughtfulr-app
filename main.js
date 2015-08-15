@@ -36,7 +36,7 @@ $(document).ready(function(){
     logOut();
     tokenExists(token);
     $('.jumbotron, .glyphs').removeClass('hide');
-    $('#user-account').removeClass('show').addClass('hide');
+    $('#user-account, .open-msg-modal').addClass('hide');
   });
 
   // Click handlers for register modal
@@ -60,7 +60,8 @@ $(document).ready(function(){
 
 // Click handlers for sign in functionality
 
-  var sa = 'https://powerful-waters-3612.herokuapp.com/';
+  // var sa = 'https://powerful-waters-3612.herokuapp.com/';
+  var sa = 'http://localhost:3000/'
 
   $('#register-btn').on('click', function() {
 
@@ -142,7 +143,7 @@ $(document).ready(function(){
   // Click handler for displaying My Account information
 
   $('.my-account, #acct-received-messages').on('click', function(){
-    $('#user-account, #my-account-nav').removeClass('hide').addClass('show');
+    $('#user-account, #my-account-nav').removeClass('hide');
     $('.jumbotron, .glyphs').addClass('hide');
     $.ajax({
       url: sa + '/received_messages',
@@ -212,6 +213,12 @@ $(document).ready(function(){
   });
 
 
+// Click handler for closing alerts
+  $('#account-info').on('click', '.alert-x', function(e){
+    console.log('sdsdf');
+    $(this).parent().parent().addClass('hide');
+  });
+
   // My Account: Click handler for displaying account information / preferences
 
   $('#acct-my-account').on('click', function(){
@@ -221,7 +228,7 @@ $(document).ready(function(){
         Authorization: 'Token token=' + token
       }
     }).done(function(data) {
-
+      $('.alert').addClass('hide');
       // AJAX to get user data.
       $.ajax({
         url: sa + '/users/' + userID,
@@ -321,7 +328,6 @@ $(document).ready(function(){
 
   // Click handler for Cancel button: removes anything a user edits and sets it back to value in db. Clicking outside of the field should also cancel, but it does not right now.
   $('#account-info').on('click', '.cancel-a-msg', function(e){
-    console.log('sdfsd');
     e.preventDefault();
     $(this).addClass('hide');
     $('.save-a-msg').addClass('hide');
@@ -332,7 +338,6 @@ $(document).ready(function(){
 
   // Click handler for Save button: saves whatever new message the user entered
   $('#account-info').on('click', '.save-a-msg', function(e){
-    console.log('clicked on Save');
     e.preventDefault();
     $.ajax({
       url: sa + '/messages/' + selectedMsgId,
@@ -346,18 +351,25 @@ $(document).ready(function(){
         }
       }
     }).done(function(data) {
-      console.log("Saved edited message.");
+      $('.alert').addClass('hide');
+      $('#msg-save-confirmation').removeClass('hide');
       $('.save-a-msg, .cancel-a-msg').addClass('hide');
       $('.edit-a-msg').removeClass('hide');
     }).fail(function(data) {
+      $('.alert').addClass('hide');
+      $('#msg-save-alert').removeClass('hide');
       console.error(data);
     });
   });
 
-  // Click handler for Delete button: deletes the current message. There should be some sort of delete confirmation here.
+  // Click handler for Delete link. Modal is opened via Bootstrap handler in HTML. selectedMsgId is set here.
   $('#account-info').on('click', '.delete-a-msg', function(e){
     selectedMsgId = $(this).data('id');
-    e.preventDefault();
+    $('#confirm-delete, delete-msg-cancel').removeClass('hide');
+  });
+
+  // Click handler for Delete button in Confirm Delete modal: deletes the current message.
+  $('#confirm-delete').on('click', function(){
     $.ajax({
       url: sa + '/messages/' + selectedMsgId,
       method: 'DELETE',
@@ -366,18 +378,24 @@ $(document).ready(function(){
       },
     }).done(function(data) {
       displaySentMessages();
+      $('#msg-delete-alert').addClass('hide');
+      $('#msg-delete-confirmation').removeClass('hide');
+      $('#confirm-delete, delete-msg-cancel').addClass('hide');
+      // $('#send-message-modal').delay(2000).fadeOut('slow');
+      window.setTimeout(function(){
+        $('#delete-msg-confirm-modal').modal('hide');
+      }, 2000);
       console.log("Deleted message");
       // $(this).addClass('hide');
     }).fail(function(data) {
       console.error(data);
+      $('#msg-delete-alert').removeClass('hide');
     });
   });
 
-
 // Click handler for allowing users to edit account information
-// Add green confirmation saying your account information has been saved
   $('#display-profile-account-settings').on('click', '.save-acct-info', function(e){
-    console.log('sdfsd');
+    $('.alert').addClass('hide');
     e.preventDefault();
 
     var findOptInSelection = function() {
@@ -389,6 +407,14 @@ $(document).ready(function(){
       }
       return bool;
     };
+
+    var profile = {
+                  moniker: $('#acct-moniker').val(),
+                  location: $('#acct-location').val(),
+                  email_or_phone: $("input[name='acct-phone-or-email']:checked").val(),
+                  phone_number: $('#acct-phone-field').val(),
+                  opted_in: findOptInSelection(),
+                  };
 
     // ajax to save user data (just email right now)
     $.ajax({
@@ -405,32 +431,28 @@ $(document).ready(function(){
     }).done(function(data) {
       console.log("Saved edited user.");
       console.log(data);
-    }).fail(function(data) {
-      console.error(data);
-    });
 
-    var profile = {
-                  moniker: $('#acct-moniker').val(),
-                  location: $('#acct-location').val(),
-                  email_or_phone: $("input[name='acct-phone-or-email']:checked").val(),
-                  phone_number: $('#acct-phone-field').val(),
-                  opted_in: findOptInSelection(),
-                  };
+      // ajax to save profile data (everything else)
+      $.ajax({
+        url: sa + '/profiles/' + userID,
+        headers: {
+          Authorization: 'Token token=' + token
+        },
+        method: 'PATCH',
+        data: {
+          profile: profile
+        },
+      }).done(function(data) {
+        $('#acct-confirmation').removeClass('hide');
+        console.log("Saved edited profile.");
+        console.log(data);
+      }).fail(function(data) {
+        $('#acct-alert').removeClass('hide');
+        console.error(data);
+      });
 
-    // ajax to save profile data (everything else)
-    $.ajax({
-      url: sa + '/profiles/' + userID,
-      headers: {
-        Authorization: 'Token token=' + token
-      },
-      method: 'PATCH',
-      data: {
-        profile: profile
-      },
-    }).done(function(data) {
-      console.log("Saved edited profile.");
-      console.log(data);
     }).fail(function(data) {
+      $('#acct-alert').removeClass('hide');
       console.error(data);
     });
 

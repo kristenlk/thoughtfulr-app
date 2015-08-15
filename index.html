@@ -87,7 +87,9 @@
           </div>
 
           <div class="modal-footer">
-            <div class="alert alert-danger hide text-left" role="alert" id="login-alert">We were unable to locate an account with that email address and password combination. Please try again.</div>
+            <div class="alert alert-danger hide text-left" role="alert" id="login-alert">
+              <p>We were unable to locate an account with that email address and password combination. Please try again.</p>
+            </div>
             <button id="sign-in-modal-close" type="button" class="btn btn-default x" data-dismiss="modal" aria-label="Close">Close</button>
             <button type="button" class="btn btn-primary" id="sign-in-btn">Sign In</button>
           </div>
@@ -186,8 +188,42 @@
       </div>
     </div>
 
+    <!-- DELETE MESSAGE MODAL -->
+    <div class="modal fade" id="delete-msg-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="deleteMsgConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Delete a message</h4>
+                </div>
+
+                <div class="modal-body">
+                    <p>You are about to permanently delete a message you've contributed to Thoughtfulr.</p>
+                    <p>Are you sure you want to delete this message?</p>
+                </div>
+
+                <div class="modal-footer">
+                  <div class="alert alert-success hide text-left" role="alert" id="msg-delete-confirmation">
+                    <p>Message deleted.</p>
+                  </div>
+
+                  <div class="alert alert-danger hide text-left" role="alert" id="msg-delete-alert">
+                    <p>We were unable to delete your message. Please try again.</p>
+                  </div>
+
+                  <button type="button" class="btn btn-default" data-dismiss="modal" id="delete-msg-cancel">Cancel</button>
+                  <a class="btn btn-danger btn-ok" id="confirm-delete">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- USER ACCOUNT -->
     <div id="user-account">
+
+      <!-- USER ACCOUNT NAVBAR -->
       <div class="span3 bs-docs-sidebar hide" id="my-account-nav">
         <h2>My Account</h2>
         <ul class="nav nav-list bs-docs-sidenav affix-top">
@@ -198,8 +234,9 @@
         </ul>
       </div>
 
+      <!-- USER ACCOUNT SUBSECTIONS -->
       <div id="account-info">
-
+        <!-- RECEIVED MESSAGES -->
         <div id="display-received-messages"></div>
           <script type="text/x-handlebars-template" id="received-messages-template">
           <h3>You have received {{receivedmessage.length}} messages. You have <span id="num_messages_left_to_receive"></span> more to receive. To receive more messages, <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">send more!</a></h3>
@@ -213,14 +250,30 @@
           </ul>
           </script>
 
+        <!-- SENT MESSAGES -->
         <div id="display-sent-messages"></div>
           <script type="text/x-handlebars-template" id="sent-messages-template">
             <h3>You have sent {{sentmessage.length}} messages. <a href="#" class="open-msg-modal" id="open-msg-modal-from-account" data-toggle="modal" data-target="#send-message-modal">Send more</a> to receive more!</h3>
+
+            <div class="alert alert-success hide text-left" role="alert" id="msg-save-confirmation">
+              <button type="button" class="close">
+                <span aria-hidden="true" class="alert-x">&times;</span>
+              </button>
+              <p>Message saved.</p>
+            </div>
+
+            <div class="alert alert-danger hide text-left" role="alert" id="msg-save-alert">
+              <button type="button" class="close">
+                <span aria-hidden="true" class="alert-x">&times;</span>
+              </button>
+              <p>We were unable to save your message. Please try again.</p>
+            </div>
+
             <ul class="sentmessages">
             {{#each sentmessage}}
               <li class="sentmessage">
                 <a href="#" data-id="{{id}}" class="edit-a-msg">Edit</a>
-                <a href="#" data-id="{{id}}" id="delete-{{id}}" class="delete-a-msg">Delete</a>
+                <a href="#" data-id="{{id}}" id="delete-{{id}}" class="delete-a-msg" data-toggle="modal" data-target="#delete-msg-confirm-modal">Delete</a>
                 <a href="#" data-id="{{id}}" id="save-{{id}}" class="save-a-msg hide">Save</a>
                 <a href="#" data-id="{{id}}" id="cancel-{{id}}" class="cancel-a-msg hide">Cancel</a>
                 <div class="sentmessage-body" contenteditable="false">{{body}}</div>
@@ -230,10 +283,25 @@
             </ul>
           </script>
 
+        <!-- ACCOUNT INFORMATION / PREFERENCES -->
           <div id="display-user-account-settings"></div>
             <script type="text/x-handlebars-template" id="account-settings-template-user">
 
               <h3>Account Information</h3>
+
+              <div class="alert alert-success hide text-left" role="alert" id="acct-confirmation">
+                <button type="button" class="close">
+                  <span aria-hidden="true" class="alert-x">&times;</span>
+                </button>
+                <p>Your account information has been saved.</p>
+              </div>
+
+              <div class="alert alert-danger hide text-left" role="alert" id="acct-alert">
+                <button type="button" class="close">
+                  <span aria-hidden="true" class="alert-x">&times;</span>
+                </button>
+                <p>We were unable to save your account information. Please try again.</p>
+              </div>
 
               Email address: <input type="text" class="form-control input-md" value="{{user.email}}" id="acct-email">
 
