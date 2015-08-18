@@ -60,8 +60,8 @@ $(document).ready(function(){
 
 // Click handlers for sign in functionality
 
-  // var sa = 'https://powerful-waters-3612.herokuapp.com/';
-  var sa = 'http://localhost:3000/'
+  var sa = 'https://powerful-waters-3612.herokuapp.com/';
+  // var sa = 'http://localhost:3000/'
 
   $('#register-btn').on('click', function() {
 
