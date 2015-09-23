@@ -6,14 +6,16 @@ var logOut;
 
 $(document).ready(function(){
 
-  // Checks for a token, does stuff if it finds one
+  var sa = 'https://powerful-waters-3612.herokuapp.com/';
+  // var sa = 'http://localhost:3000/'
 
+
+  // Checks for a token, does stuff if it finds one
   tokenExists = function(token){
     if (token) {
       $('.register, .sign-in').addClass('hide');
       $('.my-account, .log-out, .temp-send-text, .open-msg-modal').removeClass('hide');
     } else {
-      console.log('no token found!')
       $('.my-account, .log-out, .temp-send-text').addClass('hide');
       $('.register, .sign-in').removeClass('hide');
     }
@@ -25,8 +27,8 @@ $(document).ready(function(){
     token = null;
   };
 
-  // Click handlers for header
 
+  // Click handlers for header
   $('.sign-in, .register').on('click', function() {
     $('.alert').addClass('hide');
     $('.form').trigger('reset');
@@ -35,12 +37,12 @@ $(document).ready(function(){
   $('.log-out').on('click', function(){
     logOut();
     tokenExists(token);
-    $('.jumbotron, .glyphs').removeClass('hide');
-    $('#user-account, .open-msg-modal').addClass('hide');
+    $('.intro, .glyphs').removeClass('hide');
+    $('.user-account, .open-msg-modal').addClass('hide');
   });
 
-  // Click handlers for register modal
 
+  // Click handlers for register modal
   $('[name="phone-or-email"]').on('click', function() {
     if ($('#phone-radio-btn').is(':checked')) {
       $('#phone-selected').show();
@@ -59,10 +61,6 @@ $(document).ready(function(){
 
 
 // Click handlers for sign in functionality
-
-  var sa = 'https://powerful-waters-3612.herokuapp.com';
-  // var sa = 'http://localhost:3000/'
-
   $('#register-btn').on('click', function() {
 
     moniker = function(){
@@ -99,14 +97,12 @@ $(document).ready(function(){
       dataType: 'json',
       method: 'POST'
     }).done(function(data, textStatus, jqxhr){
-      // $('#result').val(JSON.stringify(data));
       console.log(data);
       $('.modal').modal('hide');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
     }).fail(function(jqxhr, textStatus, errorThrown){
-      // $('#result').val('registration failed');
       $('#register-alert').html(jqxhr.responseText);
       $('#register-alert').removeClass('hide');
       console.log(jqxhr.responseText);
@@ -131,20 +127,17 @@ $(document).ready(function(){
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
-      // simplestorage
     }).fail(function(jqxhr, textStatus, errorThrown){
       $('#login-alert').removeClass('hide');
     });
   });
 
 
-///////////
-
   // Click handler for displaying My Account information
-
   $('.my-account, #acct-received-messages').on('click', function(){
-    $('#user-account, #my-account-nav').removeClass('hide');
-    $('.jumbotron, .glyphs').addClass('hide');
+    $('.user-account, #my-account-nav').removeClass('hide');
+    $('.intro, .glyphs').addClass('hide');
+
     $.ajax({
       url: sa + '/received_messages',
       headers: {
@@ -152,10 +145,8 @@ $(document).ready(function(){
       }
     }).done(function(data) {
       var html;
-      $('#account-info > div').addClass('hide');
+      $('.account-info > div').addClass('hide');
       var templatingFunction = Handlebars.compile($('#received-messages-template').html());
-      console.log(data);
-      // console.log(data.messages[0].num_messages_left_to_receive)
       if (data.messages.length > 0) {
         html = templatingFunction({receivedmessage: data.messages});
       } else {
@@ -174,7 +165,6 @@ $(document).ready(function(){
       }
     }).done(function(data) {
       $('#num_messages_left_to_receive').text(data.user.num_messages_left_to_receive);
-
     }).fail(function(data) {
       console.error(data);
     });
@@ -184,27 +174,25 @@ $(document).ready(function(){
 
 // AJAX for displaying sent messages
   var displaySentMessages = function() {
-      $.ajax({
-        url: sa + '/sent_messages',
-        headers: {
-          Authorization: 'Token token=' + token
-        }
-      }).done(function(data) {
-        // $('#account-stuff').html(data)
-        console.log(data)
-        var html;
-        $('#account-info > div').addClass('hide');
-        var templatingFunction = Handlebars.compile($('#sent-messages-template').html());
-        if (data.messages.length > 0) {
-          html = templatingFunction({sentmessage: data.messages});
-        } else {
-          html = 'You have not yet sent any messages. You won\'t receive a daily messages until you send one, so <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">get sending!</a>'
-        }
-        $('#display-sent-messages').removeClass('hide').html(html);
+    $.ajax({
+      url: sa + '/sent_messages',
+      headers: {
+        Authorization: 'Token token=' + token
+      }
+    }).done(function(data) {
+      var html;
+      $('.account-info > div').addClass('hide');
+      var templatingFunction = Handlebars.compile($('#sent-messages-template').html());
+      if (data.messages.length > 0) {
+        html = templatingFunction({sentmessage: data.messages});
+      } else {
+        html = 'You have not yet sent any messages. You won\'t receive a daily messages until you send one, so <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">get sending!</a>'
+      }
+      $('#display-sent-messages').removeClass('hide').html(html);
 
-      }).fail(function(data) {
-        console.error(data);
-      });
+    }).fail(function(data) {
+      console.error(data);
+    });
   };
 
   // My Account: Click handler for displaying sent messages
@@ -214,13 +202,13 @@ $(document).ready(function(){
 
 
 // Click handler for closing alerts
-  $('#account-info').on('click', '.alert-x', function(e){
-    console.log('sdsdf');
+  $('.account-info').on('click', '.alert-x', function(e){
     $(this).parent().parent().addClass('hide');
   });
 
-  // My Account: Click handler for displaying account information / preferences
 
+  // My Account: Click handler for displaying account information / preferences
+  // AJAX to get profile data
   $('#acct-my-account').on('click', function(){
     $.ajax({
       url: sa + '/users/' + userID + '/profile',
@@ -229,7 +217,8 @@ $(document).ready(function(){
       }
     }).done(function(data) {
       $('.alert').addClass('hide');
-      // AJAX to get user data.
+
+      // AJAX to get user data
       $.ajax({
         url: sa + '/users/' + userID,
         headers: {
@@ -245,10 +234,10 @@ $(document).ready(function(){
         console.error(data);
       });
 
-      console.log(data)
-      $('#account-info > div').addClass('hide');
+      $('.account-info > div').addClass('hide');
       $('.jumbotron').addClass('hide');
       $('.glyphs').addClass('hide');
+
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
       // currentUserProfileData = JSON.parse(data);
@@ -269,7 +258,6 @@ $(document).ready(function(){
         $('#acct-email-option').prop('checked', true);
       }
 
-      // figure out a better way to invoke this
       displayPhoneNumberField();
 
       // Toggle phone number field when user changes daily message send method from phone to email (and vice versa)
@@ -292,15 +280,14 @@ $(document).ready(function(){
 
   // My Account: click handlers for editing sent messages
 
-// holds the id of the message you're currently editing
+  // holds the id of the message you're currently editing
   var selectedMsgId;
 
-// holds the body of the message you're currently editing
+  // holds the body of the message you're currently editing
   var priorToEditBody;
   var $sentmessageBody;
 
-
-  $('#account-info').on('click', '.edit-a-msg', function(e){
+  $('.account-info').on('click', '.edit-a-msg', function(e){
     // when you click on Edit next to a specific message, it should create an input field and the body of the message should be in the input field.
     e.preventDefault();
     var $editLink = $(this)
@@ -317,7 +304,7 @@ $(document).ready(function(){
   });
 
   // Should save an edited message when a user presses Enter on their keyboard, but isn't working right now
-  $('#account-info').on('keypress', '.sentmessage-body', function(e){
+  $('.account-info').on('keypress', '.sentmessage-body', function(e){
     // e.preventDefault();
     if(e.which == 13){
       console.log('hello');
@@ -327,17 +314,16 @@ $(document).ready(function(){
 
 
   // Click handler for Cancel button: removes anything a user edits and sets it back to value in db. Clicking outside of the field should also cancel, but it does not right now.
-  $('#account-info').on('click', '.cancel-a-msg', function(e){
+  $('.account-info').on('click', '.cancel-a-msg', function(e){
     e.preventDefault();
     $(this).addClass('hide');
     $('.save-a-msg').addClass('hide');
     $('.edit-a-msg').removeClass('hide');
     $sentmessageBody.html(priorToEditBody);
-    // $sentmessageBody = priorToEditBody;
   });
 
   // Click handler for Save button: saves whatever new message the user entered
-  $('#account-info').on('click', '.save-a-msg', function(e){
+  $('.account-info').on('click', '.save-a-msg', function(e){
     e.preventDefault();
     $.ajax({
       url: sa + '/messages/' + selectedMsgId,
@@ -362,11 +348,14 @@ $(document).ready(function(){
     });
   });
 
+
   // Click handler for Delete link. Modal is opened via Bootstrap handler in HTML. selectedMsgId is set here.
-  $('#account-info').on('click', '.delete-a-msg', function(e){
+  $('.account-info').on('click', '.delete-a-msg', function(e){
     selectedMsgId = $(this).data('id');
     $('#confirm-delete, delete-msg-cancel').removeClass('hide');
+    $('.alert').addClass('hide');
   });
+
 
   // Click handler for Delete button in Confirm Delete modal: deletes the current message.
   $('#confirm-delete').on('click', function(){
@@ -381,17 +370,16 @@ $(document).ready(function(){
       $('#msg-delete-alert').addClass('hide');
       $('#msg-delete-confirmation').removeClass('hide');
       $('#confirm-delete, delete-msg-cancel').addClass('hide');
-      // $('#send-message-modal').delay(2000).fadeOut('slow');
       window.setTimeout(function(){
         $('#delete-msg-confirm-modal').modal('hide');
       }, 2000);
       console.log("Deleted message");
-      // $(this).addClass('hide');
     }).fail(function(data) {
       console.error(data);
       $('#msg-delete-alert').removeClass('hide');
     });
   });
+
 
 // Click handler for allowing users to edit account information
   $('#display-profile-account-settings').on('click', '.save-acct-info', function(e){
@@ -416,7 +404,7 @@ $(document).ready(function(){
                   opted_in: findOptInSelection(),
                   };
 
-    // ajax to save user data (just email right now)
+    // AJAX to save user data (just email right now)
     $.ajax({
       url: sa + '/users/' + userID,
       headers: {
@@ -432,7 +420,8 @@ $(document).ready(function(){
       console.log("Saved edited user.");
       console.log(data);
 
-      // ajax to save profile data (everything else)
+
+      // AJAX to save profile data (everything else)
       $.ajax({
         url: sa + '/profiles/' + userID,
         headers: {
@@ -488,16 +477,14 @@ var msgModalOpenedFrom;
         }
       }
     }).done(function(data) {
-
       // if the user opened the Send a Message modal from the Sent Messages page, the Sent Messages page will be reloaded after the user sends the message.
       if (msgModalOpenedFrom === 'open-msg-modal-from-account') {
-        displaySentMessages()
+        displaySentMessages();
+        console.log('bah')
       }
-      console.log("Created message!");
       $('#message-alert').addClass('hide');
       $('#message-confirmation').removeClass('hide');
       $('#send-msg-btn').addClass('hide');
-      // $('#send-message-modal').delay(2000).fadeOut('slow');
       window.setTimeout(function(){
         $('#send-message-modal').modal('hide');
       }, 2000);
