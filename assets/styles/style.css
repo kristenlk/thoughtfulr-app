@@ -17,7 +17,7 @@ li.sentmessage, li.receivedmessage {
     padding-bottom: 50px;
     text-align: center;
     color: #FFF;
-    background: url('https://images.unsplash.com/photo-1433838552652-f9a46b332c40?q=80&fm=jpg&s=97cb7cd5e219e932365f3bcff3950eda') no-repeat center center;
+    background: url('../img/main-bg.jpeg') no-repeat center center;
     background-size: cover;
 }
 
