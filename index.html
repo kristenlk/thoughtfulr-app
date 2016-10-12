@@ -4,11 +4,11 @@
     <title>thoughtfulr</title>
 
     <!-- Bootstrap (CSS) -->
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="assets/styles/style.css">
+    <link rel="stylesheet" type="text/css" href="app/css/style.css">
 
     <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
@@ -37,26 +37,26 @@
         <hr>
         <div class="row">
           <div class="col-sm-4">
-            <img class="img-responsive img-center center-block" src="assets/img/pencil.png" alt="">
+            <img class="img-responsive img-center center-block" src="app/img/pencil.png" alt="">
             <h2>Send a message</h2>
-            <p>Write a message that you think might make someone else's day better. It could be a quote, something great that happened to you today, a fun fact - be creative! When you send a message, it's added to Thoughtfulr's pool of positive messages, and will be randomly sent to other users.</p>
+            <p>Write a message that you think might make someone else's day better. Your message gets added to Thoughtfulr's pool of positive messages, and will be sent to other users.</p>
           </div>
           <div class="col-sm-4">
-            <img class="img-responsive img-center center-block" src="assets/img/envelope.png" alt="">
+            <img class="img-responsive img-center center-block" src="app/img/envelope.png" alt="">
             <h2>Receive a message</h2>
-            <p>As long as you've sent out more messages than you've received, you'll receive your daily positive message at the time of day of your choosing. You can check at any time how many messages you've sent and how many you have left to receive in your account.</p>
+            <p>As long as you've sent out more messages than you've received, you'll receive your daily message at the time of day of your choosing.</p>
           </div>
           <div class="col-sm-4">
-            <img class="img-responsive img-center center-block" src="assets/img/heart.png" alt="">
+            <img class="img-responsive img-center center-block" src="app/img/heart.png" alt="">
             <h2>Have a happier day!</h2>
-            <p>We guarantee that when you take the time to send a daily positive message, and in return receive your own daily positive message, it'll brighten up your mood, you'll want to continue thinking positively throughout your day, and you'll live a Thoughtfulr life!</p>
+            <p>When you take the time to send out a positive message, and in return receive your own positive message, how could your day NOT be better?</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- NAVBAR -->
-    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="topnav">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -122,16 +122,19 @@
       </div>
 
       <!-- REGISTER MODAL -->
-      <div id="register-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
+      <div id="register-modal" class="modal multi-step fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
 
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
               <button id="register-modal-x" type="button" class="close x" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title">Register</h4>
+              <!-- <h4 class="modal-title">Register</h4> -->
+
+              <h4 class="modal-title step-1" data-step="1">Step 1</h4>
+              <h4 class="modal-title step-2" data-step="2">Step 2</h4>
             </div>
 
-            <div class="modal-body">
+            <div class="modal-body step step-1">
               <form class="form center-block">
                 <div class="form-group">
                   <input type="text" class="form-control input-md" placeholder="Email address" id="register-email">
@@ -175,10 +178,15 @@
               </form>
             </div>
 
+            <div class="modal-body step step-2">
+            This is step 2.
+            </div>
+
             <div class="modal-footer">
             <div class="alert alert-danger hide text-left" role="alert" id="register-alert"></div>
               <button id="sign-in-modal-close" type="button" class="btn btn-default x" data-dismiss="modal" aria-label="Close">Close</button>
               <button type="button" class="btn btn-primary" id="register-btn">Register</button>
+              <button type="button" class="btn btn-primary step step-1" data-step="1" onclick="sendEvent()">Continue</button>
             </div>
           </div>
         </div>
@@ -393,13 +401,16 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
     <!-- Bootstrap (JS) -->
-    <script type="text/javascript"src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- Handlebars -->
-    <script type="text/javascript" src="assets/scripts/handlebars-v3.0.3.js"></script>
+    <script type="text/javascript" src="app/js/handlebars-v3.0.3.js"></script>
+
+    <!-- Multi-Step Modal -->
+    <script type="text/javascript" src="app/js/multi-step-modal.js"></script>
 
     <!-- JS files -->
-    <script src="assets/scripts/main.js" type="text/javascript"></script>
+    <script src="app/js/main.js" type="text/javascript"></script>
 
   </body>
 </html>

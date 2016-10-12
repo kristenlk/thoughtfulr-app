@@ -1,0 +1,11 @@
+{
+  "name": "thoughtfulr-app",
+  "private": true,
+  "dependencies": {
+    "bootstrap": "*",
+    "handlebars": "*",
+    "jquery": "*",
+    "jquery-validation": "*",
+    "simpleStorage": "*"
+  }
+}

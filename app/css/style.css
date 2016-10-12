@@ -1,0 +1,144 @@
+body {
+  margin: 0 auto;
+}
+
+li {
+  list-style-type: none;
+}
+
+li.sentmessage, li.receivedmessage {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+/* Main Page */
+.intro-header {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    text-align: center;
+    color: #FFF;
+    background: url('../img/main-bg.jpeg') no-repeat center center;
+    background-size: cover;
+}
+
+.intro-message {
+    position: relative;
+    padding-top: 20%;
+    padding-bottom: 20%;
+}
+
+.intro-message > h1 {
+    margin: 0;
+    font-family: 'Pacifico', cursive;
+    font-size: 7em;
+}
+
+.intro-message > h3 {
+  padding-top: 20px;
+}
+
+
+
+/* User Account */
+.bs-docs-sidenav {
+  top: 0;
+  width: 218px;
+  margin-top: 30px;
+  margin-right: 0;
+}
+
+#display-account-settings > div, a {
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+
+.user-account {
+  padding: 25px;
+  padding-top: 50px;
+  margin: auto;
+}
+
+.account-info {
+  margin-top: 30px;
+}
+
+.glyphicon-chevron-right {
+  float: right;
+  margin-top: 2px;
+  margin-right: -6px;
+  opacity: .25;
+}
+
+
+
+/* Misc */
+h2 {
+  font-family: 'Pacifico', cursive;
+  font-size: 40px;
+  margin-left: 9px;
+  margin-top: 35px;
+/*  margin-top: 100px;*/
+}
+
+.col-md-4.h4 {
+  padding: 20px;
+}
+
+@media screen and (min-width: 680px){
+  .navbar {
+    height: 70px;
+  }
+
+  .navbar ul {
+    line-height: 70px;
+  }
+
+  .navbar a {
+    line-height: 70px;
+    margin-bottom: -15px;
+  }
+
+  .topnav {
+    line-height: 70px;
+  }
+
+  .navbar-brand {
+    line-height: 70px;
+    float: none;
+  }
+
+  .navbar-nav li a {
+    line-height: 40px;
+  }
+}
+
+.navbar-brand {
+  font-family: 'Pacifico', cursive;
+  font-size: 25px;
+}
+
+.navbar-default {
+  border-color: #fff;
+}
+
+.topnav {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Media Queries */
+@media(max-width:767px) {
+    .intro-message {
+        padding-bottom: 15%;
+    }
+
+    .intro-message > h1 {
+        font-size: 5em;
+    }
+}
+
+.user-account h3 {
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  margin-bottom: 15px;
+}
