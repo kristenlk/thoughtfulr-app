@@ -31,7 +31,7 @@
                 <h2>send a happy thought,</h2>
                 <h1>get one back.</h1>
                 <br />
-                <button type="button" id="get-started-btn" class="btn btn-cta">Get Started <i class="fa fa-caret-right" aria-hidden="true"></i></button>
+                <button type="button" id="get-started-btn" class="btn btn-main">Get Started <i class="fa fa-caret-right" aria-hidden="true"></i></button>
               </div>
             </div>
           </div>
@@ -53,36 +53,37 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="#" id="register" data-toggle="modal" data-target="#register-modal">Register</a>
+            </li>
+            <li>
+              <a href="#" id="how-it-works-nav">How It Works</a>
+            </li>
+            <li>
+              <!-- <a href="#" class="sign-in" data-toggle="modal" data-target="#sign-in-modal">Sign In</a> -->
+              <a href="#" id="sign-in-nav">Sign In</a>
+            </li>
+            <li>
+              <a href="#" id="my-account-nav" class="hide">My Account</a>
+            </li>
+            <li>
+              <a href="#" id="log-out-nav" class="hide">Log Out</a>
+            </li>
+            <li>
+              <button type="button" class="btn btn-main open-msg-modal" data-toggle="modal" data-target="#send-message-modal" id="send-message-nav">Send a Message</button>
+            </li>
 <!--             <li>
-              <a href="#" class="register" data-toggle="modal" data-target="#register-modal">Register</a>
-            </li> -->
-            <li>
-              <a href="#" id="how-it-works">How It Works</a>
-            </li>
-            <li>
-              <a href="#" class="sign-in" data-toggle="modal" data-target="#sign-in-modal">Sign In</a>
-            </li>
-            <li>
-              <a href="#" class="my-account hide">My Account</a>
-            </li>
-            <li>
-              <a href="#" class="log-out hide">Log Out</a>
-            </li>
-            <li>
-              <button type="button" class="btn btn-cta" id="send-message-btn">Send a Message</button>
-            </li>
-            <li>
               <a href="#" class="open-msg-modal hide" data-toggle="modal" data-target="#send-message-modal"><span class="glyphicon glyphicon-pencil"></span></a>
-            </li>
+            </li> -->
           </ul>
         </div>
       </div>
     </nav>
 
     <!-- SIGN IN -->
-    <div class="sign-in-page row hide">
-      <div class="col-sm-12 col-md-12 col-lg-12">
-        <h3>Sign In</h3>
+    <div id="sign-in-page" class="row hide">
+      <div class="col-md-4 col-md-offset-4">
+        <h2>Sign In</h2>
         <form class="form center-block">
           <div class="form-group">
             <input type="text" class="form-control input-md" placeholder="Email address" id="sign-in-email">
@@ -93,7 +94,9 @@
             <div class="alert alert-danger hide text-left" role="alert" id="login-alert">
               <p>We were unable to locate an account with that email address and password combination. Please try again.</p>
             </div>
-            <button type="button" class="btn btn-primary" id="sign-in-btn">Sign In</button>
+            <div class="clearfix">
+              <button type="button" class="btn btn-main col-md-offset-5" id="sign-in-btn">Sign In</button>
+            </div>
           </div>
         </form>
       </div>
@@ -101,7 +104,7 @@
 
     <!-- MODALS -->
       <!-- SIGN IN MODAL -->
-      <div id="sign-in-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel">
+<!--       <div id="sign-in-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="signInModalLabel">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -129,7 +132,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- REGISTER MODAL -->
       <div id="register-modal" class="modal multi-step fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
@@ -266,7 +269,7 @@
       <div class="col-sm-12 col-md-12 col-lg-12">
         <h2>My Account</h2>
       <!-- USER ACCOUNT NAVBAR -->
-        <div class="span3 bs-docs-sidebar col-md-4 col-sm-3 col-lg-2" id="my-account-nav">
+        <div class="span3 bs-docs-sidebar col-md-4 col-sm-3 col-lg-2" id="account-navbar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
             <li class="active" id="acct-received-messages"><a href="#receivedmessages"> Received Messages<span class="glyphicon glyphicon-chevron-right"></span></a></li>
             <li class="" id="acct-sent-messages"><a href="#sentmessages"> Sent Messages<span class="glyphicon glyphicon-chevron-right"></span></a></li>

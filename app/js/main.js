@@ -17,11 +17,11 @@ $(document).ready(function(){
   // Checks for a token, does stuff if it finds one
   tokenExists = function(token){
     if (token) {
-      $('.register, .sign-in').addClass('hide');
-      $('.my-account, .log-out, .temp-send-text, .open-msg-modal').removeClass('hide');
+      $('#register-nav, #sign-in-nav').addClass('hide');
+      $('#my-account-nav, #log-out-nav, .temp-send-text, .open-msg-modal').removeClass('hide');
     } else {
-      $('.my-account, .log-out, .temp-send-text').addClass('hide');
-      $('.register, .sign-in').removeClass('hide');
+      $('#my-account-nav, #log-out-nav, .temp-send-text').addClass('hide');
+      $('#register-nav, #sign-in-nav').removeClass('hide');
     }
   };
 
@@ -31,20 +31,28 @@ $(document).ready(function(){
     token = null;
   };
 
-
   // Click handlers for header
-  $('.sign-in, .register').on('click', function() {
+  $('#sign-in-nav, #register-nav').on('click', function() {
     $('.alert').addClass('hide');
     $('.form').trigger('reset');
+    $('.intro').addClass('hide');
   });
 
-  $('.log-out').on('click', function(){
+  $('#sign-in-nav').on('click', function() {
+    $('#sign-in-page').removeClass('hide');
+  });
+
+  $('#log-out-nav').on('click', function(){
     logOut();
     tokenExists(token);
-    $('.intro, .glyphs').removeClass('hide');
+    $('.intro').removeClass('hide');
     $('.user-account, .open-msg-modal').addClass('hide');
   });
 
+  $('.navbar-brand').on('click', function() {
+    $('.intro').removeClass('hide');
+    $('#sign-in-page, .user-account').addClass('hide');
+  });
 
   // Click handlers for register modal
   $('[name="phone-or-email"]').on('click', function() {
@@ -63,10 +71,7 @@ $(document).ready(function(){
     $('#anon-btn').prop('checked', false);
   });
 
-
-// Click handlers for sign in functionality
   $('#register-btn').on('click', function() {
-
     moniker = function(){
       var msg;
       if ($('#anon-btn').is(':checked')) {
@@ -115,6 +120,7 @@ $(document).ready(function(){
 
   $('#continue-button').on('next.m.2');
 
+  // Click handlers for sign in modal
   $('#sign-in-btn').on('click', function(){
     $.ajax(sa + '/login', {
       contentType: 'application/json',
@@ -129,21 +135,27 @@ $(document).ready(function(){
       method: 'POST'
     }).done(function(data, textStatus, jqxhr){
       console.log(data);
-      $('.modal').modal('hide');
+      // $('.modal').modal('hide');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
+      $('.user-account, #account-navbar').removeClass('hide');
+      $('#sign-in-page').addClass('hide');
+      getReceivedMessages();
     }).fail(function(jqxhr, textStatus, errorThrown){
       $('#login-alert').removeClass('hide');
     });
   });
 
-
   // Click handler for displaying My Account information
-  $('.my-account, #acct-received-messages').on('click', function(){
-    $('.user-account, #my-account-nav').removeClass('hide');
+  $('#my-account, #acct-received-messages').on('click', function(){
+    $('.user-account, #account-navbar').removeClass('hide');
     $('.intro').addClass('hide');
+    getReceivedMessages();
+  });
 
+  // AJAX for displaying received messages
+  var getReceivedMessages = function() {
     $.ajax({
       url: sa + '/received_messages',
       headers: {
@@ -174,11 +186,9 @@ $(document).ready(function(){
     }).fail(function(data) {
       console.error(data);
     });
+  }
 
-  });
-
-
-// AJAX for displaying sent messages
+  // AJAX for displaying sent messages
   var displaySentMessages = function() {
     $.ajax({
       url: sa + '/sent_messages',
@@ -242,7 +252,6 @@ $(document).ready(function(){
 
       $('.account-info > div').addClass('hide');
       $('.jumbotron').addClass('hide');
-      $('.glyphs').addClass('hide');
 
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
