@@ -10,8 +10,8 @@ var sendEvent = function(){
 
 $(document).ready(function(){
 
-  // var sa = 'https://powerful-waters-3612.herokuapp.com/';
-  var sa = 'http://localhost:3000/'
+  var sa = 'https://powerful-waters-3612.herokuapp.com/';
+  // var sa = 'http://localhost:3000/'
 
 
   // Checks for a token, does stuff if it finds one

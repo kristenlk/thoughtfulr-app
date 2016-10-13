@@ -10,8 +10,12 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="app/css/style.css">
 
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="app/css/font-awesome-4.6.3/css/font-awesome.min.css">
+
     <!-- Fonts -->
     <link href='http://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 
   </head>
   <body>
@@ -24,36 +28,15 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="intro-message">
-                <h1>thoughtfulr</h1>
-                <h3>Send a happy thought, get one back.</h3>
+                <h2>send a happy thought,</h2>
+                <h1>get one back.</h1>
+                <br />
+                <button type="button" id="get-started-btn" class="btn btn-cta">Get Started <i class="fa fa-caret-right" aria-hidden="true"></i></button>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <!-- ICONS -->
-      <div class="container text-center">
-        <hr>
-        <div class="row">
-          <div class="col-sm-4">
-            <img class="img-responsive img-center center-block" src="app/img/pencil.png" alt="">
-            <h2>Send a message</h2>
-            <p>Write a message that you think might make someone else's day better. Your message gets added to Thoughtfulr's pool of positive messages, and will be sent to other users.</p>
-          </div>
-          <div class="col-sm-4">
-            <img class="img-responsive img-center center-block" src="app/img/envelope.png" alt="">
-            <h2>Receive a message</h2>
-            <p>As long as you've sent out more messages than you've received, you'll receive your daily message at the time of day of your choosing.</p>
-          </div>
-          <div class="col-sm-4">
-            <img class="img-responsive img-center center-block" src="app/img/heart.png" alt="">
-            <h2>Have a happier day!</h2>
-            <p>When you take the time to send out a positive message, and in return receive your own positive message, how could your day NOT be better?</p>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -69,8 +52,11 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-            <li>
+<!--             <li>
               <a href="#" class="register" data-toggle="modal" data-target="#register-modal">Register</a>
+            </li> -->
+            <li>
+              <a href="#" id="how-it-works">How It Works</a>
             </li>
             <li>
               <a href="#" class="sign-in" data-toggle="modal" data-target="#sign-in-modal">Sign In</a>
@@ -80,6 +66,9 @@
             </li>
             <li>
               <a href="#" class="log-out hide">Log Out</a>
+            </li>
+            <li>
+              <button type="button" class="btn btn-cta" id="send-message-btn">Send a Message</button>
             </li>
             <li>
               <a href="#" class="open-msg-modal hide" data-toggle="modal" data-target="#send-message-modal"><span class="glyphicon glyphicon-pencil"></span></a>
