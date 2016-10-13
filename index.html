@@ -37,6 +37,7 @@
           </div>
         </div>
       </div>
+    </div>
 
     <!-- NAVBAR -->
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,6 +78,26 @@
         </div>
       </div>
     </nav>
+
+    <!-- SIGN IN -->
+    <div class="sign-in-page row hide">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <h3>Sign In</h3>
+        <form class="form center-block">
+          <div class="form-group">
+            <input type="text" class="form-control input-md" placeholder="Email address" id="sign-in-email">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control input-md" placeholder="Password" id="sign-in-password">
+          </div>
+            <div class="alert alert-danger hide text-left" role="alert" id="login-alert">
+              <p>We were unable to locate an account with that email address and password combination. Please try again.</p>
+            </div>
+            <button type="button" class="btn btn-primary" id="sign-in-btn">Sign In</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <!-- MODALS -->
       <!-- SIGN IN MODAL -->

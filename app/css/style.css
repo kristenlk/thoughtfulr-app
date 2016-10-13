@@ -90,7 +90,6 @@ li.sentmessage, li.receivedmessage {
 
 .intro-message > h2 {
   margin: 0;
-  font-family: 'Varela Round', sans-serif;
   font-size: 3em;
 }
 
@@ -130,7 +129,6 @@ li.sentmessage, li.receivedmessage {
 
 /* Misc */
 h2 {
-  font-family: 'Pacifico', cursive;
   font-size: 40px;
   margin-left: 9px;
   margin-top: 35px;

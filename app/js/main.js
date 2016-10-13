@@ -142,7 +142,7 @@ $(document).ready(function(){
   // Click handler for displaying My Account information
   $('.my-account, #acct-received-messages').on('click', function(){
     $('.user-account, #my-account-nav').removeClass('hide');
-    $('.intro, .glyphs').addClass('hide');
+    $('.intro').addClass('hide');
 
     $.ajax({
       url: sa + '/received_messages',
