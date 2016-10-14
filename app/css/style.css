@@ -101,19 +101,47 @@ li.sentmessage, li.receivedmessage {
   padding-top: 20px;
 }
 
-/* Sign In Page */
-#sign-in-page {
+/* Pages */
+#sign-in-page, #how-it-works-page {
   padding-top: 100px;
 }
 
-#sign-in-page h2 {
+#sign-in-page h2, #how-it-works-page h2 {
   text-align: center;
   padding-bottom: 10px;
 }
 
-#sign-in-page .btn-main {
+#sign-in-page .btn-main, #how-it-works-page .btn-main {
   display: block;
   margin: 0 auto;
+}
+
+#how-it-works-page img {
+  width: 75%;
+  height: auto;
+  border-radius: 8px;
+}
+
+#how-it-works-page p {
+  padding: 0;
+  font-size: 16px;
+}
+
+.send-msg img {
+  margin-left: 180px;
+}
+
+.receive-msg img {
+  float: right;
+  margin-right: 180px;
+}
+
+.receive-msg h3 {
+  text-align: right;
+}
+
+.receive-msg p {
+  text-align: right;
 }
 
 /* User Account */
@@ -210,6 +238,16 @@ li.sentmessage, li.receivedmessage {
 
   .navbar-toggle {
     margin-top: 17px;
+  }
+
+  #how-it-works-page img {
+    float: none;
+    margin: 0 auto;
+    display: block;
+  }
+
+  #how-it-works-page h3, #how-it-works-page p {
+    text-align: center;
   }
 }
 

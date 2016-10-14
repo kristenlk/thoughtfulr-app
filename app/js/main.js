@@ -10,8 +10,8 @@ var sendEvent = function(){
 
 $(document).ready(function(){
 
-  var sa = 'https://powerful-waters-3612.herokuapp.com/';
-  // var sa = 'http://localhost:3000/'
+  // var sa = 'https://powerful-waters-3612.herokuapp.com/';
+  var sa = 'http://localhost:3000/'
 
 
   // Checks for a token, does stuff if it finds one
@@ -32,7 +32,7 @@ $(document).ready(function(){
   };
 
   // Click handlers for header
-  $('#sign-in-nav, #register-nav').on('click', function() {
+  $('#sign-in-nav, #register-nav, #how-it-works-nav').on('click', function() {
     $('.alert').addClass('hide');
     $('.form').trigger('reset');
     $('.intro').addClass('hide');
@@ -40,6 +40,10 @@ $(document).ready(function(){
 
   $('#sign-in-nav').on('click', function() {
     $('#sign-in-page').removeClass('hide');
+  });
+
+  $('#how-it-works-nav').on('click', function() {
+    $('#how-it-works-page').removeClass('hide');
   });
 
   $('#log-out-nav').on('click', function(){
@@ -52,6 +56,10 @@ $(document).ready(function(){
   $('.navbar-brand').on('click', function() {
     $('.intro').removeClass('hide');
     $('#sign-in-page, .user-account').addClass('hide');
+  });
+
+  $('.navbar-collapse a').click(function(){
+      $(".navbar-collapse").collapse('hide');
   });
 
   // Click handlers for register modal
