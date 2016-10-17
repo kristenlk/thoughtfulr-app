@@ -10,18 +10,27 @@ var sendEvent = function(){
 
 $(document).ready(function(){
 
-  // var sa = 'https://powerful-waters-3612.herokuapp.com/';
-  var sa = 'http://localhost:3000/'
-
+  // var sa = 'https://powerful-waters-3612.herokuapp.com';
+  var sa = 'http://localhost:3000';
 
   // Checks for a token, does stuff if it finds one
   tokenExists = function(token){
     if (token) {
+      // Nav
       $('#register-nav, #sign-in-nav').addClass('hide');
       $('#my-account-nav, #log-out-nav, .temp-send-text, .open-msg-modal').removeClass('hide');
+
+      // Send a message
+      $('#send-message-header').html('Send a message');
+      $('#send-message-btn').html('Send message');
     } else {
+      // Nav
       $('#my-account-nav, #log-out-nav, .temp-send-text').addClass('hide');
       $('#register-nav, #sign-in-nav').removeClass('hide');
+
+      // Send a message
+      $('#send-message-header').html('Send your first message');
+      $('#send-message-btn').html('Next <i class="fa fa-caret-right" aria-hidden="true"></i>');
     }
   };
 
@@ -32,43 +41,97 @@ $(document).ready(function(){
   };
 
   // Click handlers for header
-  $('#sign-in-nav, #register-nav, #how-it-works-nav').on('click', function() {
-    $('.alert').addClass('hide');
+  $('#sign-in-nav, #register-nav, #how-it-works-nav, #send-message-nav, #get-started-btn').on('click', function() {
+    $('.alert, .intro, #user-account').addClass('hide');
     $('.form').trigger('reset');
-    $('.intro').addClass('hide');
   });
 
   $('#sign-in-nav').on('click', function() {
     $('#sign-in-page').removeClass('hide');
+    $('#how-it-works-page, #send-message-page, #preferences-page, #complete-acct-page').addClass('hide');
   });
 
   $('#how-it-works-nav').on('click', function() {
     $('#how-it-works-page').removeClass('hide');
+    $('#sign-in-page, #send-message-page, #preferences-page, #complete-acct-page, #user-account').addClass('hide');
+  });
+
+  $('#send-message-nav, #get-started-btn').on('click', function() {
+    $('#send-message-page').removeClass('hide');
+    $("#send-message-text-error").remove();
+    $('#sign-in-page, #how-it-works-page, #preferences-page, #complete-acct-page').addClass('hide');
   });
 
   $('#log-out-nav').on('click', function(){
     logOut();
     tokenExists(token);
     $('.intro').removeClass('hide');
-    $('.user-account, .open-msg-modal').addClass('hide');
+    $('#user-account').addClass('hide');
   });
 
   $('.navbar-brand').on('click', function() {
     $('.intro').removeClass('hide');
-    $('#sign-in-page, .user-account').addClass('hide');
+    $('#sign-in-page, #how-it-works-page, #send-message-page, #preferences-page, #user-account').addClass('hide');
   });
 
   $('.navbar-collapse a').click(function(){
-      $(".navbar-collapse").collapse('hide');
+    $(".navbar-collapse").collapse('hide');
   });
 
-  // Click handlers for register modal
-  $('[name="phone-or-email"]').on('click', function() {
-    if ($('#phone-radio-btn').is(':checked')) {
-      $('#phone-selected').show();
+
+  // Click handlers for send a message page
+  $("#send-message-btn").on('click', function() {
+    if (token) {
+      $.ajax({
+        url: sa + '/messages',
+        method: 'POST',
+        headers: {
+          Authorization: 'Token token=' + token
+        },
+        data: {
+          message: {
+            body: $("#send-message-text").val()
+          }
+        }
+      }).done(function(data) {
+        $('#message-alert').addClass('hide');
+        $('#message-confirmation').removeClass('hide');
+      }).fail(function(data) {
+        console.error(data);
+        $('#message-alert').removeClass('hide');
+      });
     } else {
-      $('#phone-selected').hide();
-    };
+      var form = $("#send-message-form");
+      form.validate({
+        rules: {
+          sendmessagetext: {
+            required: true
+          }
+        },
+        messages: {
+          sendmessagetext: {
+            required: 'Please enter a message.',
+          }
+        }
+      });
+
+      if (form.valid() == true){
+        $('#send-message-page').addClass('hide');
+        $('#preferences-page').removeClass('hide');
+      }
+    }
+  });
+
+
+  // Click handlers for preferences page
+  $('#preferences-back-btn').on('click', function() {
+    $('#send-message-page').removeClass('hide');
+    $('#preferences-page').addClass('hide');
+  });
+
+  $('#preferences-next-btn').on('click', function() {
+    $('#complete-acct-page').removeClass('hide');
+    $('#preferences-page').addClass('hide');
   });
 
   $('#anon-btn').on('click', function() {
@@ -79,7 +142,14 @@ $(document).ready(function(){
     $('#anon-btn').prop('checked', false);
   });
 
-  $('#register-btn').on('click', function() {
+
+  // Click handlers for complete account page
+  $('#complete-acct-back-btn').on('click', function() {
+    $('#preferences-page').removeClass('hide');
+    $('#complete-acct-page').addClass('hide');
+  });
+
+  $('#complete-acct-register-btn').on('click', function() {
     moniker = function(){
       var msg;
       if ($('#anon-btn').is(':checked')) {
@@ -94,7 +164,7 @@ $(document).ready(function(){
     var profile = {
                   moniker: moniker(),
                   location: $('#register-location').val(),
-                  email_or_phone: $("input[name='phone-or-email']:checked").val(),
+                  email_or_phone: "phone",
                   phone_number: $('#phone-number').val(),
                   selected_time: $("input[name='time-of-day']:checked").val()
                   };
@@ -115,20 +185,38 @@ $(document).ready(function(){
       method: 'POST'
     }).done(function(data, textStatus, jqxhr){
       console.log(data);
-      $('.modal').modal('hide');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
+
+      $.ajax({
+        url: sa + '/messages',
+        method: 'POST',
+        headers: {
+          Authorization: 'Token token=' + token
+        },
+        data: {
+          message: {
+            body: $("#send-message-text").val()
+          }
+        }
+      }).done(function(data) {
+        $('#user-account, #account-navbar').removeClass('hide');
+        getReceivedMessages();
+        $('#complete-acct-page').addClass('hide');
+      }).fail(function(data) {
+        console.error(data);
+        $('#complete-acct-message-alert').removeClass('hide');
+      });
     }).fail(function(jqxhr, textStatus, errorThrown){
-      $('#register-alert').html(jqxhr.responseText);
-      $('#register-alert').removeClass('hide');
+      // $('#register-alert').html(jqxhr.responseText);
+      $('#complete-acct-alert').removeClass('hide');
       console.log(jqxhr.responseText);
     });
   });
 
-  $('#continue-button').on('next.m.2');
 
-  // Click handlers for sign in modal
+  // Click handlers for sign in page
   $('#sign-in-btn').on('click', function(){
     $.ajax(sa + '/login', {
       contentType: 'application/json',
@@ -142,12 +230,10 @@ $(document).ready(function(){
       dataType: 'json',
       method: 'POST'
     }).done(function(data, textStatus, jqxhr){
-      console.log(data);
-      // $('.modal').modal('hide');
       token = data.user_login.token;
       userID = data.user_login.id;
       tokenExists(token);
-      $('.user-account, #account-navbar').removeClass('hide');
+      $('#user-account, #account-navbar').removeClass('hide');
       $('#sign-in-page').addClass('hide');
       getReceivedMessages();
     }).fail(function(jqxhr, textStatus, errorThrown){
@@ -156,9 +242,9 @@ $(document).ready(function(){
   });
 
   // Click handler for displaying My Account information
-  $('#my-account, #acct-received-messages').on('click', function(){
-    $('.user-account, #account-navbar').removeClass('hide');
-    $('.intro').addClass('hide');
+  $('#my-account-nav, #acct-received-messages').on('click', function(){
+    $('#user-account, #account-navbar').removeClass('hide');
+    $('.intro, #how-it-works-page, #send-message-page, #sign-in-page').addClass('hide');
     getReceivedMessages();
   });
 
@@ -267,27 +353,27 @@ $(document).ready(function(){
       $('#display-profile-account-settings').removeClass('hide').html(html);
 
       // shows phone number field, only if the phone radio button is checked
-      var displayPhoneNumberField = function() {
-        if ($('#acct-phone-option').is(':checked')) {
-          $('#acct-phone').show();
-        } else {
-          $('#acct-phone').hide();
-        };
-      };
+      // var displayPhoneNumberField = function() {
+      //   if ($('#acct-phone-option').is(':checked')) {
+      //     $('#acct-phone').show();
+      //   } else {
+      //     $('#acct-phone').hide();
+      //   };
+      // };
 
-      if (data.email_or_phone == "phone") {
-        $('#acct-phone-option').prop('checked', true);
-      } else {
-        $('#acct-email-option').prop('checked', true);
-      }
+      // if (data.email_or_phone == "phone") {
+      //   $('#acct-phone-option').prop('checked', true);
+      // } else {
+      //   $('#acct-email-option').prop('checked', true);
+      // }
 
-      displayPhoneNumberField();
+      // displayPhoneNumberField();
 
       // Toggle phone number field when user changes daily message send method from phone to email (and vice versa)
-      $('[name="acct-phone-or-email"]').on('click', function() {
-        displayPhoneNumberField();
-        console.log('selected phone or email');
-      });
+      // $('[name="acct-phone-or-email"]').on('click', function() {
+      //   displayPhoneNumberField();
+      //   console.log('selected phone or email');
+      // });
 
       if (data.opted_in) {
         $('#acct-opt-in').prop('checked', true);
@@ -409,22 +495,24 @@ $(document).ready(function(){
     $('.alert').addClass('hide');
     e.preventDefault();
 
-    var findOptInSelection = function() {
-      var bool;
-      if ($("input[name='acct-opt-in-out']:checked").val()) {
-        bool = true;
-      } else {
-        bool = false;
-      }
-      return bool;
-    };
+    // var findOptInSelection = function() {
+    //   var bool;
+    //   if ($("input[name='acct-opt-in-out']:checked").val()) {
+    //     bool = true;
+    //   } else {
+    //     bool = false;
+    //   }
+    //   return bool;
+    // };
+
+    console.log($("input[name='acct-opt-in-out']:checked").val());
 
     var profile = {
                   moniker: $('#acct-moniker').val(),
                   location: $('#acct-location').val(),
-                  email_or_phone: $("input[name='acct-phone-or-email']:checked").val(),
+                  email_or_phone: "phone",
                   phone_number: $('#acct-phone-field').val(),
-                  opted_in: findOptInSelection(),
+                  opted_in: $("input[name='acct-opt-in-out']:checked").val() == "optin" ? 1 : 0,
                   };
 
     // AJAX to save user data (just email right now)
@@ -469,52 +557,16 @@ $(document).ready(function(){
     });
 
   });
-
+});
 // Click handlers for send a message modal (opens from the pencil button in the navbar and in various places in My Account)
 
 // gets id of the specific "open message modal" element that was clicked
-var msgModalOpenedFrom;
+// var msgModalOpenedFrom;
 
-  $(document).on('click', '.open-msg-modal', function(e){
-    msgModalOpenedFrom = $(this).attr('id')
-    e.preventDefault();
-    $('#send-msg-btn').removeClass('hide');
-    $('.alert').addClass('hide');
-    // $('#send-message-modal').addClass('show');
-    $('#message-text').val('');
-
-  });
-
-// Click handlers for creating a message
-
-  $("#send-msg-btn").on('click', function() {
-    $.ajax({
-      url: sa + '/messages',
-      method: 'POST',
-      headers: {
-        Authorization: 'Token token=' + token
-      },
-      data: {
-        message: {
-          body: $("#message-text").val()
-        }
-      }
-    }).done(function(data) {
-      // if the user opened the Send a Message modal from the Sent Messages page, the Sent Messages page will be reloaded after the user sends the message.
-      if (msgModalOpenedFrom === 'open-msg-modal-from-account') {
-        displaySentMessages();
-        console.log('bah')
-      }
-      $('#message-alert').addClass('hide');
-      $('#message-confirmation').removeClass('hide');
-      $('#send-msg-btn').addClass('hide');
-      window.setTimeout(function(){
-        $('#send-message-modal').modal('hide');
-      }, 2000);
-    }).fail(function(data) {
-      console.error(data);
-      $('#message-alert').removeClass('hide');
-    });
-  });
-
-});
+//   $(document).on('click', '.open-msg-modal', function(e){
+//     msgModalOpenedFrom = $(this).attr('id')
+//     e.preventDefault();
+//     $('#send-msg-btn').removeClass('hide');
+//     $('.alert').addClass('hide');
+//     $('#message-text').val('');
+//   });

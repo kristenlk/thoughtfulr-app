@@ -60,7 +60,6 @@
               <a href="#" id="how-it-works-nav">How It Works</a>
             </li>
             <li>
-              <!-- <a href="#" class="sign-in" data-toggle="modal" data-target="#sign-in-modal">Sign In</a> -->
               <a href="#" id="sign-in-nav">Sign In</a>
             </li>
             <li>
@@ -70,11 +69,8 @@
               <a href="#" id="log-out-nav" class="hide">Log Out</a>
             </li>
             <li>
-              <button type="button" class="btn btn-main open-msg-modal" data-toggle="modal" data-target="#send-message-modal" id="send-message-nav">Send a Message</button>
+              <button type="button" class="btn btn-main" id="send-message-nav">Send a Message</button>
             </li>
-<!--             <li>
-              <a href="#" class="open-msg-modal hide" data-toggle="modal" data-target="#send-message-modal"><span class="glyphicon glyphicon-pencil"></span></a>
-            </li> -->
           </ul>
         </div>
       </div>
@@ -99,6 +95,94 @@
             </div>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- SEND A MESSAGE -->
+    <div id="send-message-page" class="row hide">
+      <div class="col-md-4 col-md-offset-4">
+        <h2 id="send-message-header"></h2>
+        <form class="form center-block" id="send-message-form">
+          <div class="form-group">
+            <p>Post something that you think might make someone feel good. Use your imagination! Feel free to post quotes, something good that happened to you today, or an awesome fact you've learned recently.</p>
+            <p>Note: submissions are individually reviewed for inappropriate content.</p>
+            <textarea class="form-control" rows="10" placeholder="A 6-year-old applied for a job at a railroad museum and was hired as its director of fun." id="send-message-text" name="sendmessagetext"></textarea>
+          </div>
+          <div class="alert alert-danger hide text-left" role="alert" id="message-alert">We were unable to send your message. Please try again.</div>
+          <div class="alert alert-success hide text-left" role="alert" id="message-confirmation">Your message has been successfully sent.</div>
+          <div class="clearfix" id="send-message-footer">
+            <button type="button" class="btn btn-main col-md-offset-5" id="send-message-btn"></button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- PREFERENCES -->
+    <div id="preferences-page" class="row hide">
+      <div class="col-md-4 col-md-offset-4">
+        <h2 id="preferences-header">Message Preferences</h2>
+        <form class="form center-block">
+          <div class="form-group" id="moniker-options">
+            <label for="register-moniker">Moniker:</label>
+            <p>Your moniker will be displayed when your messages are sent to other users.</p>
+            <input type="text" class="form-control input-md" placeholder="Amy Z." id="register-moniker">
+            <ul>
+              <li><input type="radio" name="anonymous" id="anon-btn">&nbsp;I want to be anonymous.</li>
+            </ul>
+          </div>
+          <br />
+          <div class="form-group">
+            <label for="register-location">Location:</label>
+            <p>Your location will be displayed when your messages are sent to other users.</p>
+            <input type="text" class="form-control input-md" placeholder="Boston, MA" id="register-location">
+          </div>
+          <br />
+          <div class="form-group">
+            <label for="phone-number">Phone number:</label>
+            <p>Enter your phone number to receive messages from Thoughtfulr on your phone. Standard text messaging rates apply.</p>
+            <input type="text" class="form-control input-md" placeholder="123-456-7890" id="phone-number"><br />
+          </div>
+          <div class="time-of-day">
+            <label for="time-of-day">Message timing:</label>
+            <p>Select the time of day (EST) that you'd like to receive your messages.</p>
+            <ul>
+              <li><input type="radio" name="time-of-day" id="morning-radio-btn" value="morning">&nbsp;Morning</li>
+              <li><input type="radio" name="time-of-day" id="afternoon-radio-btn" value="afternoon">&nbsp;Afternoon</li>
+              <li><input type="radio" name="time-of-day" id="evening-radio-btn" value="evening">&nbsp;Evening</li>
+            </ul>
+          </div>
+          <div class="clearfix" id="preferences-footer">
+            <button type="button" class="btn btn-main col-md-offset-5" id="preferences-back-btn"><i class="fa fa-caret-left" aria-hidden="true"></i> Back</button>
+            <button type="button" class="btn btn-main col-md-offset-5" id="preferences-next-btn">Next <i class="fa fa-caret-right" aria-hidden="true"></i></button>
+          </div>
+        </form>
+        <br /><br />
+      </div>
+    </div>
+
+    <!-- COMPLETE ACCOUNT -->
+    <div id="complete-acct-page" class="row hide">
+      <div class="col-md-4 col-md-offset-4">
+        <h2 id="complete-acct-header">Let's create your account.</h2>
+        <form class="form center-block">
+          <div class="form-group">
+            <input type="text" class="form-control input-md" placeholder="Email address" id="register-email">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control input-md" placeholder="Password" id="register-password">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control input-md" placeholder="Confirm password" id="register-confirm-password">
+          </div>
+          <div class="clearfix" id="complete-acct-footer">
+            <button type="button" class="btn btn-main col-md-offset-5" id="complete-acct-back-btn"><i class="fa fa-caret-left" aria-hidden="true"></i> Back</button>
+            <button type="button" class="btn btn-main col-md-offset-5" id="complete-acct-register-btn">Register</button>
+          </div>
+          <br />
+          <div class="alert alert-danger hide text-left" role="alert" id="complete-acct-alert">We are unable to create your account at this time. Please try again.</div>
+          <div class="alert alert-danger hide text-left" role="alert" id="complete-acct-message-alert">We are unable to send your message at this time. Please try again.</div>
+        </form>
+        <br /><br />
       </div>
     </div>
 
@@ -171,14 +255,14 @@
       </div> -->
 
       <!-- REGISTER MODAL -->
-      <div id="register-modal" class="modal multi-step fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
+<!--       <div id="register-modal" class="modal multi-step fade" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel">
 
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <button id="register-modal-x" type="button" class="close x" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <button id="register-modal-x" type="button" class="close x" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
               <!-- <h4 class="modal-title">Register</h4> -->
-
+<!--
               <h4 class="modal-title step-1" data-step="1">Step 1</h4>
               <h4 class="modal-title step-2" data-step="2">Step 2</h4>
             </div>
@@ -223,6 +307,7 @@
                     <li><input type="radio" name="time-of-day" id="afternoon-radio-btn" value="afternoon">&nbsp;Afternoon</li>
                     <li><input type="radio" name="time-of-day" id="evening-radio-btn" value="evening">&nbsp;Evening</li>
                   </ul>
+                  <br
                 </div>
               </form>
             </div>
@@ -239,10 +324,10 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- SEND MESSAGE MODAL -->
-      <div id="send-message-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel">
+<!--       <div id="send-message-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -267,7 +352,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- DELETE MESSAGE MODAL -->
       <div class="modal fade" id="delete-msg-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="deleteMsgConfirmModalLabel" aria-hidden="true">
@@ -301,7 +386,7 @@
 
 
     <!-- USER ACCOUNT -->
-    <div class="user-account row hide">
+    <div class="row hide" id="user-account">
       <div class="col-sm-12 col-md-12 col-lg-12">
         <h2>My Account</h2>
       <!-- USER ACCOUNT NAVBAR -->
@@ -407,7 +492,7 @@
                 </div>
 
                 <div class="form-group">
-                  <div id="acct-email-or-phone">
+<!--                   <div id="acct-email-or-phone">
                     <label>I would like to receive messages by:</label><br>
                     <ul>
                       <li>
@@ -417,7 +502,7 @@
                         <input type="radio" name="acct-phone-or-email" id="acct-email-option" value="email">&nbsp;Email
                       </li>
                     </ul>
-                  </div>
+                  </div> -->
                   <div id="acct-phone" class="collapse">
                     <label>Phone number:</label>
                     <input type="text" class="form-control input-md" value="{{phone_number}}" id="acct-phone-field">
@@ -449,14 +534,14 @@
     <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 
+    <!-- jQuery Validation -->
+    <script src="bower_components/jquery-validation/dist/jquery.validate.min.js"></script>
+
     <!-- Bootstrap (JS) -->
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
     <!-- Handlebars -->
     <script type="text/javascript" src="app/js/handlebars-v3.0.3.js"></script>
-
-    <!-- Multi-Step Modal -->
-    <script type="text/javascript" src="app/js/multi-step-modal.js"></script>
 
     <!-- JS files -->
     <script src="app/js/main.js" type="text/javascript"></script>
