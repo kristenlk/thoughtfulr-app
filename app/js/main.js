@@ -58,7 +58,7 @@ $(document).ready(function(){
 
   $('#send-message-nav, #get-started-btn').on('click', function() {
     $('#send-message-page').removeClass('hide');
-    $("#send-message-text-error").remove();
+    $("#phone-number-error, #register-location-error, #anonymous-error").remove();
     $('#sign-in-page, #how-it-works-page, #preferences-page, #complete-acct-page').addClass('hide');
   });
 
