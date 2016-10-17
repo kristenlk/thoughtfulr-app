@@ -201,6 +201,14 @@ label {
   margin-bottom: 5px;
 }
 
+#phone-number-error,
+#register-location-error,
+#anonymous-error {
+  color: #a94442;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
 /* User Account */
 .bs-docs-sidenav {
   top: 0;

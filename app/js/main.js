@@ -102,6 +102,7 @@ $(document).ready(function(){
       });
     } else {
       var form = $("#send-message-form");
+
       form.validate({
         rules: {
           sendmessagetext: {
@@ -130,8 +131,46 @@ $(document).ready(function(){
   });
 
   $('#preferences-next-btn').on('click', function() {
-    $('#complete-acct-page').removeClass('hide');
-    $('#preferences-page').addClass('hide');
+    var form = $("#preferences-form");
+
+    form.validate({
+      rules: {
+        anonymous: {
+          required: $('#anon-btn').is(':checked') || $('#register-moniker').html().length > 0 ? false : true
+        },
+        phone: {
+          required: true
+        },
+        location: {
+          required: true
+        }
+      },
+      errorPlacement: function (error, el) {
+        console.log(el.attr('name'));
+        if (el.attr('name') === 'anonymous') {
+          console.log("hi");
+            error.appendTo($('#moniker-errors'));
+        } else {
+            error.insertAfter(el);
+        }
+      },
+      messages: {
+        anonymous: {
+          required: 'Please enter a moniker.',
+        },
+        phone: {
+          required: 'Please enter your phone number.',
+        },
+        location: {
+          required: 'Please enter your location.'
+        }
+      }
+    });
+
+    if (form.valid() == true){
+      $('#complete-acct-page').removeClass('hide');
+      $('#preferences-page').addClass('hide')
+    };
   });
 
   $('#anon-btn').on('click', function() {
@@ -166,7 +205,7 @@ $(document).ready(function(){
                   location: $('#register-location').val(),
                   email_or_phone: "phone",
                   phone_number: $('#phone-number').val(),
-                  selected_time: $("input[name='time-of-day']:checked").val()
+                  selected_time: $("input[name='timeofday']:checked").val()
                   };
     console.log("profile data is", profile)
 
@@ -352,29 +391,6 @@ $(document).ready(function(){
       // currentUserProfileData = JSON.parse(data);
       $('#display-profile-account-settings').removeClass('hide').html(html);
 
-      // shows phone number field, only if the phone radio button is checked
-      // var displayPhoneNumberField = function() {
-      //   if ($('#acct-phone-option').is(':checked')) {
-      //     $('#acct-phone').show();
-      //   } else {
-      //     $('#acct-phone').hide();
-      //   };
-      // };
-
-      // if (data.email_or_phone == "phone") {
-      //   $('#acct-phone-option').prop('checked', true);
-      // } else {
-      //   $('#acct-email-option').prop('checked', true);
-      // }
-
-      // displayPhoneNumberField();
-
-      // Toggle phone number field when user changes daily message send method from phone to email (and vice versa)
-      // $('[name="acct-phone-or-email"]').on('click', function() {
-      //   displayPhoneNumberField();
-      //   console.log('selected phone or email');
-      // });
-
       if (data.opted_in) {
         $('#acct-opt-in').prop('checked', true);
       } else {
@@ -495,18 +511,6 @@ $(document).ready(function(){
     $('.alert').addClass('hide');
     e.preventDefault();
 
-    // var findOptInSelection = function() {
-    //   var bool;
-    //   if ($("input[name='acct-opt-in-out']:checked").val()) {
-    //     bool = true;
-    //   } else {
-    //     bool = false;
-    //   }
-    //   return bool;
-    // };
-
-    console.log($("input[name='acct-opt-in-out']:checked").val());
-
     var profile = {
                   moniker: $('#acct-moniker').val(),
                   location: $('#acct-location').val(),
@@ -558,15 +562,3 @@ $(document).ready(function(){
 
   });
 });
-// Click handlers for send a message modal (opens from the pencil button in the navbar and in various places in My Account)
-
-// gets id of the specific "open message modal" element that was clicked
-// var msgModalOpenedFrom;
-
-//   $(document).on('click', '.open-msg-modal', function(e){
-//     msgModalOpenedFrom = $(this).attr('id')
-//     e.preventDefault();
-//     $('#send-msg-btn').removeClass('hide');
-//     $('.alert').addClass('hide');
-//     $('#message-text').val('');
-//   });
