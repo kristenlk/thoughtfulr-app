@@ -160,7 +160,9 @@ label {
   font-size: 16px;
 }
 
-#preferences-page li {
+#preferences-page li,
+#display-user-account-settings li,
+#display-profile-account-settings li {
   margin-top: 10px;
   margin-left: -15px;
 }
@@ -170,7 +172,9 @@ label {
   color: #777;
 }
 
-#preferences-page ul {
+#preferences-page ul,
+#display-user-account-settings ul,
+#display-profile-account-settings ul {
   margin-bottom: 0;
 }
 
@@ -192,7 +196,6 @@ label.error {
   margin-top: 5px;
 }
 
-/* User Account */
 .bs-docs-sidenav {
   top: 0;
   width: 218px;
@@ -200,9 +203,12 @@ label.error {
   margin-right: 0;
 }
 
-#display-account-settings > div, a {
-  padding-top: 1em;
-  padding-bottom: 1em;
+#display-received-messages h3,
+#display-sent-messages h3,
+#display-user-account-settings h3,
+#display-profile-account-settings h3 {
+  margin-top: 8px;
+  margin-bottom: 20px;
 }
 
 #user-account {
@@ -228,6 +234,12 @@ label.error {
   margin-bottom: -10px;
   margin-left: 28px;
   margin-top: 55px;
+}
+
+#save-acct-info {
+  display: block;
+  margin: 0 auto;
+  float: left;
 }
 
 /* Navbar */

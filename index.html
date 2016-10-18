@@ -352,7 +352,10 @@
               <form name="acctInfoForm">
                 <div class="form-group">
                   <label>Moniker:</label>
-                  <input type="text" class="form-control input-md" value="{{moniker}}" id="acct-moniker">
+                  <input type="text" class="form-control input-md" value="{{moniker}}" placeholder="Amy Z." id="acct-moniker">
+                  <ul>
+                    <li><input type="radio" id="acct-anon-btn">&nbsp;I want to be anonymous.</li>
+                  </ul>
                 </div>
 
                 <div class="form-group">
@@ -361,7 +364,7 @@
                 </div>
 
                 <div class="form-group">
-                  <div id="acct-phone" class="collapse">
+                  <div id="acct-phone">
                     <label>Phone number:</label>
                     <input type="text" class="form-control input-md" value="{{phone_number}}" id="acct-phone-field">
                   </div>
@@ -381,7 +384,7 @@
                 </div>
               </form>
 
-              <a href="#" class="save-acct-info">Save changes</a>
+              <button type="button" class="btn btn-main col-md-offset-5" id="save-acct-info">Save Changes</button>
 
               </script>
 

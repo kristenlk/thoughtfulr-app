@@ -218,19 +218,8 @@ $(document).ready(function(){
     });
 
     if (form.valid() == true) {
-      moniker = function(){
-        var msg;
-        if ($('#anon-btn').is(':checked')) {
-          msg = 'anonymous';
-          console.log(msg);
-        } else {
-          msg = $('#register-moniker').val();
-        }
-        return msg;
-      }
-
       var profile = {
-        moniker: moniker(),
+        moniker: $('#anon-btn').is(':checked') ? 'anonymous' : $('#register-moniker').val(),
         location: $('#register-location').val(),
         phone_number: $('#phone-number').val(),
         selected_time: $("input[name='timeofday']:checked").val()
@@ -439,6 +428,11 @@ $(document).ready(function(){
       } else {
         $('#acct-opt-out').prop('checked', true);
       }
+
+      if (data.moniker == "anonymous") {
+        $('#acct-anon-btn').prop('checked', true);
+        $('#acct-moniker').val('');
+      }
     }).fail(function(data) {
       console.error(data);
     });
@@ -461,7 +455,6 @@ $(document).ready(function(){
     $('#cancel-' + $(this).data('id')).removeClass('hide');
     $sentmessageBody.prop('contenteditable', 'true');
     $sentmessageBody.focus();
-
   });
 
   // Should save an edited message when a user presses Enter on their keyboard, but isn't working right now
@@ -536,13 +529,21 @@ $(document).ready(function(){
     });
   });
 
+  $('.account-info').on('click', '#acct-anon-btn', function(e){
+    $('#acct-moniker').val('');
+  });
+
+  $('.account-info').on('click', '#acct-moniker', function(e){
+    $('#acct-anon-btn').prop('checked', false);
+  });
+
   // Click handler for allowing users to edit account information
-  $('#display-profile-account-settings').on('click', '.save-acct-info', function(e){
+  $('#display-profile-account-settings').on('click', '#save-acct-info', function(e){
     $('.alert').addClass('hide');
     e.preventDefault();
 
     var profile = {
-      moniker: $('#acct-moniker').val(),
+      moniker: $('#acct-anon-btn').is(':checked') ? 'anonymous' : $('#acct-moniker').val(),
       location: $('#acct-location').val(),
       phone_number: $('#acct-phone-field').val(),
       opted_in: $("input[name='acct-opt-in-out']:checked").val() == "optin" ? 1 : 0,
