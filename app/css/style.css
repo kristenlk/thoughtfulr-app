@@ -170,6 +170,10 @@ label {
   color: #777;
 }
 
+#preferences-page ul {
+  margin-bottom: 0;
+}
+
 #preferences-back-btn,
 #complete-acct-back-btn {
   float: left;
@@ -182,28 +186,7 @@ label {
   margin-right: 125px!important;
 }
 
-#send-message-text-error {
-  background-image: linear-gradient(to bottom,#f2dede 0,#e7c3c3 100%);
-  background-repeat: repeat-x;
-  border-color: #dca7a7!important;
-  text-shadow: 0 1px 0 rgba(255,255,255,.2);
-  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.25),0 1px 2px rgba(0,0,0,.05);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.25),0 1px 2px rgba(0,0,0,.05);
-  color: #a94442;
-  background-color: #f2dede;
-  padding: 15px;
-  margin-bottom: 20px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  font-size: 14px;
-  width: 100%;
-  margin-top: 20px;
-  margin-bottom: 5px;
-}
-
-#phone-number-error,
-#register-location-error,
-#anonymous-error {
+label.error {
   color: #a94442;
   font-size: 12px;
   margin-top: 5px;

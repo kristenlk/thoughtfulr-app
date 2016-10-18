@@ -77,12 +77,12 @@
     <div id="sign-in-page" class="row hide">
       <div class="col-md-4 col-md-offset-4">
         <h2>Sign In</h2>
-        <form class="form center-block">
+        <form class="form center-block" id="sign-in-form">
           <div class="form-group">
-            <input type="text" class="form-control input-md" placeholder="Email address" id="sign-in-email">
+            <input type="text" class="form-control input-md" placeholder="Email address" id="sign-in-email" name="signinemail">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control input-md" placeholder="Password" id="sign-in-password">
+            <input type="password" class="form-control input-md" placeholder="Password" id="sign-in-password" name="signinpassword">
           </div>
             <div class="alert alert-danger hide text-left" role="alert" id="login-alert">
               <p>We were unable to locate an account with that email address and password combination. Please try again.</p>
@@ -140,6 +140,7 @@
             <p>Enter your phone number to receive messages from Thoughtfulr on your phone. Standard text messaging rates apply.</p>
             <input type="text" class="form-control input-md" placeholder="123-456-7890" id="phone-number" name="phone"><br />
           </div>
+          <br />
           <div class="time-of-day">
             <label for="timeofday">Message timing:</label>
             <p>Select the time of day (EST) that you'd like to receive your messages.</p>
@@ -148,7 +149,9 @@
               <li><input type="radio" name="timeofday" id="afternoon-radio-btn" value="afternoon">&nbsp;Afternoon</li>
               <li><input type="radio" name="timeofday" id="evening-radio-btn" value="evening">&nbsp;Evening</li>
             </ul>
+            <div id="timeofday-errors"></div>
           </div>
+          <br />
           <div class="clearfix" id="preferences-footer">
             <button type="button" class="btn btn-main col-md-offset-5" id="preferences-back-btn"><i class="fa fa-caret-left" aria-hidden="true"></i> Back</button>
             <button type="button" class="btn btn-main col-md-offset-5" id="preferences-next-btn">Next <i class="fa fa-caret-right" aria-hidden="true"></i></button>
@@ -162,15 +165,15 @@
     <div id="complete-acct-page" class="row hide">
       <div class="col-md-4 col-md-offset-4">
         <h2 id="complete-acct-header">Let's create your account.</h2>
-        <form class="form center-block">
+        <form class="form center-block" id="complete-acct-form">
           <div class="form-group">
-            <input type="text" class="form-control input-md" placeholder="Email address" id="register-email">
+            <input type="text" class="form-control input-md" placeholder="Email address" id="register-email" name="registeremail">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control input-md" placeholder="Password" id="register-password">
+            <input type="password" class="form-control input-md" placeholder="Password" id="register-password" name="registerpassword">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control input-md" placeholder="Confirm password" id="register-confirm-password">
+            <input type="password" class="form-control input-md" placeholder="Confirm password" id="register-confirm-password" name="confirmpassword">
           </div>
           <div class="clearfix" id="complete-acct-footer">
             <button type="button" class="btn btn-main col-md-offset-5" id="complete-acct-back-btn"><i class="fa fa-caret-left" aria-hidden="true"></i> Back</button>

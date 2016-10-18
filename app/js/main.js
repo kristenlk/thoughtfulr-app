@@ -9,11 +9,9 @@ var sendEvent = function(){
 }
 
 $(document).ready(function(){
+  var sa = 'https://powerful-waters-3612.herokuapp.com';
+  // var sa = 'http://localhost:3000';
 
-  // var sa = 'https://powerful-waters-3612.herokuapp.com';
-  var sa = 'http://localhost:3000';
-
-  // Checks for a token, does stuff if it finds one
   tokenExists = function(token){
     if (token) {
       // Nav
@@ -78,7 +76,6 @@ $(document).ready(function(){
     $(".navbar-collapse").collapse('hide');
   });
 
-
   // Click handlers for send a message page
   $("#send-message-btn").on('click', function() {
     if (token) {
@@ -116,13 +113,12 @@ $(document).ready(function(){
         }
       });
 
-      if (form.valid() == true){
+      if (form.valid() == true) {
         $('#send-message-page').addClass('hide');
         $('#preferences-page').removeClass('hide');
       }
     }
   });
-
 
   // Click handlers for preferences page
   $('#preferences-back-btn').on('click', function() {
@@ -143,15 +139,18 @@ $(document).ready(function(){
         },
         location: {
           required: true
+        },
+        timeofday: {
+          required: true
         }
       },
       errorPlacement: function (error, el) {
-        console.log(el.attr('name'));
         if (el.attr('name') === 'anonymous') {
-          console.log("hi");
-            error.appendTo($('#moniker-errors'));
+          error.appendTo($('#moniker-errors'));
+        } else if (el.attr('name') === 'timeofday') {
+          error.appendTo($('#timeofday-errors'));
         } else {
-            error.insertAfter(el);
+          error.insertAfter(el);
         }
       },
       messages: {
@@ -163,11 +162,14 @@ $(document).ready(function(){
         },
         location: {
           required: 'Please enter your location.'
+        },
+        timeofday: {
+          required: 'Please select a time of day to receive your messages.'
         }
       }
     });
 
-    if (form.valid() == true){
+    if (form.valid() == true) {
       $('#complete-acct-page').removeClass('hide');
       $('#preferences-page').addClass('hide')
     };
@@ -181,7 +183,6 @@ $(document).ready(function(){
     $('#anon-btn').prop('checked', false);
   });
 
-
   // Click handlers for complete account page
   $('#complete-acct-back-btn').on('click', function() {
     $('#preferences-page').removeClass('hide');
@@ -189,95 +190,141 @@ $(document).ready(function(){
   });
 
   $('#complete-acct-register-btn').on('click', function() {
-    moniker = function(){
-      var msg;
-      if ($('#anon-btn').is(':checked')) {
-        msg = 'anonymous';
-        console.log(msg);
-      } else {
-        msg = $('#register-moniker').val();
-      }
-      return msg;
-    }
+    var form = $("#complete-acct-form");
 
-    var profile = {
-                  moniker: moniker(),
-                  location: $('#register-location').val(),
-                  email_or_phone: "phone",
-                  phone_number: $('#phone-number').val(),
-                  selected_time: $("input[name='timeofday']:checked").val()
-                  };
-    console.log("profile data is", profile)
-
-    $.ajax(sa + '/users', {
-      contentType: 'application/json',
-      processData: false,
-      data: JSON.stringify({
-        user: {
-          email: $('#register-email').val(),
-          password: $('#register-password').val(),
-          password_confirmation: $('#register-confirm-password').val()
+    form.validate({
+      rules: {
+        registeremail: {
+          required: true
         },
-        profile: profile
-      }),
-      dataType: 'json',
-      method: 'POST'
-    }).done(function(data, textStatus, jqxhr){
-      console.log(data);
-      token = data.user_login.token;
-      userID = data.user_login.id;
-      tokenExists(token);
-
-      $.ajax({
-        url: sa + '/messages',
-        method: 'POST',
-        headers: {
-          Authorization: 'Token token=' + token
+        registerpassword: {
+          required: true
         },
-        data: {
-          message: {
-            body: $("#send-message-text").val()
-          }
+        confirmpassword: {
+          required: true
         }
-      }).done(function(data) {
-        $('#user-account, #account-navbar').removeClass('hide');
-        getReceivedMessages();
-        $('#complete-acct-page').addClass('hide');
-      }).fail(function(data) {
-        console.error(data);
-        $('#complete-acct-message-alert').removeClass('hide');
-      });
-    }).fail(function(jqxhr, textStatus, errorThrown){
-      // $('#register-alert').html(jqxhr.responseText);
-      $('#complete-acct-alert').removeClass('hide');
-      console.log(jqxhr.responseText);
+      },
+      messages: {
+        registeremail: {
+          required: 'Please enter your email address.'
+        },
+        registerpassword: {
+          required: 'Please enter a password.'
+        },
+        confirmpassword: {
+          required: 'Please confirm your password.'
+        }
+      }
     });
-  });
 
+    if (form.valid() == true) {
+      moniker = function(){
+        var msg;
+        if ($('#anon-btn').is(':checked')) {
+          msg = 'anonymous';
+          console.log(msg);
+        } else {
+          msg = $('#register-moniker').val();
+        }
+        return msg;
+      }
+
+      var profile = {
+        moniker: moniker(),
+        location: $('#register-location').val(),
+        phone_number: $('#phone-number').val(),
+        selected_time: $("input[name='timeofday']:checked").val()
+      };
+
+      $.ajax(sa + '/users', {
+        contentType: 'application/json',
+        processData: false,
+        data: JSON.stringify({
+          user: {
+            email: $('#register-email').val(),
+            password: $('#register-password').val(),
+            password_confirmation: $('#register-confirm-password').val()
+          },
+          profile: profile
+        }),
+        dataType: 'json',
+        method: 'POST'
+      }).done(function(data, textStatus, jqxhr){
+        token = data.user_login.token;
+        userID = data.user_login.id;
+        tokenExists(token);
+
+        $.ajax({
+          url: sa + '/messages',
+          method: 'POST',
+          headers: {
+            Authorization: 'Token token=' + token
+          },
+          data: {
+            message: {
+              body: $("#send-message-text").val()
+            }
+          }
+        }).done(function(data) {
+          $('#user-account, #account-navbar').removeClass('hide');
+          getReceivedMessages();
+          $('#complete-acct-page').addClass('hide');
+        }).fail(function(data) {
+          console.error(data);
+          $('#complete-acct-message-alert').removeClass('hide');
+        });
+      }).fail(function(jqxhr, textStatus, errorThrown){
+        $('#complete-acct-alert').removeClass('hide');
+      });
+    };
+  });
 
   // Click handlers for sign in page
   $('#sign-in-btn').on('click', function(){
-    $.ajax(sa + '/login', {
-      contentType: 'application/json',
-      processData: false,
-      data: JSON.stringify({
-        credentials: {
-          email: $('#sign-in-email').val(),
-          password: $('#sign-in-password').val(),
+    var form = $("#sign-in-form");
+
+    form.validate({
+      rules: {
+        signinemail: {
+          required: true
+        },
+        signinpassword: {
+          required: true
         }
-      }),
-      dataType: 'json',
-      method: 'POST'
-    }).done(function(data, textStatus, jqxhr){
-      token = data.user_login.token;
-      userID = data.user_login.id;
-      tokenExists(token);
-      $('#user-account, #account-navbar').removeClass('hide');
-      $('#sign-in-page').addClass('hide');
-      getReceivedMessages();
-    }).fail(function(jqxhr, textStatus, errorThrown){
-      $('#login-alert').removeClass('hide');
+      },
+      messages: {
+        signinemail: {
+          required: 'Please enter your email address.'
+        },
+        signinpassword: {
+          required: 'Please enter your password.'
+        }
+      }
     });
+
+    if (form.valid() == true) {
+      $.ajax(sa + '/login', {
+        contentType: 'application/json',
+        processData: false,
+        data: JSON.stringify({
+          credentials: {
+            email: $('#sign-in-email').val(),
+            password: $('#sign-in-password').val(),
+          }
+        }),
+        dataType: 'json',
+        method: 'POST'
+      }).done(function(data, textStatus, jqxhr){
+        token = data.user_login.token;
+        userID = data.user_login.id;
+        tokenExists(token);
+        $('#user-account, #account-navbar').removeClass('hide');
+        $('#sign-in-page').addClass('hide');
+        getReceivedMessages();
+      }).fail(function(jqxhr, textStatus, errorThrown){
+        $('#login-alert').removeClass('hide');
+      });
+    }
   });
 
   // Click handler for displaying My Account information
@@ -349,12 +396,10 @@ $(document).ready(function(){
     displaySentMessages();
   });
 
-
-// Click handler for closing alerts
+  // Click handler for closing alerts
   $('.account-info').on('click', '.alert-x', function(e){
     $(this).parent().parent().addClass('hide');
   });
-
 
   // My Account: Click handler for displaying account information / preferences
   // AJAX to get profile data
@@ -374,7 +419,6 @@ $(document).ready(function(){
           Authorization: 'Token token=' + token
         }
       }).done(function(data) {
-        console.log(data);
         var templatingFunction = Handlebars.compile($('#account-settings-template-user').html());
         var html = templatingFunction(data);
         currentUserData = data;
@@ -388,7 +432,6 @@ $(document).ready(function(){
 
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
-      // currentUserProfileData = JSON.parse(data);
       $('#display-profile-account-settings').removeClass('hide').html(html);
 
       if (data.opted_in) {
@@ -399,16 +442,10 @@ $(document).ready(function(){
     }).fail(function(data) {
       console.error(data);
     });
-
   });
 
-
   // My Account: click handlers for editing sent messages
-
-  // holds the id of the message you're currently editing
   var selectedMsgId;
-
-  // holds the body of the message you're currently editing
   var priorToEditBody;
   var $sentmessageBody;
 
@@ -419,7 +456,6 @@ $(document).ready(function(){
     $sentmessageBody = $(this).siblings().filter('.sentmessage-body');
     selectedMsgId = $(this).data('id');
     priorToEditBody = $sentmessageBody.html();
-    console.log('currentMsgBody is: ' + priorToEditBody);
     $editLink.addClass('hide');
     $('#save-' + $(this).data('id')).removeClass('hide');
     $('#cancel-' + $(this).data('id')).removeClass('hide');
@@ -432,11 +468,9 @@ $(document).ready(function(){
   $('.account-info').on('keypress', '.sentmessage-body', function(e){
     // e.preventDefault();
     if(e.which == 13){
-      console.log('hello');
       $('.save-a-msg').click();
     }
   });
-
 
   // Click handler for Cancel button: removes anything a user edits and sets it back to value in db. Clicking outside of the field should also cancel, but it does not right now.
   $('.account-info').on('click', '.cancel-a-msg', function(e){
@@ -473,14 +507,12 @@ $(document).ready(function(){
     });
   });
 
-
   // Click handler for Delete link. Modal is opened via Bootstrap handler in HTML. selectedMsgId is set here.
   $('.account-info').on('click', '.delete-a-msg', function(e){
     selectedMsgId = $(this).data('id');
     $('#confirm-delete, delete-msg-cancel').removeClass('hide');
     $('.alert').addClass('hide');
   });
-
 
   // Click handler for Delete button in Confirm Delete modal: deletes the current message.
   $('#confirm-delete').on('click', function(){
@@ -498,26 +530,23 @@ $(document).ready(function(){
       window.setTimeout(function(){
         $('#delete-msg-confirm-modal').modal('hide');
       }, 2000);
-      console.log("Deleted message");
     }).fail(function(data) {
       console.error(data);
       $('#msg-delete-alert').removeClass('hide');
     });
   });
 
-
-// Click handler for allowing users to edit account information
+  // Click handler for allowing users to edit account information
   $('#display-profile-account-settings').on('click', '.save-acct-info', function(e){
     $('.alert').addClass('hide');
     e.preventDefault();
 
     var profile = {
-                  moniker: $('#acct-moniker').val(),
-                  location: $('#acct-location').val(),
-                  email_or_phone: "phone",
-                  phone_number: $('#acct-phone-field').val(),
-                  opted_in: $("input[name='acct-opt-in-out']:checked").val() == "optin" ? 1 : 0,
-                  };
+      moniker: $('#acct-moniker').val(),
+      location: $('#acct-location').val(),
+      phone_number: $('#acct-phone-field').val(),
+      opted_in: $("input[name='acct-opt-in-out']:checked").val() == "optin" ? 1 : 0,
+    };
 
     // AJAX to save user data (just email right now)
     $.ajax({
@@ -532,9 +561,7 @@ $(document).ready(function(){
         }
       },
     }).done(function(data) {
-      console.log("Saved edited user.");
       console.log(data);
-
 
       // AJAX to save profile data (everything else)
       $.ajax({
@@ -548,17 +575,14 @@ $(document).ready(function(){
         },
       }).done(function(data) {
         $('#acct-confirmation').removeClass('hide');
-        console.log("Saved edited profile.");
         console.log(data);
       }).fail(function(data) {
         $('#acct-alert').removeClass('hide');
         console.error(data);
       });
-
     }).fail(function(data) {
       $('#acct-alert').removeClass('hide');
       console.error(data);
     });
-
   });
 });
