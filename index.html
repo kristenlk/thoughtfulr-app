@@ -31,7 +31,7 @@
                 <h2>send a happy thought,</h2>
                 <h1>get one back.</h1>
                 <br />
-                <button type="button" id="get-started-btn" class="btn btn-main">Get Started <i class="fa fa-caret-right" aria-hidden="true"></i></button>
+                <button type="button" id="get-started-btn" class="btn btn-main open-message-page">Get Started <i class="fa fa-caret-right" aria-hidden="true"></i></button>
               </div>
             </div>
           </div>
@@ -66,7 +66,7 @@
               <a href="#" id="log-out-nav" class="hide">Log Out</a>
             </li>
             <li>
-              <button type="button" class="btn btn-main" id="send-message-nav">Send a Message</button>
+              <button type="button" class="btn btn-main open-message-page" id="send-message-nav">Send a Message</button>
             </li>
           </ul>
         </div>
@@ -110,6 +110,7 @@
           <div class="clearfix" id="send-message-footer">
             <button type="button" class="btn btn-main col-md-offset-5" id="send-message-btn"></button>
           </div>
+          <br />
         </form>
       </div>
     </div>
@@ -122,7 +123,7 @@
           <div class="form-group" id="moniker-options">
             <label for="register-moniker">Moniker:</label>
             <p>Your moniker will be displayed when your messages are sent to other users.</p>
-            <input type="text" class="form-control input-md" placeholder="Amy Z." id="register-moniker" name="moniker">
+            <input type="text" class="form-control input-md" placeholder="Amy Z." id="register-moniker" name="registermoniker">
             <ul>
               <li><input type="radio" name="anonymous" id="anon-btn">&nbsp;I want to be anonymous.</li>
             </ul>
@@ -132,22 +133,22 @@
           <div class="form-group">
             <label for="register-location">Location:</label>
             <p>Your location will be displayed when your messages are sent to other users.</p>
-            <input type="text" class="form-control input-md" placeholder="Boston, MA" id="register-location" name="location">
+            <input type="text" class="form-control input-md" placeholder="Boston, MA" id="register-location" name="registerlocation">
           </div>
           <br />
           <div class="form-group">
-            <label for="phone-number">Phone number:</label>
+            <label for="register-phone">Phone number:</label>
             <p>Enter your phone number to receive messages from Thoughtfulr on your phone. Standard text messaging rates apply.</p>
-            <input type="text" class="form-control input-md" placeholder="123-456-7890" id="phone-number" name="phone"><br />
+            <input type="text" class="form-control input-md" placeholder="123-456-7890" id="register-phone" name="registerphone"><br />
           </div>
           <br />
-          <div class="time-of-day">
-            <label for="timeofday">Message timing:</label>
-            <p>Select the time of day (EST) that you'd like to receive your messages.</p>
+          <div class="register-time-of-day">
+            <label for="registertimeofday">Message timing:</label>
+            <p>Select the time of day that you'd like to receive your messages.</p>
             <ul>
-              <li><input type="radio" name="timeofday" id="morning-radio-btn" value="morning">&nbsp;Morning</li>
-              <li><input type="radio" name="timeofday" id="afternoon-radio-btn" value="afternoon">&nbsp;Afternoon</li>
-              <li><input type="radio" name="timeofday" id="evening-radio-btn" value="evening">&nbsp;Evening</li>
+              <li><input type="radio" name="registertimeofday" id="morning-radio-btn" value="morning">&nbsp;Morning (9am EST)</li>
+              <li><input type="radio" name="registertimeofday" id="afternoon-radio-btn" value="afternoon">&nbsp;Afternoon (2pm EST)</li>
+              <li><input type="radio" name="registertimeofday" id="evening-radio-btn" value="evening">&nbsp;Evening (7pm EST)</li>
             </ul>
             <div id="timeofday-errors"></div>
           </div>
@@ -223,42 +224,42 @@
       <br /><br />
     </div>
 
-      <!-- DELETE MESSAGE MODAL -->
-      <div class="modal fade" id="delete-msg-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="deleteMsgConfirmModalLabel" aria-hidden="true">
-          <div class="modal-dialog">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                      <h4 class="modal-title" id="myModalLabel">Delete a message</h4>
-                  </div>
-
-                  <div class="modal-body">
-                      <p>You are about to permanently delete a message you've contributed to Thoughtfulr.</p>
-                      <p>Are you sure you want to delete this message?</p>
-                  </div>
-
-                  <div class="modal-footer">
-                    <div class="alert alert-success hide text-left" role="alert" id="msg-delete-confirmation">
-                      <p>Message deleted.</p>
-                    </div>
-
-                    <div class="alert alert-danger hide text-left" role="alert" id="msg-delete-alert">
-                      <p>We were unable to delete your message. Please try again.</p>
-                    </div>
-
-                    <button type="button" class="btn btn-default" data-dismiss="modal" id="delete-msg-cancel">Cancel</button>
-                    <a class="btn btn-danger btn-ok" id="confirm-delete">Delete</a>
-                  </div>
-              </div>
+    <!-- DELETE MESSAGE MODAL -->
+    <div class="modal fade" id="delete-msg-confirm-modal" tabindex="-1" role="dialog" aria-labelledby="deleteMsgConfirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">Delete a message</h4>
           </div>
-      </div>
 
+          <div class="modal-body">
+            <p>You are about to permanently delete a message you've contributed to Thoughtfulr.</p>
+            <p>Are you sure you want to delete this message?</p>
+          </div>
+
+          <div class="modal-footer">
+            <div class="alert alert-success hide text-left" role="alert" id="msg-delete-confirmation">
+              <p>Message deleted.</p>
+            </div>
+
+            <div class="alert alert-danger hide text-left" role="alert" id="msg-delete-alert">
+              <p>We were unable to delete your message. Please try again.</p>
+            </div>
+
+            <button type="button" class="btn btn-main" data-dismiss="modal" id="delete-msg-cancel">Cancel</button>
+            <a class="btn btn-danger btn-ok" id="confirm-delete">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- USER ACCOUNT -->
     <div class="row hide" id="user-account">
       <div class="col-sm-12 col-md-12 col-lg-12">
         <h2>My Account</h2>
-      <!-- USER ACCOUNT NAVBAR -->
+
+        <!-- USER ACCOUNT NAVBAR -->
         <div class="span3 bs-docs-sidebar col-md-4 col-sm-3 col-lg-2" id="account-navbar">
           <ul class="nav nav-list bs-docs-sidenav affix-top">
             <li class="active" id="acct-received-messages"><a href="#receivedmessages"> Received Messages<span class="glyphicon glyphicon-chevron-right"></span></a></li>
@@ -270,10 +271,11 @@
 
       <!-- USER ACCOUNT SUBSECTIONS -->
       <div class="account-info col-md-8 col-sm-offset-1 col-sm-7 col-lg-6">
+
         <!-- RECEIVED MESSAGES -->
         <div id="display-received-messages"></div>
           <script type="text/x-handlebars-template" id="received-messages-template">
-          <h3>You have received {{receivedmessage.length}} messages. You have <span id="num_messages_left_to_receive"></span> more to receive. To receive more messages, <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">send more!</a></h3>
+          <h3>You have received {{receivedmessage.length}} {{pluralize receivedmessage.length 'message' 'messages'}}. You have <span id="num_messages_left_to_receive"></span> more to receive. To receive more messages, <a href="#" class="open-message-page">send more!</a></h3>
           <ul class="receivedmessages">
           {{#each receivedmessage}}
             <li class="receivedmessage">
@@ -286,108 +288,113 @@
 
         <!-- SENT MESSAGES -->
         <div id="display-sent-messages"></div>
-          <script type="text/x-handlebars-template" id="sent-messages-template">
-            <h3>You have sent {{sentmessage.length}} messages. <a href="#" class="open-msg-modal" id="open-msg-modal-from-account" data-toggle="modal" data-target="#send-message-modal">Send more</a> to receive more!</h3>
+        <script type="text/x-handlebars-template" id="sent-messages-template">
+          <h3>You have sent {{sentmessage.length}} {{pluralize sentmessage.length 'message' 'messages'}}. <a href="#" class="open-message-page">Send more</a> to receive more!</h3>
 
-            <div class="alert alert-success hide text-left" role="alert" id="msg-save-confirmation">
-              <button type="button" class="close">
-                <span aria-hidden="true" class="alert-x">&times;</span>
-              </button>
-              <p>Message saved.</p>
-            </div>
+          <div class="alert alert-success hide text-left" role="alert" id="msg-save-confirmation">
+            <button type="button" class="close">
+              <span aria-hidden="true" class="alert-x">&times;</span>
+            </button>
+            <p>Message saved.</p>
+          </div>
 
-            <div class="alert alert-danger hide text-left" role="alert" id="msg-save-alert">
-              <button type="button" class="close">
-                <span aria-hidden="true" class="alert-x">&times;</span>
-              </button>
-              <p>We were unable to save your message. Please try again.</p>
-            </div>
+          <div class="alert alert-danger hide text-left" role="alert" id="msg-save-alert">
+            <button type="button" class="close">
+              <span aria-hidden="true" class="alert-x">&times;</span>
+            </button>
+            <p>We were unable to save your message. Please try again.</p>
+          </div>
 
-            <ul class="sentmessages">
-            {{#each sentmessage}}
-              <li class="sentmessage">
-                <a href="#" data-id="{{id}}" class="edit-a-msg">Edit</a>
-                <a href="#" data-id="{{id}}" id="delete-{{id}}" class="delete-a-msg" data-toggle="modal" data-target="#delete-msg-confirm-modal">Delete</a>
-                <a href="#" data-id="{{id}}" id="save-{{id}}" class="save-a-msg hide">Save</a>
-                <a href="#" data-id="{{id}}" id="cancel-{{id}}" class="cancel-a-msg hide">Cancel</a>
-                <div class="sentmessage-body" contenteditable="false">{{body}}</div>
-                {{created_at}}
-              </li>
-            {{/each}}
-            </ul>
-          </script>
+          <ul class="sentmessages">
+          {{#each sentmessage}}
+            <li class="sentmessage">
+              <a href="#" data-id="{{id}}" class="edit-a-msg">Edit</a>
+              <a href="#" data-id="{{id}}" id="delete-{{id}}" class="delete-a-msg" data-toggle="modal" data-target="#delete-msg-confirm-modal">Delete</a>
+              <a href="#" data-id="{{id}}" id="save-{{id}}" class="save-a-msg hide">Save</a>
+              <a href="#" data-id="{{id}}" id="cancel-{{id}}" class="cancel-a-msg hide">Cancel</a>
+              <div class="sentmessage-body" contenteditable="false">{{body}}</div>
+              {{created_at}}
+            </li>
+          {{/each}}
+          </ul>
+        </script>
 
         <!-- ACCOUNT INFORMATION / PREFERENCES -->
-          <div id="display-user-account-settings"></div>
-            <script type="text/x-handlebars-template" id="account-settings-template-user">
+        <div id="display-user-account-settings"></div>
+        <script type="text/x-handlebars-template" id="account-settings-template-user">
+          <h3>Account Information</h3>
+          <form name="acct-info-form">
+            <div class="alert alert-success hide text-left" role="alert" id="acct-confirmation">
+              <button type="button" class="close">
+                <span aria-hidden="true" class="alert-x">&times;</span>
+              </button>
+              <p>Your account information has been saved.</p>
+            </div>
 
-              <h3>Account Information</h3>
-              <form name="acctInfoForm">
+            <div class="alert alert-danger hide text-left" role="alert" id="acct-alert">
+              <button type="button" class="close">
+                <span aria-hidden="true" class="alert-x">&times;</span>
+              </button>
+              <p>We were unable to save your account information. Please try again.</p>
+            </div>
 
-                <div class="alert alert-success hide text-left" role="alert" id="acct-confirmation">
-                  <button type="button" class="close">
-                    <span aria-hidden="true" class="alert-x">&times;</span>
-                  </button>
-                  <p>Your account information has been saved.</p>
-                </div>
+            <div class="form-group">
+              <label>Email address:</label>
+              <input type="text" class="form-control input-md" value="{{user.email}}" id="acct-email">
+            </div>
+          </form>
+        </script>
 
-                <div class="alert alert-danger hide text-left" role="alert" id="acct-alert">
-                  <button type="button" class="close">
-                    <span aria-hidden="true" class="alert-x">&times;</span>
-                  </button>
-                  <p>We were unable to save your account information. Please try again.</p>
-                </div>
+        <div id="display-profile-account-settings"></div>
+        <script type="text/x-handlebars-template" id="account-settings-template-profile">
 
-                <div class="form-group">
-                  <label>Email address:</label>
-                  <input type="text" class="form-control input-md" value="{{user.email}}" id="acct-email">
-                </div>
-              </form>
+          <form name="acct-info-formmm">
+            <div class="form-group">
+              <label>Moniker:</label>
+              <input type="text" class="form-control input-md" value="{{moniker}}" placeholder="Amy Z." id="acct-moniker" name="acctanonymous">
+              <ul>
+                <li><input type="radio" id="acct-anon-btn">&nbsp;I want to be anonymous.</li>
+              </ul>
+            </div>
 
-            </script>
+            <div class="form-group">
+              <label>Location:</label>
+              <input type="text" class="form-control input-md" value="{{location}}" id="acct-location" name="acctlocation">
+            </div>
 
-            <div id="display-profile-account-settings"></div>
-            <script type="text/x-handlebars-template" id="account-settings-template-profile">
+            <div class="form-group">
+              <div id="acct-phone">
+                <label>Phone number:</label>
+                <input type="text" class="form-control input-md" value="{{phone_number}}" id="acct-phone-field" name="acctphone">
+              </div>
+            </div>
 
-              <form name="acctInfoForm">
-                <div class="form-group">
-                  <label>Moniker:</label>
-                  <input type="text" class="form-control input-md" value="{{moniker}}" placeholder="Amy Z." id="acct-moniker">
-                  <ul>
-                    <li><input type="radio" id="acct-anon-btn">&nbsp;I want to be anonymous.</li>
-                  </ul>
-                </div>
+            <div class="form-group">
+              <label for="accttimeofday">Message timing:</label>
+              <p>Select the time of day that you'd like to receive your messages.</p>
+              <ul>
+                <li><input type="radio" name="accttimeofday" id="morning-radio-btn" value="morning">&nbsp;Morning (9am EST)</li>
+                <li><input type="radio" name="accttimeofday" id="afternoon-radio-btn" value="afternoon">&nbsp;Afternoon (2pm EST)</li>
+                <li><input type="radio" name="accttimeofday" id="evening-radio-btn" value="evening">&nbsp;Evening (7pm EST)</li>
+              </ul>
+            </div>
 
-                <div class="form-group">
-                  <label>Location:</label>
-                  <input type="text" class="form-control input-md" value="{{location}}" id="acct-location">
-                </div>
+            <div class="form-group" id="acct-opt-in-out">
+              <label>Daily messages:</label>
+              <ul>
+                <li>
+                  <input type="radio" name="acct-opt-in-out" id="acct-opt-in" value="optin" name="optinorout">&nbsp;Send me daily messages!
+                </li>
+                <li>
+                  <input type="radio" name="acct-opt-in-out" id="acct-opt-out" value="optout" name="optinorout">&nbsp;I do not want to receive daily messages from Thoughtfulr.
+                </li>
+              </ul>
+            </div>
+          </form>
 
-                <div class="form-group">
-                  <div id="acct-phone">
-                    <label>Phone number:</label>
-                    <input type="text" class="form-control input-md" value="{{phone_number}}" id="acct-phone-field">
-                  </div>
-                </div>
+          <button type="button" class="btn btn-main col-md-offset-5" id="save-acct-info">Save Changes</button>
 
-                <div class="form-group">
-                  <label>Daily messages:</label>
-                  <ul>
-                    <li>
-                      <input type="radio" name="acct-opt-in-out" id="acct-opt-in" value="optin">&nbsp;Send me daily messages!
-                    </li>
-                    <li>
-                      <input type="radio" name="acct-opt-in-out" id="acct-opt-out" value="optout">&nbsp;I do not want to receive daily messages from Thoughtfulr.
-                    </li>
-                  </ul>
-
-                </div>
-              </form>
-
-              <button type="button" class="btn btn-main col-md-offset-5" id="save-acct-info">Save Changes</button>
-
-              </script>
-
+        </script>
       </div>
     </div>
 

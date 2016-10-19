@@ -4,10 +4,6 @@ var moniker;
 var tokenExists;
 var logOut;
 
-var sendEvent = function(){
-  $('#register-modal').trigger('next.m.2');
-}
-
 $(document).ready(function(){
   var sa = 'https://powerful-waters-3612.herokuapp.com';
   // var sa = 'http://localhost:3000';
@@ -16,7 +12,7 @@ $(document).ready(function(){
     if (token) {
       // Nav
       $('#register-nav, #sign-in-nav').addClass('hide');
-      $('#my-account-nav, #log-out-nav, .temp-send-text, .open-msg-modal').removeClass('hide');
+      $('#my-account-nav, #log-out-nav, .temp-send-text').removeClass('hide');
 
       // Send a message
       $('#send-message-header').html('Send a message');
@@ -46,6 +42,7 @@ $(document).ready(function(){
 
   $('#sign-in-nav').on('click', function() {
     $('#sign-in-page').removeClass('hide');
+    $("#sign-in-email-error, #sign-in-password-error").remove();
     $('#how-it-works-page, #send-message-page, #preferences-page, #complete-acct-page').addClass('hide');
   });
 
@@ -56,7 +53,7 @@ $(document).ready(function(){
 
   $('#send-message-nav, #get-started-btn').on('click', function() {
     $('#send-message-page').removeClass('hide');
-    $("#phone-number-error, #register-location-error, #anonymous-error").remove();
+    $("#phone-number-error, #register-location-error, #anonymous-error, #register-email-error, #register-password-error, #register-confirm-password-error").remove();
     $('#sign-in-page, #how-it-works-page, #preferences-page, #complete-acct-page').addClass('hide');
   });
 
@@ -78,41 +75,43 @@ $(document).ready(function(){
 
   // Click handlers for send a message page
   $("#send-message-btn").on('click', function() {
+    var form = $("#send-message-form");
+
+    form.validate({
+      rules: {
+        sendmessagetext: {
+          required: true
+        }
+      },
+      messages: {
+        sendmessagetext: {
+          required: 'Please enter a message.',
+        }
+      }
+    });
+
     if (token) {
-      $.ajax({
-        url: sa + '/messages',
-        method: 'POST',
-        headers: {
-          Authorization: 'Token token=' + token
-        },
-        data: {
-          message: {
-            body: $("#send-message-text").val()
+      if (form.valid() == true) {
+        $.ajax({
+          url: sa + '/messages',
+          method: 'POST',
+          headers: {
+            Authorization: 'Token token=' + token
+          },
+          data: {
+            message: {
+              body: $("#send-message-text").val()
+            }
           }
-        }
-      }).done(function(data) {
-        $('#message-alert').addClass('hide');
-        $('#message-confirmation').removeClass('hide');
-      }).fail(function(data) {
-        console.error(data);
-        $('#message-alert').removeClass('hide');
-      });
+        }).done(function(data) {
+          $('#message-alert').addClass('hide');
+          $('#message-confirmation').removeClass('hide');
+        }).fail(function(data) {
+          console.error(data);
+          $('#message-alert').removeClass('hide');
+        });
+      }
     } else {
-      var form = $("#send-message-form");
-
-      form.validate({
-        rules: {
-          sendmessagetext: {
-            required: true
-          }
-        },
-        messages: {
-          sendmessagetext: {
-            required: 'Please enter a message.',
-          }
-        }
-      });
-
       if (form.valid() == true) {
         $('#send-message-page').addClass('hide');
         $('#preferences-page').removeClass('hide');
@@ -131,39 +130,39 @@ $(document).ready(function(){
 
     form.validate({
       rules: {
-        anonymous: {
+        registeranonymous: {
           required: $('#anon-btn').is(':checked') || $('#register-moniker').html().length > 0 ? false : true
         },
-        phone: {
+        registerphone: {
           required: true
         },
-        location: {
+        registerlocation: {
           required: true
         },
-        timeofday: {
+        registertimeofday: {
           required: true
         }
       },
       errorPlacement: function (error, el) {
         if (el.attr('name') === 'anonymous') {
           error.appendTo($('#moniker-errors'));
-        } else if (el.attr('name') === 'timeofday') {
+        } else if (el.attr('name') === 'registertimeofday') {
           error.appendTo($('#timeofday-errors'));
         } else {
           error.insertAfter(el);
         }
       },
       messages: {
-        anonymous: {
+        registeranonymous: {
           required: 'Please enter a moniker.',
         },
-        phone: {
+        registerphone: {
           required: 'Please enter your phone number.',
         },
-        location: {
+        registerlocation: {
           required: 'Please enter your location.'
         },
-        timeofday: {
+        registertimeofday: {
           required: 'Please select a time of day to receive your messages.'
         }
       }
@@ -195,7 +194,8 @@ $(document).ready(function(){
     form.validate({
       rules: {
         registeremail: {
-          required: true
+          required: true,
+          email: true
         },
         registerpassword: {
           required: true
@@ -206,7 +206,8 @@ $(document).ready(function(){
       },
       messages: {
         registeremail: {
-          required: 'Please enter your email address.'
+          required: 'Please enter your email address.',
+          email: 'Please enter a valid email address.'
         },
         registerpassword: {
           required: 'Please enter a password.'
@@ -222,7 +223,7 @@ $(document).ready(function(){
         moniker: $('#anon-btn').is(':checked') ? 'anonymous' : $('#register-moniker').val(),
         location: $('#register-location').val(),
         phone_number: $('#phone-number').val(),
-        selected_time: $("input[name='timeofday']:checked").val()
+        selected_time: $("input[name='registertimeofday']:checked").val()
       };
 
       $.ajax(sa + '/users', {
@@ -275,7 +276,8 @@ $(document).ready(function(){
     form.validate({
       rules: {
         signinemail: {
-          required: true
+          required: true,
+          email: true
         },
         signinpassword: {
           required: true
@@ -283,7 +285,8 @@ $(document).ready(function(){
       },
       messages: {
         signinemail: {
-          required: 'Please enter your email address.'
+          required: 'Please enter your email address.',
+          email: 'Please enter a valid email address.'
         },
         signinpassword: {
           required: 'Please enter your password.'
@@ -337,7 +340,7 @@ $(document).ready(function(){
       if (data.messages.length > 0) {
         html = templatingFunction({receivedmessage: data.messages});
       } else {
-        html = 'You haven\'t received any messages yet. If you haven\'t sent out a message yet, <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">get sending</a> and you\'ll receive a message within the next day. If you\'ve already sent a message, you should be receiving your first message within the next 24 hours.'
+        html = '<h3>You have not yet received any messages.</h3><p>If you haven\'t sent out a message yet, <a href="#" class="open-message-page">send one now</a> and you\'ll receive a message within the next day. If you\'ve already sent a message, you should be receiving your first message within the next 24 hours.</p>'
       }
       $('#display-received-messages').removeClass('hide').html(html);
 
@@ -357,6 +360,11 @@ $(document).ready(function(){
     });
   }
 
+  Handlebars.registerHelper('pluralize', function(number, single, plural) {
+    if (number === 1) { return single; }
+    else { return plural; }
+  });
+
   // AJAX for displaying sent messages
   var displaySentMessages = function() {
     $.ajax({
@@ -371,7 +379,7 @@ $(document).ready(function(){
       if (data.messages.length > 0) {
         html = templatingFunction({sentmessage: data.messages});
       } else {
-        html = 'You have not yet sent any messages. You won\'t receive a daily messages until you send one, so <a href="#" class="open-msg-modal" data-toggle="modal" data-target="#send-message-modal">get sending!</a>'
+        html = '<h3>You have not yet sent any messages.</h3><p>You won\'t receive a daily message until you send one, so <a href="#" class="open-message-page">send one now!</a>'
       }
       $('#display-sent-messages').removeClass('hide').html(html);
 
@@ -422,6 +430,8 @@ $(document).ready(function(){
       var templatingFunction = Handlebars.compile($('#account-settings-template-profile').html());
       var html = templatingFunction(data);
       $('#display-profile-account-settings').removeClass('hide').html(html);
+
+      $("input[value='" + data.selected_time + "']").prop('checked', true);
 
       if (data.opted_in) {
         $('#acct-opt-in').prop('checked', true);
@@ -546,7 +556,8 @@ $(document).ready(function(){
       moniker: $('#acct-anon-btn').is(':checked') ? 'anonymous' : $('#acct-moniker').val(),
       location: $('#acct-location').val(),
       phone_number: $('#acct-phone-field').val(),
-      opted_in: $("input[name='acct-opt-in-out']:checked").val() == "optin" ? 1 : 0,
+      selected_time: $("input[name='accttimeofday']:checked").val(),
+      opted_in: $("input[name='acct-opt-in-out']:checked").val() == "optin" ? 1 : 0
     };
 
     // AJAX to save user data (just email right now)

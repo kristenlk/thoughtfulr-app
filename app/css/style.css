@@ -39,12 +39,14 @@ li.sentmessage, li.receivedmessage {
   color: #fff;
 }
 
-.nav .btn-main {
+.nav .btn-main,
+#delete-msg-confirm-modal .btn-main {
   background: transparent;
   color: #93A4C7!important;
 }
 
-.nav .btn-main:hover {
+.nav .btn-main:hover,
+#delete-msg-confirm-modal .btn-main:hover {
   background: #93A4C7;
   border: 2px solid #93A4C7;
   color: #fff!important;
@@ -61,12 +63,25 @@ li.sentmessage, li.receivedmessage {
   border: 2px solid #6D7AA2;
 }
 
-/*#send-message-nav, #get-started-btn {
+.btn-danger {
+  background: #D9534F;
+  border: 2px solid #D9534F;
   color: #fff;
-  outline: 0;
+  padding: 8px 20px;
+  letter-spacing: 0.8px;
+  color: #fff!important;
+  outline: 0!important;
   margin-left: 15px;
   margin-right: 15px;
-}*/
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.btn-danger:hover {
+  background: #C44B47;
+  border: 2px solid #C44B47;
+  color: #fff;
+}
 
 /* Main Page */
 .intro-header {
@@ -240,6 +255,10 @@ label.error {
   display: block;
   margin: 0 auto;
   float: left;
+}
+
+#acct-opt-in-out li:first-child {
+  margin-top: 0;
 }
 
 /* Navbar */
